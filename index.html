@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AGS Performance Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script>
 /* DEPLOYMENT CONFIGURATION (see DEPLOYMENT.md). The OAuth client ID is public by design; no secrets here. */
 window.AGS_CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbz7vhZqNMUdoevn0eQkqypnsZqsjaekFR4mK-5X8YzRQxwHR0iU5G9smXiPiAbPpuC2/exec', GOOGLE_CLIENT_ID: '475733208759-pmvcgkpk7j32bopbstj0jmm3rj9vii4n.apps.googleusercontent.com', ALLOWED_DOMAIN: 'allianceglobalsolutions.com', ENABLE_DEMO: false };
 </script>
 <style>
-:root{--bg:#EEF1F5;--surface:#fff;--surface2:#F6F8FB;--ink:#172131;--ink2:#3B475A;--muted:#5E6B80;--line:#D7DDE6;--line2:#E8ECF2;--accent:#2B5C9E;--accent2:#1F4A85;--accent-soft:#E3ECF8;--ok:#2A7656;--ok-soft:#E1F1E9;--warn:#9A630E;--warn-soft:#FBF0DC;--bad:#B42318;--bad-soft:#FBE4E0;--side:#102038;--r:10px;--font:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color-scheme:light}
+:root{--bg:#EEF1F5;--surface:#fff;--surface2:#F6F8FB;--ink:#172131;--ink2:#3B475A;--muted:#5E6B80;--line:#D7DDE6;--line2:#E8ECF2;--accent:#2B5C9E;--accent2:#1F4A85;--accent-soft:#E3ECF8;--ok:#2A7656;--ok-soft:#E1F1E9;--warn:#9A630E;--warn-soft:#FBF0DC;--bad:#B42318;--bad-soft:#FBE4E0;--side:#102038;--r:10px;--font:'Inter','Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color-scheme:light}
 :root[data-theme="dark"]{--bg:#0C1420;--surface:#121D2E;--surface2:#172437;--ink:#E4E9F1;--ink2:#C2CBD8;--muted:#94A1B5;--line:#2A3A52;--line2:#22324A;--accent:#7FA8E3;--accent2:#A6C3EE;--accent-soft:#1C2F4C;--ok:#6CC59C;--ok-soft:#173528;--warn:#E3B05A;--warn-soft:#3A2C12;--bad:#FF9C8F;--bad-soft:#3E1D18;--side:#0A1626;color-scheme:dark}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*,*::before,*::after{box-sizing:inherit}
 html,body,#app{height:100%}body{margin:0;font:14.5px/1.5 var(--font);color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit;color:inherit}
@@ -60,6 +60,18 @@ h1{font-size:1.25rem;margin:0}h2{font-size:1.02rem;margin:0 0 12px}.muted{color:
 .camp.h-red{border-top:4px solid #B42318}.camp.h-amber{border-top:4px solid #C68A12}.camp.h-green{border-top:4px solid #2A7656}.why{margin:-4px 0 10px;min-height:20px}
 tr.total td{font-weight:800;background:var(--surface2)}.hrow{display:grid;grid-template-columns:140px 1fr 1fr;gap:8px;align-items:center;margin:6px 0;font-size:13px}.hrow .hh{width:70px;display:inline-block;margin:0 4px}
 .tag.ok{background:var(--ok-soft);color:var(--ok)}.train th.grp{text-align:center;border-left:2px solid var(--line)}.train td.avg,.train th.avg{border-right:2px solid var(--line);font-weight:700}.tv.red{color:var(--bad)}.btn-sm{padding:3px 10px;font-size:12px;margin-top:4px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-right:4px}.seg button{border:0;background:var(--surface);color:var(--ink2);padding:6px 11px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}.h3{font-size:14px;margin:6px 0 8px}
+.bandbar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:4px 0 12px;background:var(--surface2)}.bandbar span{display:block;height:100%}
+.b-ex{background:#1E7B52}.b-out{background:#4FA36F}.b-sat{background:#8CC08B}.b-ni{background:#E3A93B}.b-poor{background:#D2583E}.b-ztp{background:#8E1F14}
+.dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:8px;vertical-align:0}.t.mini td{padding:6px 10px;font-size:13px}
+.meter{display:inline-block;width:54px;height:6px;border-radius:3px;background:var(--surface2);margin-right:8px;vertical-align:middle;overflow:hidden}.meter i{display:block;height:100%;background:#D2583E}
+.cv{display:inline-block;min-width:48px;padding:2px 8px;border-radius:6px;font-weight:600}.cv-met{background:var(--ok-soft);color:var(--ok)}.cv-part{background:var(--warn-soft);color:var(--warn)}.cv-miss{background:var(--bad-soft);color:var(--bad)}
+.tv.greenv{color:var(--ok)}.tv.amberv{color:var(--warn)}
+.chart{width:100%;min-width:560px;height:auto;display:block}.ch-bar{fill:var(--accent);opacity:.78}.ch-line{fill:none;stroke:#D2583E;stroke-width:2.2}.ch-dot{fill:#D2583E}.ch-grid{stroke:var(--line);stroke-dasharray:3 4}
+.ch-x,.ch-y,.ch-ya{font-size:11px;fill:var(--muted);font-family:var(--font)}.ch-x{text-anchor:middle}.ch-y{text-anchor:end}.ch-ya{text-anchor:start;fill:#D2583E}
+.lg-bar,.lg-line{display:inline-block;width:12px;height:8px;margin:0 4px 0 10px;border-radius:2px;background:var(--accent);opacity:.8}.lg-line{height:3px;background:#D2583E;vertical-align:2px;opacity:1}
+.tgrid{display:grid;grid-template-columns:70px repeat(4,1fr);gap:8px;align-items:center}.tf{font-size:12px;color:var(--ink2);display:flex;flex-direction:column;gap:3px}.tf .rt{width:100px}
 .bar{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .mb{position:fixed;inset:0;background:rgba(9,18,32,.5);display:flex;align-items:flex-start;justify-content:center;padding:5vh 14px;z-index:50;overflow:auto}.modal{background:var(--surface);border-radius:14px;width:100%;max-width:640px;border:1px solid var(--line)}
 .mh{position:relative;padding:16px 20px;border-bottom:1px solid var(--line2)}.mh h2{margin:0;padding-right:30px}.x{position:absolute;right:12px;top:10px;border:0;background:none;font-size:24px;cursor:pointer;color:var(--muted)}.mbody{padding:16px 20px}.mf{display:flex;gap:8px;justify-content:flex-end;padding:12px 20px;border-top:1px solid var(--line2)}
@@ -67,6 +79,16 @@ tr.total td{font-weight:800;background:var(--surface2)}.hrow{display:grid;grid-t
 details.edit{margin-top:14px;border-top:1px solid var(--line2);padding-top:12px}details.edit summary{cursor:pointer;font-weight:700;color:var(--accent)}.hist{padding-left:18px;margin:8px 0 0}.hist li{margin-bottom:6px}
 #toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:90;max-width:min(420px,calc(100vw - 32px))}.toast{background:#102038;color:#fff;padding:11px 14px;border-radius:9px;border-left:4px solid #7FA8E3;box-shadow:0 8px 24px rgba(0,0,0,.25)}.toast.ok{border-left-color:#6CC59C}.toast.bad{border-left-color:#EE8C7D}
 @media (max-width:900px){.shell{grid-template-columns:1fr}.side{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:30;flex-direction:row;padding:6px calc(6px + env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));}.side .brand,.side-foot{display:none}#nav{flex-direction:row;width:100%;justify-content:space-around}#nav button{flex-direction:column;gap:2px;font-size:11px;padding:6px}.page{padding:14px 14px 90px}.grid2,.row2{grid-template-columns:1fr}.hide-sm{display:none}}
+
+/* typography: Inter, even-width figures, calmer weights */
+body{font-size:14px;letter-spacing:-0.006em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'cv11','ss01'}
+h1,h2,h3{font-weight:600;letter-spacing:-0.015em}
+.big,.tv,td.n,th.n,.wk-l,.score,.v,.dl,.tile .tv{font-variant-numeric:tabular-nums}
+.big{font-weight:700!important;letter-spacing:-0.02em}.tile .tv{font-weight:700;letter-spacing:-0.02em}
+.lbl{font-weight:600!important;color:var(--muted)!important;font-size:12px!important}
+.t th{font-size:11px!important;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)!important}
+.t td{font-size:13.5px}.tag{font-weight:600!important}.btn{font-weight:600}.side nav button{font-weight:500}.side nav button[aria-current=page]{font-weight:600}
+.t a{color:var(--ink);text-decoration:none;font-weight:500}.t a:hover{text-decoration:underline;color:var(--accent)}.chart{max-height:260px}
 </style>
 </head>
 <body>
@@ -104,6 +126,8 @@ var AGSCore = (function () {
     Grievances: ['GrievanceID', 'Date', 'Campaign', 'AgentID', 'Category', 'Details', 'Status', 'HandledBy', 'ResolvedDate', 'Resolution'].concat(META),
     Attrition: ['AttritionID', 'AgentID', 'Campaign', 'TeamLeadID', 'LastDay', 'Type', 'Reason', 'RehireEligible', 'Notes'].concat(META),
     CallWeeks: ['WeekID', 'Source', 'AgentID', 'Period', 'Days', 'Inbound', 'Outbound', 'TalkSec', 'HoldSec', 'HandleSec', 'LoginSec', 'Offered', 'Missed'].concat(META),
+    CallDays: ['DayID', 'Source', 'AgentID', 'Date', 'Inbound', 'Outbound', 'TalkSec', 'HoldSec', 'HandleSec', 'LoginSec', 'Offered', 'Missed'].concat(META),
+    QaAudits: ['RowID', 'QaAuditID', 'AgentID', 'Campaign', 'Period', 'Date', 'Scorecard', 'Score', 'Passed', 'Band', 'Ztp', 'Callout', 'Missed', 'Auditor'].concat(META),
     AdmitMonths: ['RowID', 'AgentID', 'Month', 'Calls', 'CallsVob', 'Admits'].concat(META),
     Aliases: ['AliasID', 'Source', 'Key', 'Label', 'AgentID'].concat(META),
     TrainingScores: ['RowID', 'TraineeKey', 'Name', 'EmployeeID', 'Campaign', 'HireDate', 'Card', 'Week', 'Score', 'Audits', 'LastDate', 'Trainer'].concat(META),
@@ -123,13 +147,15 @@ var AGSCore = (function () {
     grievances: { sheet: 'Grievances', id: 'GrievanceID', prefix: 'GR', yearly: true, label: 'Grievance' },
     attrition: { sheet: 'Attrition', id: 'AttritionID', prefix: 'AT', yearly: true, label: 'Attrition record' },
     callWeeks: { sheet: 'CallWeeks', id: 'WeekID', prefix: 'CW', yearly: false, label: 'Call report week' },
+    callDays: { sheet: 'CallDays', id: 'DayID', prefix: 'CD', yearly: false, label: 'Call report day' },
+    qaAudits: { sheet: 'QaAudits', id: 'RowID', prefix: 'QA', yearly: false, label: 'QA audit' },
     admitMonths: { sheet: 'AdmitMonths', id: 'RowID', prefix: 'AM', yearly: false, label: 'Admits month' },
     aliases: { sheet: 'Aliases', id: 'AliasID', prefix: 'AL', yearly: false, label: 'Name match' },
     trainingScores: { sheet: 'TrainingScores', id: 'RowID', prefix: 'TS', yearly: false, label: 'Training score' },
     trainingDecisions: { sheet: 'TrainingDecisions', id: 'DecisionID', prefix: 'TD', yearly: false, label: 'Training decision' },
     users: { sheet: 'Users', id: 'UserID', prefix: 'USR', yearly: false, label: 'User' }
   };
-  var DATA_ENTITIES = ['teamLeads', 'agents', 'kpiGrades', 'attWeeks', 'qaWeeks', 'escalations', 'grievances', 'attrition', 'callWeeks', 'admitMonths', 'aliases', 'trainingScores', 'trainingDecisions'];
+  var DATA_ENTITIES = ['teamLeads', 'agents', 'kpiGrades', 'attWeeks', 'qaWeeks', 'escalations', 'grievances', 'attrition', 'callWeeks', 'callDays', 'qaAudits', 'admitMonths', 'aliases', 'trainingScores', 'trainingDecisions'];
   // Training: trainee scorecards from the QA Hub. The decision (endorse to production or training fallout) is recorded here.
   var DECISIONS = ['Pending', 'Endorsed to production', 'Training fallout (TFO)', 'Extended'];
   // Linked call reports: Legacy 2026 and Banyan 2026 ("Daily Call Report") and the Hercules dashboard ("AGENT VOB ADMITS MTD").
@@ -155,6 +181,8 @@ var AGSCore = (function () {
     SessionHours: ['12', 'How long people stay signed in after signing in with Google (hours, 1–168).'],
     Health: [JSON.stringify(DEFAULT_HEALTH), 'Campaign health thresholds: green at or above the first number, amber at or above the second, otherwise red (watch share: the reverse).'],
     TrainingPassMark: ['87', 'Trainee scorecards: both Teach Back and Mock Call averages at or above this % = meets the mark.'],
+    ReportTargets: [JSON.stringify({ LEGACY_CALLS: { aht: 180, answerRate: 90, holdPct: 10, util: 40 }, BANYAN_CALLS: { aht: 145, holdPct: 10, util: 40, prodPerDay: '' } }), 'Report targets: AHT at most (seconds), answer rate at least (%), hold % at most, utilisation at least (%), productivity per day at least.'],
+    QaTargets: ['{}', 'Weekly audit target per campaign, copied from the QA Hub scorecards.'],
     ReportYear: ['', 'Year for report dates without one ("Nov12"); empty = the current year.']
   };
 
@@ -194,9 +222,14 @@ var AGSCore = (function () {
     var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9), dim = daysInMonth(y, m), a = (w - 1) * 7 + 1, z = w === 4 ? dim : w * 7, pre = p.slice(0, 7) + '-';
     return [pre + ('0' + a).slice(-2), pre + ('0' + z).slice(-2)];
   }
-  function periodLabel(p) { if (!isPeriod(p)) return s(p); var r = periodRange(p); return MONTHS[+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' · Week ' + p.slice(9) + ' (' + +r[0].slice(8) + '–' + +r[1].slice(8) + ')'; }
-  function prevPeriod(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w > 1) return periodFrom(y, m, w - 1); m--; if (m < 1) { m = 12; y--; } return periodFrom(y, m, 4); }
-  function nextPeriod(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w < 4) return periodFrom(y, m, w + 1); m++; if (m > 12) { m = 1; y++; } return periodFrom(y, m, 1); }
+  // A period is a week ("2026-11-W4") or a whole month ("2026-11").
+  function isMonth(p) { return /^\d{4}-(0[1-9]|1[0-2])$/.test(s(p)); }
+  function weeksOf(p) { return isMonth(p) ? [1, 2, 3, 4].map(function (w) { return p + '-W' + w; }) : [p]; }
+  function prevMonth(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7) - 1; if (m < 1) { m = 12; y--; } return y + '-' + ('0' + m).slice(-2); }
+  function nextMonth(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7) + 1; if (m > 12) { m = 1; y++; } return y + '-' + ('0' + m).slice(-2); }
+  function periodLabel(p) { if (isMonth(p)) return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' (whole month)'; if (!isPeriod(p)) return s(p); var r = periodRange(p); return MONTHS[+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' · Week ' + p.slice(9) + ' (' + +r[0].slice(8) + '–' + +r[1].slice(8) + ')'; }
+  function prevPeriod(p) { if (isMonth(p)) return prevMonth(p); var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w > 1) return periodFrom(y, m, w - 1); m--; if (m < 1) { m = 12; y--; } return periodFrom(y, m, 4); }
+  function nextPeriod(p) { if (isMonth(p)) return nextMonth(p); var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w < 4) return periodFrom(y, m, w + 1); m++; if (m > 12) { m = 1; y++; } return periodFrom(y, m, 1); }
 
   // ------------------------------------------------------------------ KPIs
   function campaignsOf(st) { return s(settingsWithDefaults(st).Campaigns).split(',').map(function (x) { return x.trim(); }).filter(Boolean); }
@@ -235,9 +268,12 @@ var AGSCore = (function () {
   // One week's figures per agent: attendance %, quality %, KPI score, and why they need attention.
   function weekView(data, period, st) {
     st = settingsWithDefaults(st || {});
-    var att = byKey((data.attWeeks || []).filter(function (r) { return live(r) && r.Period === period; }), 'AgentID');
-    var qa = byKey((data.qaWeeks || []).filter(function (r) { return live(r) && r.Period === period; }), 'AgentID');
-    var kg = byKey((data.kpiGrades || []).filter(function (r) { return live(r) && r.Period === period; }), 'AgentID');
+    var wks = {}; weeksOf(period).forEach(function (w) { wks[w] = 1; });
+    var group = function (list) { var o = {}; (list || []).forEach(function (r) { if (live(r) && wks[r.Period]) (o[r.AgentID] = o[r.AgentID] || []).push(r); }); return o; };
+    var attG = group(data.attWeeks), qaG = group(data.qaWeeks), kgG = group(data.kpiGrades), att = {}, qa = {}, kg = {};
+    Object.keys(attG).forEach(function (k) { var sc = 0, lo = 0; attG[k].forEach(function (r) { sc += n(r.Scheduled) || 0; lo += n(r.Lost) || 0; }); att[k] = { Pct: attG[k].length === 1 ? attG[k][0].Pct : sc > 0 ? round((sc - lo) / sc * 100, 1) : null }; });   // one week: the linked figure; a month: from the minutes
+    Object.keys(qaG).forEach(function (k) { var tot = 0, cnt = 0, z = false; qaG[k].forEach(function (r) { var c = n(r.Audits) || 1; tot += (n(r.Avg) || 0) * c; cnt += c; if (b(r.Ztp)) z = true; }); qa[k] = { Avg: cnt ? round(tot / cnt, 1) : null, Audits: cnt, Ztp: z }; });
+    Object.keys(kgG).forEach(function (k) { var l = kgG[k].map(function (r) { return n(r.Score); }); kg[k] = { Score: avg(l), GradeID: kgG[k].length === 1 ? kgG[k][0].GradeID : '' }; });
     var lim = { att: +st.WatchAttendance || 95, qa: +st.WatchQuality || 87, kpi: +st.WatchKpi || 3 };
     var openGrv = {}; (data.grievances || []).forEach(function (g) { if (live(g) && g.AgentID && (g.Status === 'Open' || g.Status === 'Under review')) openGrv[g.AgentID] = true; });
     return (data.agents || []).filter(function (a) { return live(a) && a.Status !== 'Inactive'; }).map(function (a) {
@@ -331,15 +367,17 @@ var AGSCore = (function () {
     var h = aoa[0] || [], c = { date: col(h, ['date (est)', 'date']), user: col(h, ['user']), name: col(h, ['user name']), inb: col(h, ['inbound calls']), out: col(h, ['outbound calls']),
       talk: col(h, ['talk time (h:mm:ss)', 'talk time']), hold: col(h, ['hold time (h:mm:ss)', 'hold time']), handle: col(h, ['handle time (h:mm:ss)', 'handle time']), login: col(h, ['login time (h:mm:ss)', 'login time']),
       offered: col(h, ['offered calls']), missed: col(h, ['missed dials']) };
-    var out = {}, unmatched = {}, num = function (r, k) { return c[k] < 0 ? 0 : (+s(r[c[k]]).replace(/,/g, '') || 0); }, dur = function (r, k) { return c[k] < 0 ? 0 : durSec(r[c[k]]); };
+    var out = {}, days = {}, unmatched = {}, num = function (r, k) { return c[k] < 0 ? 0 : (+s(r[c[k]]).replace(/,/g, '') || 0); }, dur = function (r, k) { return c[k] < 0 ? 0 : durSec(r[c[k]]); };
     aoa.slice(1).forEach(function (r) {
       var d = reportDate(r[c.date], year); if (!d || d < since) return;
       var uid = s(r[c.user]).trim(), nm = s(r[c.name]).trim(); if (!uid && !nm) return;
       var a = resolve(uid, nm); if (!a) { unmatched[uid || nm] = nm || uid; return; }
       var k = a + '|' + periodKey(d), o = out[k] || (out[k] = { AgentID: a, Period: periodKey(d), Days: 0, Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 });
+      var dk = a + '|' + d, dd = days[dk] || (days[dk] = { AgentID: a, Date: d, Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 });
+      dd.Inbound += num(r, 'inb'); dd.Outbound += num(r, 'out'); dd.TalkSec += dur(r, 'talk'); dd.HoldSec += dur(r, 'hold'); dd.HandleSec += dur(r, 'handle'); dd.LoginSec += dur(r, 'login'); dd.Offered += num(r, 'offered'); dd.Missed += num(r, 'missed');
       o.Days++; o.Inbound += num(r, 'inb'); o.Outbound += num(r, 'out'); o.TalkSec += dur(r, 'talk'); o.HoldSec += dur(r, 'hold'); o.HandleSec += dur(r, 'handle'); o.LoginSec += dur(r, 'login'); o.Offered += num(r, 'offered'); o.Missed += num(r, 'missed');
     });
-    return { weeks: Object.keys(out).map(function (k) { return out[k]; }), unmatched: unmatched, columnsFound: Object.keys(c).filter(function (k) { return c[k] >= 0; }) };
+    return { weeks: Object.keys(out).map(function (k) { return out[k]; }), days: Object.keys(days).map(function (k) { return days[k]; }), unmatched: unmatched, columnsFound: Object.keys(c).filter(function (k) { return c[k] >= 0; }) };
   }
   // Figures for a set of call-report weeks (one agent, or a whole campaign): AHT per the score guide = (talk + hold) ÷ calls.
   function callStats(list) {
@@ -348,6 +386,8 @@ var AGSCore = (function () {
     var calls = t.Inbound + t.Outbound;
     t.calls = calls; t.aht = calls ? (t.TalkSec + t.HoldSec) / calls : null; t.productivity = round(t.Inbound + t.Outbound / 4, 2);
     t.answerRate = t.Offered ? round(t.Inbound / t.Offered * 100, 1) : null;
+    t.util = t.LoginSec ? round(t.TalkSec / t.LoginSec * 100, 1) : null; t.holdPct = t.TalkSec ? round(t.HoldSec / t.TalkSec * 100, 1) : null;
+    t.prodPerDay = t.Days ? round(t.productivity / t.Days, 1) : null;
     return t;
   }
   // Hercules "AGENT VOB ADMITS MTD": per agent per month — calls, calls VOB, total admits.
@@ -404,6 +444,56 @@ var AGSCore = (function () {
       return t;
     }).sort(function (x, y) { return x.name < y.name ? -1 : 1; });
   }
+
+  // ------------------------------------------------------------------ quality detail (each audit from the QA Hub)
+  // QA Hub audits → one row each (trainee scorecards and "no audit" left out; callouts kept and marked).
+  // Missed items carry the item titles from the scorecard: "code|title".
+  function qaAuditRows(audits, resolveQa, cards, campNames) {
+    var titles = {}; (cards || []).forEach(function (c) { var d = json(c.Definition, {}); (d.sections || []).forEach(function (sec) { (sec.items || []).forEach(function (it) { titles[c.ScorecardID + '|' + it.code] = it.title; }); }); });
+    return (audits || []).filter(function (a) { return !a.ArchivedAt && s(a.Purpose) !== 'TRAINING' && !b(a.NoAudit) && n(a.Score) !== null; }).map(function (a) {
+      var ag = resolveQa(a.AgentID); if (!ag) return null;
+      var p = periodFrom(+a.Year, +a.Month, +a.Week); if (!isPeriod(p)) return null;
+      var missed = arr(a.Results).filter(function (r) { return r.a === 'N'; }).map(function (r) { return r.c + '|' + (titles[a.ScorecardID + '|' + r.c] || r.c); });
+      return { QaAuditID: a.AuditID, AgentID: ag, Campaign: campNames[a.CampaignID] || '', Period: p, Date: s(a.AuditDate), Scorecard: a.ScorecardName || '', Score: n(a.Score), Passed: b(a.Passed) ? 'TRUE' : 'FALSE',
+        Band: a.Band || '', Ztp: b(a.ZTP) ? 'TRUE' : 'FALSE', Callout: b(a.Callout) ? 'TRUE' : 'FALSE', Missed: JSON.stringify(missed), Auditor: a.AuditorName || '' };
+    }).filter(Boolean);
+  }
+  var BAND_ORDER = ['Excellent', 'Outstanding', 'Satisfactory', 'Needs Improvement', 'Poor', 'Auto-Fail (ZTP)'];
+  // Quality for a period (week or month) and a set of agents: tiles, bands, flags, most-missed items, coverage.
+  function qualityReport(data, period, agentIds, st) {
+    var inP = function (p) { var w = {}; weeksOf(p).forEach(function (x) { w[x] = 1; }); return w; }, cur = inP(period), prev = inP(prevPeriod(period)), ids = {}; agentIds.forEach(function (a) { ids[a] = 1; });
+    var all = (data.qaAudits || []).filter(function (a) { return live(a) && ids[a.AgentID]; });
+    var sum = function (list) { var sc = list.filter(function (a) { return !b(a.Callout); }), v = sc.map(function (a) { return n(a.Score); });
+      return { audits: sc.length, avg: avg(v), pass: sc.length ? round(sc.filter(function (a) { return b(a.Passed); }).length / sc.length * 100, 1) : null, ztp: sc.filter(function (a) { return b(a.Ztp); }).length, callouts: list.length - sc.length }; };
+    var now = all.filter(function (a) { return cur[a.Period]; }), before = all.filter(function (a) { return prev[a.Period]; });
+    var bands = {}; BAND_ORDER.forEach(function (x) { bands[x] = 0; }); now.forEach(function (a) { if (!b(a.Callout) && bands[a.Band] !== undefined) bands[a.Band]++; });
+    // flags: two failed audits in a row (latest two scored audits up to the end of the period), or a zero-tolerance finding in the period
+    var last = weeksOf(period).slice(-1)[0], flags = [];
+    agentIds.forEach(function (id) {
+      var mine = all.filter(function (a) { return a.AgentID === id && !b(a.Callout) && a.Period <= last; }).sort(function (x, y) { return s(x.Date) + x.QaAuditID < s(y.Date) + y.QaAuditID ? -1 : 1; });
+      var why = []; if (mine.length >= 2 && !b(mine[mine.length - 1].Passed) && !b(mine[mine.length - 2].Passed)) why.push('Failed the last two audits');
+      if (now.some(function (a) { return a.AgentID === id && b(a.Ztp) && !b(a.Callout); })) why.push('Zero-tolerance finding');
+      if (why.length) flags.push({ agentId: id, why: why });
+    });
+    // most-missed items per campaign
+    var missed = {}; now.filter(function (a) { return !b(a.Callout); }).forEach(function (a) {
+      var c = missed[a.Campaign] || (missed[a.Campaign] = { audits: 0, items: {} }); c.audits++;
+      arr(a.Missed).forEach(function (m) { var k = a.Scorecard + '|' + m, it = c.items[k] || (c.items[k] = { scorecard: a.Scorecard, code: m.split('|')[0], title: m.split('|').slice(1).join('|'), count: 0, agents: {} }); it.count++; it.agents[a.AgentID] = 1; });
+    });
+    Object.keys(missed).forEach(function (c) { missed[c].top = Object.keys(missed[c].items).map(function (k) { var it = missed[c].items[k]; it.agentCount = Object.keys(it.agents).length; delete it.agents; it.rate = round(it.count / missed[c].audits * 100, 1); return it; }).sort(function (x, y) { return y.count - x.count; }).slice(0, 10); delete missed[c].items; });
+    // coverage: scored audits per agent per week against the campaign's weekly target (weeks not started yet are left out)
+    var targets = json(settingsWithDefaults(st || {}).QaTargets, {}) || {}, today = settingsWithDefaults(st || {}).Today, curWeek = today ? periodKey(today) : '';
+    var weeks = weeksOf(period).filter(function (w) { return !curWeek || w <= curWeek; }), byAg = {};
+    (data.agents || []).forEach(function (a) { byAg[a.AgentID] = a; });
+    var coverage = agentIds.map(function (id) { var a = byAg[id] || {}, t = +targets[a.Campaign] || 0;
+      var cells = weeks.map(function (w) { var k = all.filter(function (x) { return x.AgentID === id && x.Period === w && !b(x.Callout); }).length; return { week: w, count: k, target: t, state: !t ? 'none' : k >= t ? 'met' : k ? 'partial' : 'missing' }; });
+      var done = cells.reduce(function (x, c) { return x + c.count; }, 0); return { agentId: id, target: t, cells: cells, done: done, due: t * weeks.length }; });
+    var due = coverage.reduce(function (x, c) { return x + c.due; }, 0), done = coverage.reduce(function (x, c) { return x + Math.min(c.done, c.due || c.done); }, 0);
+    return { now: sum(now), prev: sum(before), bands: bands, flags: flags, missed: missed, coverage: coverage, weeks: weeks, coveragePct: due ? round(done / due * 100, 1) : null };
+  }
+  // Report figures with utilisation (talk ÷ login) and hold % (hold ÷ talk); colour against the targets in Settings.
+  function reportTargets(st, source) { var t = json(settingsWithDefaults(st || {}).ReportTargets, {}) || {}; return t[source] || {}; }
+  function judge(metric, v, t) { if (v === null || v === undefined || t === undefined || t === '' || t === null) return ''; return (metric === 'aht' || metric === 'holdPct') ? (v <= +t ? 'good' : 'bad') : (v >= +t ? 'good' : 'bad'); }
 
   // ------------------------------------------------------------------ campaign health (green / amber / red: the worst measure)
   function health(g, st) {
@@ -496,7 +586,8 @@ var AGSCore = (function () {
     var months = Math.max(1, Math.min(24, +p.months || 4)), d = new Date(Date.parse(ctx.today + 'T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - months + 1); var since = d.toISOString().slice(0, 7) + '-W1';
     var out = { settings: ctx.settings, user: publicUser(ctx.user), today: ctx.today, serverTime: ctx.now, coreVersion: CORE_VERSION, since: since };
     DATA_ENTITIES.forEach(function (e) {
-      out[e] = ctx.repo.all(e).filter(function (r) { return live(r) && (e === 'teamLeads' || ctx.visible(e, r)) && (!r.Period || r.Period >= since); });
+      var dayCut = addDays(ctx.today, -42);   // daily call rows: the last 6 weeks only (older ones stay in the sheet)
+      out[e] = ctx.repo.all(e).filter(function (r) { return live(r) && (e === 'teamLeads' || ctx.visible(e, r)) && (!r.Period || r.Period >= since) && (e !== 'callDays' || s(r.Date) >= dayCut); });
     });
     out.users = isAdmin(ctx.user) ? ctx.repo.all('users').filter(live) : [];
     return out;
@@ -674,13 +765,32 @@ var AGSCore = (function () {
       });
     });
     // call reports (Legacy, Banyan) and Hercules admits (Legacy), plus one name the demo cannot match
-    D.callWeeks = []; D.admitMonths = []; D.aliases = [];
+    D.callWeeks = []; D.callDays = []; D.admitMonths = []; D.aliases = []; var C_periodRange = periodRange;
     D.agents.forEach(function (a) {
       var src = a.Campaign === 'Legacy' ? 'LEGACY_CALLS' : a.Campaign === 'Banyan' ? 'BANYAN_CALLS' : ''; if (!src) return;
-      periods.forEach(function (per) { var days = 5, inb = Math.round(60 + rnd() * 120), outb = Math.round(40 + rnd() * 160), talk = (inb + outb) * Math.round(45 + rnd() * 60);
-        D.callWeeks.push(meta({ WeekID: id('callWeeks'), Source: src, AgentID: a.AgentID, Period: per, Days: String(days), Inbound: String(inb), Outbound: String(outb), TalkSec: String(talk), HoldSec: String(Math.round(talk * 0.08)), HandleSec: String(talk), LoginSec: String(days * 8.5 * 3600), Offered: String(inb + Math.round(rnd() * 12)), Missed: String(Math.round(rnd() * 3)) })); });
+      periods.forEach(function (per) {   // five working days per week; the week is the sum of its days
+        var r0 = C_periodRange(per), wk = { Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 }, nd = 0;
+        for (var dn = 0; dn < 7 && nd < 5; dn++) { var date = addDays(r0[0], dn); if (date > r0[1] || date >= today) break; nd++;
+          var inb = Math.round(12 + rnd() * 26), outb = Math.round(8 + rnd() * 32), talk = (inb + outb) * Math.round(45 + rnd() * 60), dy = { Inbound: inb, Outbound: outb, TalkSec: talk, HoldSec: Math.round(talk * (0.04 + rnd() * 0.1)), HandleSec: talk, LoginSec: Math.round(8.2 * 3600 + rnd() * 1800), Offered: inb + Math.round(rnd() * 3), Missed: rnd() < 0.3 ? 1 : 0 };
+          Object.keys(wk).forEach(function (k) { wk[k] += dy[k]; });
+          if (date >= addDays(today, -42)) { var rec = { DayID: id('callDays'), Source: src, AgentID: a.AgentID, Date: date }; Object.keys(dy).forEach(function (k) { rec[k] = String(dy[k]); }); D.callDays.push(meta(rec)); } }
+        if (!nd) return; var wr = { WeekID: id('callWeeks'), Source: src, AgentID: a.AgentID, Period: per, Days: String(nd) }; Object.keys(wk).forEach(function (k) { wr[k] = String(wk[k]); }); D.callWeeks.push(meta(wr)); });
       if (a.Campaign === 'Legacy') [0, 1, 2].forEach(function (k) { var d = new Date(Date.parse(today + 'T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - k); var calls = Math.round(120 + rnd() * 300);
         D.admitMonths.push(meta({ RowID: id('admitMonths'), AgentID: a.AgentID, Month: d.toISOString().slice(0, 7), Calls: String(calls), CallsVob: String(Math.round(calls * (0.02 + rnd() * 0.05))), Admits: String(Math.round(rnd() * 7)) })); });
+    });
+    // individual QA audits: weekly target 3 (Legacy, Banyan) / 2 (Takahami); missed items from the real scorecards' item titles
+    D.qaAudits = []; var ITEMS = { Legacy: [['17', 'Active Listening'], ['14', 'Agent Asked Mandatory Intake Questions'], ['19', 'Clarity and Ownership'], ['11', 'Documentation Accuracy in Salesforce'], ['21', 'Clearly Explained Next Steps to Caller']],
+      Banyan: [['12', 'Documentation Accuracy in Salesforce'], ['20', 'Clarity and Ownership'], ['09', 'Offered Callback When Admissions Unavailable'], ['18', 'Active Listening']], Takahami: [['1.3', 'Notes'], ['2.3.A', 'Template / Spreadsheet Contents'], ['5.1.F', 'Action']] };
+    var CARD = { Legacy: 'Legacy Calls', Banyan: 'Banyan Calls', Takahami: 'Takahami Claims' }, TGT = { Legacy: 3, Banyan: 3, Takahami: 2 };
+    D.agents.forEach(function (a, ai) {
+      var q = D.qaWeeks.filter(function (w) { return w.AgentID === a.AgentID; });
+      q.forEach(function (w) { var k = ai % 7 === 3 && w.Period === periodKey(today) ? 1 : TGT[a.Campaign] - (rnd() < 0.2 ? 1 : 0), r = periodRange(w.Period);
+        for (var i = 0; i < k; i++) { var sc = Math.max(40, Math.min(100, Math.round(+w.Avg + (rnd() - 0.5) * 12))); if (ai === 2 && w.Period >= prevPeriod(periodKey(today))) sc = 80 + i;
+          var miss = []; ITEMS[a.Campaign].forEach(function (it) { if (rnd() * 100 > sc - 8) miss.push(it[0] + '|' + it[1]); });
+          var band = sc >= 100 ? 'Excellent' : sc >= 95 ? 'Outstanding' : sc >= 87 ? 'Satisfactory' : sc >= 81 ? 'Needs Improvement' : 'Poor', date = addDays(r[0], Math.min(i * 2, 6));
+          if (date >= today) date = addDays(today, -1);
+          D.qaAudits.push(meta({ RowID: id('qaAudits'), QaAuditID: 'QA-' + today.slice(0, 4) + '-' + ('0000' + (D.qaAudits.length + 1)).slice(-5), AgentID: a.AgentID, Campaign: a.Campaign, Period: w.Period, Date: date, Scorecard: CARD[a.Campaign], Score: String(sc),
+            Passed: sc >= 87 ? 'TRUE' : 'FALSE', Band: band, Ztp: b(w.Ztp) && i === 0 ? 'TRUE' : 'FALSE', Callout: rnd() < 0.05 ? 'TRUE' : 'FALSE', Missed: JSON.stringify(miss), Auditor: 'Paolo Santos' })); } });
     });
     // demo trainees (from the QA Hub): six trainees, weeks 1–3, Teach Back and Mock Call
     D.trainingScores = []; D.trainingDecisions = [];
@@ -689,7 +799,7 @@ var AGSCore = (function () {
         D.trainingScores.push(meta({ RowID: id('trainingScores'), TraineeKey: 'QA-T' + i, Name: x[0], EmployeeID: '', Campaign: x[1], HireDate: addDays(today, -30), Card: card, Week: String(w), Score: String(round(Math.min(100, x[2] * 100 - 8 + w * 4 + (rnd() - 0.5) * 6), 1)), Audits: '1', LastDate: addDays(today, -(3 - w) * 7 - 1), Trainer: 'Paolo Santos' })); } });
     });
     D.trainingDecisions.push(meta({ DecisionID: id('trainingDecisions'), TraineeKey: 'QA-T4', Name: 'Encarnacion, Mia', Campaign: 'Takahami', Decision: 'Endorsed to production', DecidedOn: addDays(today, -1), Notes: 'Strong teach back and mock calls.' }));
-    D.settings = { LinksSync: JSON.stringify({ at: today + 'T00:30:00.000Z', unmatched: { LEGACY_CALLS: { USR842DE0E37: 'John Vincent' } }, reports: {} }) };
+    D.settings = { QaTargets: JSON.stringify({ Legacy: 3, Banyan: 3, Takahami: 2 }), LinksSync: JSON.stringify({ at: today + 'T00:30:00.000Z', unmatched: { LEGACY_CALLS: { USR842DE0E37: 'John Vincent' } }, reports: {} }) };
     var pickA = function (c) { var l = D.agents.filter(function (a) { return a.Campaign === c; }); return l[Math.floor(rnd() * l.length)]; };
     [['Banyan', 'High', 'Caller was transferred to the wrong facility.', 'Open'], ['Legacy', 'Medium', 'Callback not made within the promised time.', 'In progress'], ['Legacy', 'Low', 'Client asked for a call recording review.', 'Resolved'], ['Takahami', 'Critical', 'Claim batch submitted with wrong allowable amounts.', 'Open']].forEach(function (x, i) {
       var a = pickA(x[0]); D.escalations.push(meta({ EscalationID: id('escalations'), Date: addDays(today, -i * 4 - 1), Campaign: x[0], AgentID: i === 2 ? '' : a.AgentID, Client: x[0] + ' client', Severity: x[1], Summary: x[2], Status: x[3], Owner: '', ResolvedDate: x[3] === 'Resolved' ? addDays(today, -2) : '', Resolution: x[3] === 'Resolved' ? 'Recording shared; no further action.' : '' })); });
@@ -707,11 +817,12 @@ var AGSCore = (function () {
     DATA_ENTITIES: DATA_ENTITIES, DEFAULT_SETTINGS: DEFAULT_SETTINGS, DEFAULT_KPIS: DEFAULT_KPIS, SEVERITIES: SEVERITIES, ESC_STATUSES: ESC_STATUSES, GRV_STATUSES: GRV_STATUSES,
     GRV_CATEGORIES: GRV_CATEGORIES, ATTRITION_TYPES: ATTRITION_TYPES, ACTIVE_STATUSES: ACTIVE_STATUSES, WRITE_ACTIONS: WRITE_ACTIONS, MONTHS: MONTHS,
     AgsError: AgsError, s: s, n: n, b: b, live: live, clone: clone, json: json, isEmail: isEmail, round: round, isIsoDate: isIsoDate, addDays: addDays, settingsWithDefaults: settingsWithDefaults, normRole: normRole,
-    weekOfMonth: weekOfMonth, periodKey: periodKey, periodFrom: periodFrom, isPeriod: isPeriod, periodRange: periodRange, periodLabel: periodLabel, prevPeriod: prevPeriod, nextPeriod: nextPeriod,
+    weekOfMonth: weekOfMonth, periodKey: periodKey, isMonth: isMonth, weeksOf: weeksOf, periodFrom: periodFrom, isPeriod: isPeriod, periodRange: periodRange, periodLabel: periodLabel, prevPeriod: prevPeriod, nextPeriod: nextPeriod,
     campaignsOf: campaignsOf, kpiDefs: kpiDefs, kpisFor: kpisFor, kpiScore: kpiScore, avg: avg, weekView: weekView, overview: overview, agentWeeks: agentWeeks,
     attendanceWeeks: attendanceWeeks, qualityWeeks: qualityWeeks, normName: normName, REPORT_SOURCES: REPORT_SOURCES, DEFAULT_HEALTH: DEFAULT_HEALTH,
     DECISIONS: DECISIONS, cardName: cardName, trainingRows: trainingRows, trainees: trainees,
-    durSec: durSec, fmtDur: fmtDur, reportDate: reportDate, callReportWeeks: callReportWeeks, callStats: callStats, admitMonths: admitMonths, makeResolver: makeResolver, health: health,
+    qaAuditRows: qaAuditRows, qualityReport: qualityReport, reportTargets: reportTargets, judge: judge, BAND_ORDER: BAND_ORDER,
+    weekdayOf: weekdayOf, durSec: durSec, fmtDur: fmtDur, reportDate: reportDate, callReportWeeks: callReportWeeks, callStats: callStats, admitMonths: admitMonths, makeResolver: makeResolver, health: health,
     isAdmin: isAdmin, isQA: isQA, isTL: isTL, allAccess: allAccess, capabilities: capabilities, buildScope: buildScope, inScope: inScope,
     resolveUser: resolveUser, publicUser: publicUser, handle: handle, generateSynthetic: generateSynthetic,
     _systemContext: function (repo, user) { return makeCtx(repo, user, 'system-' + repo.uuid()); }
@@ -894,7 +1005,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   function camps() { return C.campaignsOf(S.data.settings); }
   function inCamp(c) { return !S.camp || c === S.camp; }
   var NAV = [['overview', 'Overview', '◎'], ['kpis', 'KPI grades', '★'], ['attendance', 'Attendance', '◷'], ['quality', 'Quality', '✓'], ['legacy', 'Legacy reports', '▦'], ['banyan', 'Banyan reports', '▦'], ['training', 'Training', '◆'], ['escalations', 'Escalations', '⚑'], ['grievances', 'Grievances', '✉'], ['attrition', 'Attrition', '⇥'], ['settings', 'Settings', '⚙', 'settings']];
-  var WEEKLY = { overview: 1, kpis: 1, legacy: 1, banyan: 1 };
+  var WEEKLY = { overview: 1, kpis: 1, legacy: 1, banyan: 1, quality: 1 };
   function navList() { return NAV.filter(function (n) { return !n[3] || cap(n[3]); }); }
   function renderShell() {
     $('#app').innerHTML = '<div class="shell"><aside class="side"><div class="brand"><div class="logo">P</div><div><b>Performance Hub</b><div class="small" style="opacity:.7">AGS</div></div></div><nav id="nav"></nav><div class="side-foot small" id="linkinfo"></div></aside>' +
@@ -907,7 +1018,9 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     var base = S.page.split('/')[0];
     $('#nav').innerHTML = navList().map(function (n) { return '<button data-act="nav" data-page="' + n[0] + '"' + (n[0] === base ? ' aria-current="page"' : '') + '><span class="ni">' + n[2] + '</span>' + n[1] + '</button>'; }).join('');
     $('#g-camp').innerHTML = '<option value="">All campaigns</option>' + camps().map(function (c) { return '<option' + (S.camp === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
-    $('#g-week').innerHTML = WEEKLY[base] ? '<button class="icon" data-act="wk" data-d="-1" aria-label="Previous week">‹</button><span class="wk-l">' + esc(C.periodLabel(S.period)) + '</span><button class="icon" data-act="wk" data-d="1" aria-label="Next week"' + (S.period >= C.periodKey(S.data.today) ? ' disabled' : '') + '>›</button>' : '';
+    var mon = C.isMonth(S.period);
+    $('#g-week').innerHTML = WEEKLY[base] ? '<span class="seg" role="group" aria-label="Show a week or the whole month"><button data-act="range" data-r="week" aria-pressed="' + !mon + '">Week</button><button data-act="range" data-r="month" aria-pressed="' + mon + '">Month</button></span>' +
+      '<button class="icon" data-act="wk" data-d="-1" aria-label="Previous ' + (mon ? 'month' : 'week') + '">‹</button><span class="wk-l">' + esc(C.periodLabel(S.period)) + '</span><button class="icon" data-act="wk" data-d="1" aria-label="Next ' + (mon ? 'month' : 'week') + '"' + (atLatest() ? ' disabled' : '') + '>›</button>' : '';
     var lab = navList().filter(function (n) { return n[0] === base; })[0]; $('#title').textContent = base === 'agent' ? 'Agent' : lab ? lab[1] : ''; document.title = $('#title').textContent + ' — AGS Performance Hub';
     var ls = C.json(S.data.settings.LinksSync, null); $('#linkinfo').innerHTML = S.mode === 'demo' ? 'Demo data' : ls && ls.at ? 'Linked data: ' + esc(ago(ls.at)) : 'Links not run yet';
     try { $('#page').innerHTML = (PAGES[base] || PAGES.overview)(S.page.split('/')[1]); } catch (e) { console.error(e); $('#page').innerHTML = '<div class="note bad">This page could not be shown: ' + esc(e.message) + '</div>'; }
@@ -919,7 +1032,14 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   document.addEventListener('click', function (e) { var el = e.target.closest('[data-act]'); $$('.menu').forEach(function (m) { if (!m.parentNode.contains(e.target)) m.remove(); }); if (!el || el.disabled) return; var f = ACT[el.dataset.act]; if (f) { e.preventDefault(); f(el, e); } });
   document.addEventListener('change', function (e) { if (e.target.id === 'g-camp') { S.camp = e.target.value; render(); } var f = e.target.dataset && e.target.dataset.f; if (f) { S.f[S.page.split('/')[0]] = S.f[S.page.split('/')[0]] || {}; S.f[S.page.split('/')[0]][f] = e.target.value; render(); } });
   ACT.closeModal = closeModal; ACT.nav = function (el) { go(el.dataset.page); };
-  ACT.wk = function (el) { if (+el.dataset.d < 0) S.period = C.prevPeriod(S.period); else if (S.period < C.periodKey(S.data.today)) S.period = C.nextPeriod(S.period); render(); };
+  function atLatest() { var cur = C.periodKey(S.data.today); return C.isMonth(S.period) ? S.period >= cur.slice(0, 7) : S.period >= cur; }
+  ACT.wk = function (el) { if (+el.dataset.d < 0) S.period = C.prevPeriod(S.period); else if (!atLatest()) S.period = C.nextPeriod(S.period); render(); };
+  // Week ↔ whole month: the month of the week shown; back to the current week (this month) or week 4 (an earlier month)
+  ACT.range = function (el) { var cur = C.periodKey(S.data.today);
+    if (el.dataset.r === 'month' && !C.isMonth(S.period)) S.period = S.period.slice(0, 7);
+    else if (el.dataset.r === 'week' && C.isMonth(S.period)) S.period = S.period === cur.slice(0, 7) ? cur : S.period + '-W4';
+    render(); };
+  function lastWeekOf(p) { var cur = C.periodKey(S.data.today), w = C.weeksOf(p).filter(function (x) { return x <= cur; }); return w.length ? w[w.length - 1] : C.weeksOf(p)[0]; }
   ACT.theme = function () { S.theme = { auto: 'light', light: 'dark', dark: 'auto' }[S.theme]; lsSet('ags_ph_theme', S.theme); applyTheme(); };
   ACT.demoLogin = function (el) { S.demoEmail = el.dataset.email; start('demo'); };
   ACT.userMenu = function (el) { if (el.parentNode.querySelector('.menu')) return; var m = document.createElement('div'); m.className = 'menu'; m.innerHTML = '<div class="muted small" style="padding:6px 10px">' + esc(S.user.email) + '</div>' + (S.mode === 'demo' ? '<button data-act="resetDemo">Reset demo data</button>' : '') + '<button data-act="signOut">Sign out</button>'; el.parentNode.appendChild(m); };
@@ -931,7 +1051,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   function pct(v, lim) { return v === null || v === undefined ? '<span class="muted">—</span>' : '<span class="v ' + (v < lim ? 'bad' : 'good') + '">' + v + '%</span>'; }
   function kpiCell(v) { return v === null || v === undefined ? '<span class="muted">—</span>' : '<span class="v ' + (v < LIM().kpi ? 'bad' : v >= 4 ? 'good' : '') + '">' + (+v).toFixed(2) + '</span>'; }
   function delta(now, prev, unit) { if (now === null || prev === null || now === undefined || prev === undefined) return ''; var d = Math.round((now - prev) * 100) / 100; if (!d) return '<span class="dl">±0</span>'; return '<span class="dl ' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲ ' : '▼ ') + Math.abs(d) + (unit || '') + '</span>'; }
-  function lastPeriods(k) { var out = [], p = S.period; for (var i = 0; i < k; i++) { out.unshift(p); p = C.prevPeriod(p); } return out; }
+  function lastPeriods(k) { var out = [], p = lastWeekOf(S.period); for (var i = 0; i < k; i++) { out.unshift(p); p = C.prevPeriod(p); } return out; }
   function people() { return S.data.agents.filter(function (a) { return C.live(a) && a.Status !== 'Inactive' && inCamp(a.Campaign); }).sort(function (a, b) { return a.FullName < b.FullName ? -1 : 1; }); }
   function empty(t) { return '<div class="empty">' + esc(t) + '</div>'; }
 
@@ -955,6 +1075,12 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
 
   // ======================================================================== KPI grades (weekly, by the team lead)
   PAGES.kpis = function () {
+    if (C.isMonth(S.period)) {
+      var ws = C.weeksOf(S.period), ppl = people(), g = {}; S.data.kpiGrades.forEach(function (r) { if (C.live(r)) g[r.AgentID + '|' + r.Period] = r; });
+      return '<div class="note">Grades are entered per week. This is ' + esc(C.periodLabel(S.period)) + ': each week\'s KPI score and the month average. Switch to <b>Week</b> at the top to enter grades.</div>' +
+        (ppl.length ? '<section class="card flush"><div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th>' + ws.map(function (w) { return '<th class="n">Week ' + w.slice(9) + '</th>'; }).join('') + '<th class="n">Month</th></tr>' +
+          ppl.map(function (a) { var v = ws.map(function (w) { var r = g[a.AgentID + '|' + w]; return r ? C.n(r.Score) : null; }); return '<tr class="click" data-act="agent" data-id="' + esc(a.AgentID) + '"><td><b>' + esc(a.FullName) + '</b></td><td>' + esc(a.Campaign) + '</td>' + v.map(function (x) { return '<td class="n">' + kpiCell(x) + '</td>'; }).join('') + '<td class="n"><b>' + kpiCell(C.avg(v)) + '</b></td></tr>'; }).join('') + '</table></div></section>' : empty('No agents.'));
+    }
     var list = people(), groups = {};
     list.forEach(function (a) { (groups[a.Campaign] = groups[a.Campaign] || []).push(a); });
     var have = {}; S.data.kpiGrades.forEach(function (g) { if (C.live(g) && g.Period === S.period) have[g.AgentID] = g; });
@@ -997,21 +1123,47 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
           return '<td class="n">' + pct(v, kind === 'att' ? L.att : L.qa) + (kind === 'qa' && r && C.b(r.Ztp) ? ' <span class="tag red" title="Zero-tolerance finding">ZTP</span>' : '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</table></div></section>' : empty('No agents.'));
   }
   PAGES.attendance = function () { return weeklyTable('att'); };
-  PAGES.quality = function () { return weeklyTable('qa'); };
+  // Quality: tiles, bands, flags, most-missed items, coverage — for the selected week or month
+  PAGES.quality = function () {
+    var ids = people().map(function (a) { return a.AgentID; }), q = C.qualityReport(S.data, S.period, ids, Object.assign({}, S.data.settings, { Today: S.data.today })), L = LIM(), cmp = C.isMonth(S.period) ? 'last month' : 'last week';
+    var tile = function (label, v, d, sub, cls) { return '<div class="tile"><div class="muted small">' + label + '</div><div class="tv ' + (cls || '') + '">' + v + '</div>' + (d || '') + (sub ? '<div class="muted small">' + sub + '</div>' : '') + '</div>'; };
+    var bandCls = { 'Excellent': 'b-ex', 'Outstanding': 'b-out', 'Satisfactory': 'b-sat', 'Needs Improvement': 'b-ni', 'Poor': 'b-poor', 'Auto-Fail (ZTP)': 'b-ztp' }, totB = C.BAND_ORDER.reduce(function (x, k) { return x + q.bands[k]; }, 0);
+    var html = '<div class="tiles">' + tile('Average score', q.now.avg === null ? '—' : q.now.avg + '%', delta(q.now.avg, q.prev.avg, '%'), 'vs ' + cmp, q.now.avg !== null && q.now.avg < L.qa ? 'red' : '') +
+      tile('Pass rate', q.now.pass === null ? '—' : q.now.pass + '%', delta(q.now.pass, q.prev.pass, '%'), 'audits at or above the pass mark') + tile('Audits', q.now.audits, delta(q.now.audits, q.prev.audits, ''), 'callouts not counted') +
+      tile('Zero-tolerance', q.now.ztp, '', 'audits with a ZTP finding', q.now.ztp ? 'red' : '') + tile('Callouts', q.now.callouts, '', 'for reference only') + tile('Coverage', q.coveragePct === null ? '—' : q.coveragePct + '%', '', 'audits done vs weekly target', q.coveragePct !== null && q.coveragePct < 100 ? 'amberv' : '') + '</div>';
+    html += '<div class="grid2"><section class="card"><h2>Score bands</h2>' + (totB ? '<div class="bandbar">' + C.BAND_ORDER.filter(function (k) { return q.bands[k]; }).map(function (k) { return '<span class="' + bandCls[k] + '" style="width:' + (q.bands[k] / totB * 100) + '%" title="' + esc(k + ': ' + q.bands[k]) + '"></span>'; }).join('') + '</div>' +
+      '<table class="t mini">' + C.BAND_ORDER.map(function (k) { return '<tr><td><i class="dot ' + bandCls[k] + '"></i>' + esc(k) + '</td><td class="n">' + q.bands[k] + '</td><td class="n muted">' + (totB ? Math.round(q.bands[k] / totB * 100) : 0) + '%</td></tr>'; }).join('') + '</table>' : empty('No audits in this period.')) + '</section>' +
+      '<section class="card"><h2>Flags <span class="muted small">(' + q.flags.length + ')</span></h2>' + (q.flags.length ? '<table class="t mini">' + q.flags.map(function (f) { return '<tr class="click" data-act="agent" data-id="' + esc(f.agentId) + '"><td><b>' + esc(agentName(f.agentId)) + '</b></td><td>' + f.why.map(function (w) { return '<span class="tag red">' + esc(w) + '</span>'; }).join(' ') + '</td></tr>'; }).join('') + '</table>' : empty('No one failed their last two audits or had a zero-tolerance finding.')) + '</section></div>';
+    var camps2 = Object.keys(q.missed).sort();
+    html += '<section class="card flush"><h2 class="pad">Most-missed items</h2><p class="muted small pad0">Scorecard items marked "No" most often in this period, per campaign (callouts not counted).</p>' + (camps2.length ? camps2.map(function (c) { var m = q.missed[c];
+        return '<div class="pad"><h3 class="h3">' + esc(c) + ' <span class="muted small">· ' + m.audits + ' audits</span></h3>' + (m.top.length ? '<div class="tw"><table class="t"><tr><th>Item</th><th>Scorecard</th><th class="n">Missed</th><th class="n">Of audits</th><th class="n">Agents</th></tr>' +
+          m.top.map(function (it) { return '<tr><td><span class="muted mono small">' + esc(it.code) + '</span> ' + esc(it.title) + '</td><td>' + esc(it.scorecard) + '</td><td class="n"><b>' + it.count + '</b></td><td class="n"><span class="meter"><i style="width:' + Math.min(100, it.rate) + '%"></i></span>' + it.rate + '%</td><td class="n">' + it.agentCount + '</td></tr>'; }).join('') + '</table></div>' : '<p class="muted">Nothing missed.</p>') + '</div>'; }).join('') : empty('No audits in this period.')) + '</section>';
+    var stateCls = { met: 'cv-met', partial: 'cv-part', missing: 'cv-miss', none: '' };
+    html += '<section class="card flush"><h2 class="pad">Coverage</h2><p class="muted small pad0">Audits done each week against the weekly target from the QA Hub scorecards. Weeks that have not started are left out.</p>' +
+      (q.weeks.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th class="n">Target / week</th>' + q.weeks.map(function (w) { return '<th class="n">' + esc(C.MONTHS[+w.slice(5, 7) - 1] + ' W' + w.slice(9)) + '</th>'; }).join('') + '<th class="n">Done</th></tr>' +
+        q.coverage.map(function (c) { return '<tr><td><a href="#agent/' + esc(c.agentId) + '">' + esc(agentName(c.agentId)) + '</a></td><td class="n">' + (c.target || '—') + '</td>' + c.cells.map(function (x) { return '<td class="n"><span class="cv ' + stateCls[x.state] + '">' + x.count + (x.target ? ' / ' + x.target : '') + '</span></td>'; }).join('') + '<td class="n"><b>' + c.done + (c.due ? ' / ' + c.due : '') + '</b></td></tr>'; }).join('') + '</table></div>' : empty('This period has not started yet.')) + '</section>';
+    return html + '<h2 style="margin:22px 0 10px">Weekly scores <span class="muted small">(last 8 weeks)</span></h2>' + weeklyTable('qa');
+  };
 
   // ======================================================================== Legacy and Banyan reports (linked call reports)
   function reportPage(source, campaign) {
     var list = S.data.agents.filter(function (a) { return C.live(a) && a.Campaign === campaign; }).sort(function (a, b) { return a.FullName < b.FullName ? -1 : 1; });
-    var wk = S.data.callWeeks.filter(function (w) { return C.live(w) && w.Source === source && w.Period === S.period; }), by = {}; wk.forEach(function (w) { by[w.AgentID] = w; });
+    var inP = {}; C.weeksOf(S.period).forEach(function (w) { inP[w] = 1; });
+    var wk = S.data.callWeeks.filter(function (w) { return C.live(w) && w.Source === source && inP[w.Period]; }), by = {}; wk.forEach(function (w) { (by[w.AgentID] = by[w.AgentID] || []).push(w); });
     var rows = list.filter(function (a) { return by[a.AgentID]; }), tot = C.callStats(wk), legacy = source === 'LEGACY_CALLS', ls = C.json(S.data.settings.LinksSync, null);
     var num = function (v) { return v === null || v === undefined ? '—' : Math.round(v * 100) / 100; };
-    var head = '<tr><th>Agent</th><th class="n">Days</th><th class="n">Inbound</th><th class="n">Outbound</th>' + (legacy ? '<th class="n">Offered</th><th class="n">Missed</th><th class="n">Answer rate</th>' : '<th class="n">Productivity</th>') + '<th class="n">Talk</th><th class="n">Hold</th><th class="n">AHT</th><th class="n">Login</th></tr>';
-    var line = function (st, label, cls) { return '<tr class="' + (cls || '') + '"><td>' + label + '</td><td class="n">' + st.Days + '</td><td class="n">' + st.Inbound + '</td><td class="n">' + st.Outbound + '</td>' + (legacy ? '<td class="n">' + st.Offered + '</td><td class="n">' + st.Missed + '</td><td class="n">' + (st.answerRate === null ? '—' : st.answerRate + '%') + '</td>' : '<td class="n">' + num(st.productivity) + '</td>') +
-      '<td class="n">' + C.fmtDur(st.TalkSec) + '</td><td class="n">' + C.fmtDur(st.HoldSec) + '</td><td class="n">' + C.fmtDur(st.aht) + '</td><td class="n">' + C.fmtDur(st.LoginSec) + '</td></tr>'; };
-    var html = '<div class="bar"><span class="muted">From the ' + (legacy ? 'Legacy 2026' : 'Banyan 2026') + ' "Daily Call Report", ' + esc(C.periodLabel(S.period)) + '. AHT = (talk + hold) ÷ calls, per the score guide' + (legacy ? '' : '; productivity = inbound + outbound ÷ 4') + '.' + (ls && ls.at ? ' Updated ' + esc(ago(ls.at)) + '.' : '') + '</span></div>' +
-      '<div class="tiles"><div class="tile"><div class="muted small">Calls</div><div class="tv">' + tot.calls + '</div><div class="muted small">' + tot.Inbound + ' inbound · ' + tot.Outbound + ' outbound</div></div><div class="tile"><div class="muted small">AHT</div><div class="tv">' + C.fmtDur(tot.aht) + '</div></div>' +
-      (legacy ? '<div class="tile"><div class="muted small">Answer rate</div><div class="tv">' + (tot.answerRate === null ? '—' : tot.answerRate + '%') + '</div><div class="muted small">' + tot.Missed + ' missed</div></div>' : '<div class="tile"><div class="muted small">Productivity</div><div class="tv">' + num(tot.productivity) + '</div></div>') + '</div>' +
-      (rows.length ? '<section class="card flush"><div class="tw"><table class="t">' + head + rows.map(function (a) { return line(C.callStats([by[a.AgentID]]), '<a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a>'); }).join('') + line(tot, '<b>Total</b>', 'total') + '</table></div></section>' : empty('No call report rows for this week.'));
+    var T = C.reportTargets(S.data.settings, source), J = function (m, v) { var j = C.judge(m, v, T[m]); return j ? ' class="n v ' + j + '"' : ' class="n"'; };
+    var head = '<tr><th>Agent</th><th class="n">Days</th><th class="n">Inbound</th><th class="n">Outbound</th>' + (legacy ? '<th class="n">Offered</th><th class="n">Missed</th><th class="n">Answer rate</th>' : '<th class="n">Productivity</th><th class="n">Per day</th>') + '<th class="n">Talk</th><th class="n">Hold</th><th class="n">Hold %</th><th class="n">AHT</th><th class="n">Login</th><th class="n">Utilisation</th></tr>';
+    var pc2 = function (v) { return v === null || v === undefined ? '—' : v + '%'; };
+    var line = function (st, label, cls) { return '<tr class="' + (cls || '') + '"><td>' + label + '</td><td class="n">' + st.Days + '</td><td class="n">' + st.Inbound + '</td><td class="n">' + st.Outbound + '</td>' + (legacy ? '<td class="n">' + st.Offered + '</td><td class="n">' + st.Missed + '</td><td' + J('answerRate', st.answerRate) + '>' + pc2(st.answerRate) + '</td>' : '<td class="n">' + num(st.productivity) + '</td><td' + J('prodPerDay', st.prodPerDay) + '>' + num(st.prodPerDay) + '</td>') +
+      '<td class="n">' + C.fmtDur(st.TalkSec) + '</td><td class="n">' + C.fmtDur(st.HoldSec) + '</td><td' + J('holdPct', st.holdPct) + '>' + pc2(st.holdPct) + '</td><td' + J('aht', st.aht) + '>' + C.fmtDur(st.aht) + '</td><td class="n">' + C.fmtDur(st.LoginSec) + '</td><td' + J('util', st.util) + '>' + pc2(st.util) + '</td></tr>'; };
+    var tg = function (m, fmt) { return T[m] === undefined || T[m] === '' ? '' : '<div class="muted small">target ' + (m === 'aht' || m === 'holdPct' ? 'at most ' : 'at least ') + fmt(T[m]) + '</div>'; }, jc = function (m, v) { var j = C.judge(m, v, T[m]); return j === 'bad' ? 'red' : j === 'good' ? 'greenv' : ''; };
+    var html = '<div class="bar"><span class="muted">From the ' + (legacy ? 'Legacy 2026' : 'Banyan 2026') + ' "Daily Call Report", ' + esc(C.periodLabel(S.period)) + '. AHT = (talk + hold) ÷ calls, per the score guide' + (legacy ? '' : '; productivity = inbound + outbound ÷ 4') + '. Utilisation = talk ÷ login; hold % = hold ÷ talk.' + (ls && ls.at ? ' Updated ' + esc(ago(ls.at)) + '.' : '') + '</span></div>' +
+      '<div class="tiles"><div class="tile"><div class="muted small">Calls</div><div class="tv">' + tot.calls + '</div><div class="muted small">' + tot.Inbound + ' inbound · ' + tot.Outbound + ' outbound</div></div><div class="tile"><div class="muted small">AHT</div><div class="tv ' + jc('aht', tot.aht) + '">' + C.fmtDur(tot.aht) + '</div>' + tg('aht', C.fmtDur) + '</div>' +
+      (legacy ? '<div class="tile"><div class="muted small">Answer rate</div><div class="tv ' + jc('answerRate', tot.answerRate) + '">' + pc2(tot.answerRate) + '</div>' + tg('answerRate', function (v) { return v + '%'; }) + '</div>' : '<div class="tile"><div class="muted small">Productivity per agent-day</div><div class="tv ' + jc('prodPerDay', tot.prodPerDay) + '">' + num(tot.prodPerDay) + '</div>' + tg('prodPerDay', function (v) { return v; }) + '</div>') +
+      '<div class="tile"><div class="muted small">Hold %</div><div class="tv ' + jc('holdPct', tot.holdPct) + '">' + pc2(tot.holdPct) + '</div>' + tg('holdPct', function (v) { return v + '%'; }) + '</div><div class="tile"><div class="muted small">Utilisation</div><div class="tv ' + jc('util', tot.util) + '">' + pc2(tot.util) + '</div>' + tg('util', function (v) { return v + '%'; }) + '</div></div>' + trendChart(source) +
+      (rows.length ? '<section class="card flush"><div class="tw"><table class="t">' + head + rows.map(function (a) { return line(C.callStats(by[a.AgentID]), '<a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a>'); }).join('') + line(tot, '<b>Total</b>', 'total') + '</table></div></section>' : empty('No call report rows for ' + (C.isMonth(S.period) ? 'this month.' : 'this week.')));
+    html += dayByDay(source, list, T);
     if (legacy) {
       var mo = S.period.slice(0, 7), am = S.data.admitMonths.filter(function (r) { return C.live(r) && r.Month === mo; }), calls = 0, vob = 0, admits = 0;
       am.forEach(function (r) { calls += +r.Calls || 0; vob += +r.CallsVob || 0; admits += +r.Admits || 0; });
@@ -1019,6 +1171,37 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
         '<div class="tiles"><div class="tile"><div class="muted small">Total admits</div><div class="tv">' + admits + '</div></div><div class="tile"><div class="muted small">Total VOB %</div><div class="tv">' + (calls ? Math.round(vob / calls * 10000) / 100 + '%' : '—') + '</div><div class="muted small">' + vob + ' calls VOB ÷ ' + calls + ' total calls</div></div></div>' +
         (am.length ? '<section class="card flush"><div class="tw"><table class="t"><tr><th>Agent</th><th class="n">Total admits</th><th class="n">Calls VOB</th><th class="n">Total calls</th><th class="n">VOB %</th></tr>' +
           am.sort(function (x, y) { return agentName(x.AgentID) < agentName(y.AgentID) ? -1 : 1; }).map(function (r) { return '<tr><td>' + esc(agentName(r.AgentID)) + '</td><td class="n">' + r.Admits + '</td><td class="n">' + r.CallsVob + '</td><td class="n">' + r.Calls + '</td><td class="n">' + (+r.Calls ? Math.round(r.CallsVob / r.Calls * 10000) / 100 + '%' : '—') + '</td></tr>'; }).join('') + '</table></div></section>' : empty('No admits for this month yet.'));
+    }
+    return html;
+  }
+  // Calls (bars) and AHT (line) for the last 12 weeks
+  function trendChart(source) {
+    var weeks = lastPeriods(12), pts = weeks.map(function (w) { return C.callStats(S.data.callWeeks.filter(function (x) { return C.live(x) && x.Source === source && x.Period === w && inCampAgent(x.AgentID); })); });
+    var maxC = Math.max.apply(null, pts.map(function (p) { return p.calls; }).concat([1])), ahts = pts.map(function (p) { return p.aht; }).filter(function (v) { return v !== null; }), maxA = Math.max.apply(null, ahts.concat([1])) * 1.15;
+    var W = 1040, H = 230, L0 = 46, R0 = 56, T0 = 14, B0 = 30, cw = (W - L0 - R0) / weeks.length, y = function (v) { return T0 + (H - T0 - B0) * (1 - v / maxC); }, ya = function (v) { return T0 + (H - T0 - B0) * (1 - v / maxA); };
+    var bars = pts.map(function (p, i) { var h = H - B0 - y(p.calls); return '<rect x="' + (L0 + i * cw + cw * 0.18) + '" y="' + y(p.calls) + '" width="' + cw * 0.64 + '" height="' + Math.max(0, h) + '" rx="3" class="ch-bar"><title>' + esc(C.periodLabel(weeks[i])) + ': ' + p.calls + ' calls, AHT ' + C.fmtDur(p.aht) + '</title></rect>'; }).join('');
+    var path = pts.map(function (p, i) { return p.aht === null ? null : [L0 + i * cw + cw / 2, ya(p.aht)]; }).filter(Boolean), line = path.length ? '<polyline class="ch-line" points="' + path.map(function (q) { return q[0] + ',' + q[1]; }).join(' ') + '"/>' + path.map(function (q) { return '<circle class="ch-dot" cx="' + q[0] + '" cy="' + q[1] + '" r="3.2"/>'; }).join('') : '';
+    var labels = weeks.map(function (w, i) { return '<text x="' + (L0 + i * cw + cw / 2) + '" y="' + (H - 10) + '" class="ch-x">' + esc(C.MONTHS[+w.slice(5, 7) - 1] + ' W' + w.slice(9)) + '</text>'; }).join('');
+    var grid = [0, 0.5, 1].map(function (f) { var v = Math.round(maxC * f); return '<line x1="' + L0 + '" x2="' + (W - R0) + '" y1="' + y(v) + '" y2="' + y(v) + '" class="ch-grid"/><text x="' + (L0 - 6) + '" y="' + (y(v) + 4) + '" class="ch-y">' + v + '</text><text x="' + (W - R0 + 6) + '" y="' + (ya(maxA * f / 1.15 * 1.15) + 4) + '" class="ch-ya">' + C.fmtDur(maxA * f).replace(/^0:/, '') + '</text>'; }).join('');
+    return '<section class="card"><h2>Trend <span class="muted small">· last 12 weeks · <i class="lg-bar"></i> calls <i class="lg-line"></i> AHT</span></h2><div class="tw"><svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Calls and AHT for the last 12 weeks">' + grid + bars + line + labels + '</svg></div></section>';
+  }
+  function inCampAgent(id) { return !!S.data.agents.filter(function (a) { return a.AgentID === id; })[0]; }
+  // Day by day: campaign totals per day; for a single week also each agent's calls and AHT per day
+  function dayByDay(source, list, T) {
+    var r0 = C.isMonth(S.period) ? [S.period + '-01', C.periodRange(S.period + '-W4')[1]] : C.periodRange(S.period), cut = C.addDays(S.data.today, -42);
+    var rows = S.data.callDays.filter(function (d) { return C.live(d) && d.Source === source && d.Date >= r0[0] && d.Date <= r0[1]; });
+    if (!rows.length) return '<section class="card"><h2>Day by day</h2>' + empty(r0[1] < cut ? 'Daily figures are kept for the last 6 weeks.' : 'No daily figures for this period yet.') + '</section>';
+    var dates = {}; rows.forEach(function (d) { (dates[d.Date] = dates[d.Date] || []).push(d); });
+    var ds = Object.keys(dates).sort(), legacy = source === 'LEGACY_CALLS', J = function (m, v) { var j = C.judge(m, v, T[m]); return j ? ' class="n v ' + j + '"' : ' class="n"'; };
+    var dayLabel = function (d) { return C.weekdayOf ? C.weekdayOf(d) + ' ' + (+d.slice(8)) : d; };
+    var html = '<section class="card flush"><h2 class="pad">Day by day</h2><div class="tw"><table class="t"><tr><th>Day</th><th class="n">Agents</th><th class="n">Inbound</th><th class="n">Outbound</th><th class="n">Calls</th>' + (legacy ? '<th class="n">Answer rate</th>' : '<th class="n">Productivity</th>') + '<th class="n">Hold %</th><th class="n">AHT</th><th class="n">Utilisation</th></tr>' +
+      ds.map(function (d) { var st = C.callStats(dates[d].map(function (x) { return Object.assign({ Days: 1 }, x); })); return '<tr><td>' + esc(dayLabel(d)) + '</td><td class="n">' + dates[d].length + '</td><td class="n">' + st.Inbound + '</td><td class="n">' + st.Outbound + '</td><td class="n"><b>' + st.calls + '</b></td>' +
+        (legacy ? '<td' + J('answerRate', st.answerRate) + '>' + (st.answerRate === null ? '—' : st.answerRate + '%') + '</td>' : '<td class="n">' + st.productivity + '</td>') + '<td' + J('holdPct', st.holdPct) + '>' + (st.holdPct === null ? '—' : st.holdPct + '%') + '</td><td' + J('aht', st.aht) + '>' + C.fmtDur(st.aht) + '</td><td' + J('util', st.util) + '>' + (st.util === null ? '—' : st.util + '%') + '</td></tr>'; }).join('') + '</table></div></section>';
+    if (!C.isMonth(S.period)) {
+      var by = {}; rows.forEach(function (d) { by[d.AgentID + '|' + d.Date] = d; });
+      html += '<section class="card flush"><h2 class="pad">Each agent, day by day <span class="muted small">· calls and AHT</span></h2><div class="tw"><table class="t"><tr><th>Agent</th>' + ds.map(function (d) { return '<th class="n">' + esc(dayLabel(d)) + '</th>'; }).join('') + '</tr>' +
+        list.filter(function (a) { return ds.some(function (d) { return by[a.AgentID + '|' + d]; }); }).map(function (a) { return '<tr><td><a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a></td>' + ds.map(function (d) { var x = by[a.AgentID + '|' + d]; if (!x) return '<td class="n muted">—</td>'; var st = C.callStats([Object.assign({ Days: 1 }, x)]), j = C.judge('aht', st.aht, T.aht);
+          return '<td class="n"><b>' + st.calls + '</b><div class="small ' + (j === 'bad' ? 'red' : 'muted') + '">' + C.fmtDur(st.aht).replace(/^0:/, '') + '</div></td>'; }).join('') + '</tr>'; }).join('') + '</table></div></section>';
     }
     return html;
   }
@@ -1138,12 +1321,15 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     write('saveSettings', { changes: { KpiDefs: JSON.stringify(d) } }).then(function () { render(); toast('Saved.', 'ok'); }, function (e) { el.disabled = false; showErrors($('#page'), e); }); };
   SET.rules = function () { var st = S.data.settings, k = function (key, label, hint, type) { return '<div class="field"><label class="lbl">' + label + '</label><input class="input" data-st="' + key + '" ' + (type ? 'type="' + type + '" ' : '') + 'value="' + esc(st[key]) + '"><div class="hint">' + hint + '</div><div class="err" data-err="' + key + '"></div></div>'; };
     var ls = C.json(st.LinksSync, null);
-    return '<section class="card" style="max-width:720px">' + k('Campaigns', 'Campaigns covered', 'Names as in Schedules, separated by commas.') + k('WatchAttendance', 'Watch: attendance below (%)', 'Agents below this are listed under Agents to watch.', 'number') + k('WatchQuality', 'Watch: quality below (%)', '', 'number') + k('WatchKpi', 'Watch: KPI score below (1–5)', '', 'number') + k('TrainingPassMark', 'Training: pass mark (%)', 'Teach Back and Mock Call averages both at or above this = meets the mark.', 'number') + k('SessionHours', 'Session length (hours)', 'How long people stay signed in.', 'number') + healthFields() + k('ReportYear', 'Year for report dates without one', 'For dates like "Nov12". Leave empty for the current year.') +
+    return '<section class="card" style="max-width:720px">' + k('Campaigns', 'Campaigns covered', 'Names as in Schedules, separated by commas.') + k('WatchAttendance', 'Watch: attendance below (%)', 'Agents below this are listed under Agents to watch.', 'number') + k('WatchQuality', 'Watch: quality below (%)', '', 'number') + k('WatchKpi', 'Watch: KPI score below (1–5)', '', 'number') + k('TrainingPassMark', 'Training: pass mark (%)', 'Teach Back and Mock Call averages both at or above this = meets the mark.', 'number') + k('SessionHours', 'Session length (hours)', 'How long people stay signed in.', 'number') + healthFields() + k('ReportYear', 'Year for report dates without one', 'For dates like "Nov12". Leave empty for the current year.') + targetFields() +
       '<button class="btn btn-primary" data-act="saveSettings">Save settings</button></section>' +
       '<section class="card" style="max-width:720px"><h2>Links</h2>' + (ls && ls.at ? '<p>Last copied ' + esc(ago(ls.at)) + '.</p><ul class="small"><li>Roster: ' + esc(JSON.stringify(ls.roster && ls.roster.agents || {})) + '</li><li>Attendance weeks: ' + esc(JSON.stringify(ls.attendance || {})) + '</li><li>Quality weeks: ' + esc(JSON.stringify(ls.quality || {})) + '</li></ul>' + (ls.problems && ls.problems.length ? '<div class="note bad">' + ls.problems.map(esc).join('<br>') + '</div>' : '') : '<p class="muted">Not run yet. In Apps Script, run AGS_syncLinks, then AGS_installLinksTrigger.</p>') + '</section>'; };
+  function targetFields() { var t = C.json(S.data.settings.ReportTargets, {}) || {}, f = function (src, k, lab, hint) { var v = (t[src] || {})[k]; return '<label class="tf">' + lab + ' <input class="input rt" data-src="' + src + '" data-k="' + k + '" value="' + esc(v === undefined ? '' : v) + '"><span class="muted small">' + hint + '</span></label>'; };
+    return '<div class="field"><label class="lbl">Report targets (empty = no colour)</label><div class="tgrid"><b>Legacy</b>' + f('LEGACY_CALLS', 'aht', 'AHT at most', 'seconds') + f('LEGACY_CALLS', 'answerRate', 'Answer rate at least', '%') + f('LEGACY_CALLS', 'holdPct', 'Hold at most', '%') + f('LEGACY_CALLS', 'util', 'Utilisation at least', '%') +
+      '<b>Banyan</b>' + f('BANYAN_CALLS', 'aht', 'AHT at most', 'seconds') + f('BANYAN_CALLS', 'prodPerDay', 'Productivity per day at least', '') + f('BANYAN_CALLS', 'holdPct', 'Hold at most', '%') + f('BANYAN_CALLS', 'util', 'Utilisation at least', '%') + '</div><div class="err" data-err="ReportTargets"></div></div>'; }
   function healthFields() { var h = C.json(S.data.settings.Health, null) || C.DEFAULT_HEALTH, row = function (k, lab, unit, rev) { return '<div class="hrow"><span>' + lab + '</span><label>' + (rev ? 'Green up to' : 'Green from') + ' <input class="input hh" data-h="' + k + '" data-i="0" value="' + esc(h[k][0]) + '">' + unit + '</label><label>' + (rev ? 'Amber up to' : 'Amber from') + ' <input class="input hh" data-h="' + k + '" data-i="1" value="' + esc(h[k][1]) + '">' + unit + '</label></div>'; };
     return '<div class="field"><label class="lbl">Campaign health (the worst measure decides; open Critical escalation or 2+ High = Red, 1 High = Amber)</label>' + row('attendance', 'Attendance', '%') + row('quality', 'Quality', '%') + row('kpi', 'KPI score', '') + row('watchShare', 'Agents to watch', '% of the team', true) + '<div class="err" data-err="Health"></div></div>'; }
-  ACT.saveSettings = function (el) { var ch = {}; var h = C.json(S.data.settings.Health, null) || C.clone(C.DEFAULT_HEALTH), hc = false; $$('.hh').forEach(function (x) { var v = +x.value; if (v !== +h[x.dataset.h][+x.dataset.i]) { h[x.dataset.h][+x.dataset.i] = v; hc = true; } }); if (hc) ch.Health = JSON.stringify(h); $$('[data-st]').forEach(function (x) { if (x.value.trim() !== String(S.data.settings[x.dataset.st])) ch[x.dataset.st] = x.value; }); if (!Object.keys(ch).length) { toast('No changes to save.'); return; } el.disabled = true;
+  ACT.saveSettings = function (el) { var ch = {}; var h = C.json(S.data.settings.Health, null) || C.clone(C.DEFAULT_HEALTH), hc = false; $$('.hh').forEach(function (x) { var v = +x.value; if (v !== +h[x.dataset.h][+x.dataset.i]) { h[x.dataset.h][+x.dataset.i] = v; hc = true; } }); if (hc) ch.Health = JSON.stringify(h); var rt = C.json(S.data.settings.ReportTargets, {}) || {}, rc = false; $$('.rt').forEach(function (x) { rt[x.dataset.src] = rt[x.dataset.src] || {}; var v = x.value.trim() === '' ? '' : +x.value; if (String(rt[x.dataset.src][x.dataset.k] === undefined ? '' : rt[x.dataset.src][x.dataset.k]) !== String(v)) { rt[x.dataset.src][x.dataset.k] = v; rc = true; } }); if (rc) ch.ReportTargets = JSON.stringify(rt); $$('[data-st]').forEach(function (x) { if (x.value.trim() !== String(S.data.settings[x.dataset.st])) ch[x.dataset.st] = x.value; }); if (!Object.keys(ch).length) { toast('No changes to save.'); return; } el.disabled = true;
     write('saveSettings', { changes: ch }).then(function () { render(); toast('Settings saved.', 'ok'); }, function (e) { el.disabled = false; showErrors($('#page'), e); }); };
   SET.names = function () {
     var ls = C.json(S.data.settings.LinksSync, null), un = (ls && ls.unmatched) || {}, have = {}; S.data.aliases.forEach(function (x) { if (C.live(x)) have[x.Source + '|' + String(x.Key).toLowerCase()] = x; });

@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AGS Performance Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script>
 /* DEPLOYMENT CONFIGURATION (see DEPLOYMENT.md). The OAuth client ID is public by design; no secrets here. */
 window.AGS_CONFIG = { API_URL: 'https://script.google.com/macros/s/AKfycbz7vhZqNMUdoevn0eQkqypnsZqsjaekFR4mK-5X8YzRQxwHR0iU5G9smXiPiAbPpuC2/exec', GOOGLE_CLIENT_ID: '475733208759-pmvcgkpk7j32bopbstj0jmm3rj9vii4n.apps.googleusercontent.com', ALLOWED_DOMAIN: 'allianceglobalsolutions.com', ENABLE_DEMO: false };
 </script>
 <style>
-:root{--bg:#EEF1F5;--surface:#fff;--surface2:#F6F8FB;--ink:#172131;--ink2:#3B475A;--muted:#5E6B80;--line:#D7DDE6;--line2:#E8ECF2;--accent:#2B5C9E;--accent2:#1F4A85;--accent-soft:#E3ECF8;--ok:#2A7656;--ok-soft:#E1F1E9;--warn:#9A630E;--warn-soft:#FBF0DC;--bad:#B42318;--bad-soft:#FBE4E0;--side:#102038;--r:10px;--font:'Inter','Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color-scheme:light}
+:root{--bg:#EEF1F5;--surface:#fff;--surface2:#F6F8FB;--ink:#172131;--ink2:#3B475A;--muted:#5E6B80;--line:#D7DDE6;--line2:#E8ECF2;--accent:#2B5C9E;--accent2:#1F4A85;--accent-soft:#E3ECF8;--ok:#2A7656;--ok-soft:#E1F1E9;--warn:#9A630E;--warn-soft:#FBF0DC;--bad:#B42318;--bad-soft:#FBE4E0;--side:#102038;--r:10px;--font:'Lexend','Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color-scheme:light}
 :root[data-theme="dark"]{--bg:#0C1420;--surface:#121D2E;--surface2:#172437;--ink:#E4E9F1;--ink2:#C2CBD8;--muted:#94A1B5;--line:#2A3A52;--line2:#22324A;--accent:#7FA8E3;--accent2:#A6C3EE;--accent-soft:#1C2F4C;--ok:#6CC59C;--ok-soft:#173528;--warn:#E3B05A;--warn-soft:#3A2C12;--bad:#FF9C8F;--bad-soft:#3E1D18;--side:#0A1626;color-scheme:dark}
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*,*::before,*::after{box-sizing:inherit}
 html,body,#app{height:100%}body{margin:0;font:14.5px/1.5 var(--font);color:var(--ink);background:var(--bg)}button,input,select,textarea{font:inherit;color:inherit}
@@ -80,15 +80,18 @@ details.edit{margin-top:14px;border-top:1px solid var(--line2);padding-top:12px}
 #toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:90;max-width:min(420px,calc(100vw - 32px))}.toast{background:#102038;color:#fff;padding:11px 14px;border-radius:9px;border-left:4px solid #7FA8E3;box-shadow:0 8px 24px rgba(0,0,0,.25)}.toast.ok{border-left-color:#6CC59C}.toast.bad{border-left-color:#EE8C7D}
 @media (max-width:900px){.shell{grid-template-columns:1fr}.side{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:30;flex-direction:row;padding:6px calc(6px + env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px));}.side .brand,.side-foot{display:none}#nav{flex-direction:row;width:100%;justify-content:space-around}#nav button{flex-direction:column;gap:2px;font-size:11px;padding:6px}.page{padding:14px 14px 90px}.grid2,.row2{grid-template-columns:1fr}.hide-sm{display:none}}
 
-/* typography: Inter, even-width figures, calmer weights */
-body{font-size:14px;letter-spacing:-0.006em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'cv11','ss01'}
-h1,h2,h3{font-weight:600;letter-spacing:-0.015em}
+/* typography: Lexend — light body, medium headings and figures, sentence-case table headings */
+body{font-size:14px;font-weight:400;letter-spacing:-0.01em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+h1,h2,h3{font-weight:500;letter-spacing:-0.02em}h1{font-size:1.4rem}
 .big,.tv,td.n,th.n,.wk-l,.score,.v,.dl,.tile .tv{font-variant-numeric:tabular-nums}
-.big{font-weight:700!important;letter-spacing:-0.02em}.tile .tv{font-weight:700;letter-spacing:-0.02em}
-.lbl{font-weight:600!important;color:var(--muted)!important;font-size:12px!important}
-.t th{font-size:11px!important;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)!important}
-.t td{font-size:13.5px}.tag{font-weight:600!important}.btn{font-weight:600}.side nav button{font-weight:500}.side nav button[aria-current=page]{font-weight:600}
-.t a{color:var(--ink);text-decoration:none;font-weight:500}.t a:hover{text-decoration:underline;color:var(--accent)}.chart{max-height:260px}
+.big{font-weight:500!important;letter-spacing:-0.03em}.tile .tv{font-weight:500;font-size:1.7rem;letter-spacing:-0.03em}
+.lbl{font-weight:400!important;color:var(--muted)!important;font-size:12.5px!important}.muted{font-weight:300}
+.t th{font-size:12px!important;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)!important}
+.t td{font-size:13.5px;font-weight:400}.t td b{font-weight:500}.tag{font-weight:500!important}.btn{font-weight:500}
+.side nav button{font-weight:400}.side nav button[aria-current=page]{font-weight:500}.brand b{font-weight:600}
+.t a{color:var(--ink);text-decoration:none;font-weight:400}.t a:hover{text-decoration:underline;color:var(--accent)}.chart{max-height:260px}
+.ch-x,.ch-y,.ch-ya{font-weight:300}
+.wk-l{font-weight:500!important}.facts b{font-weight:500}.seg button{font-weight:500}.health{font-weight:500!important}
 </style>
 </head>
 <body>
@@ -120,12 +123,12 @@ var AGSCore = (function () {
     TeamLeads: ['TeamLeadID', 'FullName', 'Email', 'Campaigns', 'Status'].concat(META),
     Agents: ['AgentID', 'EmployeeID', 'FullName', 'Campaign', 'TeamLeadID', 'Email', 'Status', 'HireDate'].concat(META),
     KpiGrades: ['GradeID', 'AgentID', 'TeamLeadID', 'Campaign', 'Period', 'Grades', 'Score', 'Note'].concat(META),
-    AttWeeks: ['WeekID', 'AgentID', 'Period', 'Scheduled', 'Lost', 'Pct', 'Days'].concat(META),
-    QaWeeks: ['WeekID', 'AgentID', 'Period', 'Audits', 'Avg', 'Ztp'].concat(META),
+    AttWeeks: ['WeekID', 'AgentID', 'Period', 'Month', 'Scheduled', 'Lost', 'Pct', 'Days'].concat(META),
+    QaWeeks: ['WeekID', 'AgentID', 'Period', 'Month', 'Audits', 'Avg', 'Ztp'].concat(META),
     Escalations: ['EscalationID', 'Date', 'Campaign', 'AgentID', 'Client', 'Severity', 'Summary', 'Status', 'Owner', 'ResolvedDate', 'Resolution'].concat(META),
     Grievances: ['GrievanceID', 'Date', 'Campaign', 'AgentID', 'Category', 'Details', 'Status', 'HandledBy', 'ResolvedDate', 'Resolution'].concat(META),
     Attrition: ['AttritionID', 'AgentID', 'Campaign', 'TeamLeadID', 'LastDay', 'Type', 'Reason', 'RehireEligible', 'Notes'].concat(META),
-    CallWeeks: ['WeekID', 'Source', 'AgentID', 'Period', 'Days', 'Inbound', 'Outbound', 'TalkSec', 'HoldSec', 'HandleSec', 'LoginSec', 'Offered', 'Missed'].concat(META),
+    CallWeeks: ['WeekID', 'Source', 'AgentID', 'Period', 'Month', 'Days', 'Inbound', 'Outbound', 'TalkSec', 'HoldSec', 'HandleSec', 'LoginSec', 'Offered', 'Missed'].concat(META),
     CallDays: ['DayID', 'Source', 'AgentID', 'Date', 'Inbound', 'Outbound', 'TalkSec', 'HoldSec', 'HandleSec', 'LoginSec', 'Offered', 'Missed'].concat(META),
     QaAudits: ['RowID', 'QaAuditID', 'AgentID', 'Campaign', 'Period', 'Date', 'Scorecard', 'Score', 'Passed', 'Band', 'Ztp', 'Callout', 'Missed', 'Auditor'].concat(META),
     AdmitMonths: ['RowID', 'AgentID', 'Month', 'Calls', 'CallsVob', 'Admits'].concat(META),
@@ -211,25 +214,34 @@ var AGSCore = (function () {
   // Week of month as used by the QA team: days 1–7 = week 1, 8–14 = week 2, ... 29–31 = week 5.
   function daysInMonth(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }
   function weekdayOf(d) { return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][new Date(d + "T00:00:00Z").getUTCDay()]; }
-  // ------------------------------------------------------------------ weeks (as in the QA Hub)
-  // Days 1–7 = week 1, 8–14 = week 2, 15–21 = week 3, 22 to the end of the month = week 4. Period key: "2026-11-W4".
+  // ------------------------------------------------------------------ weeks: Monday to Sunday
+  // A week is identified by its Monday ("2026-11-23"); a month by "2026-11". Linked attendance, quality and call
+  // figures are stored in per-month pieces of each week (field Month), so a week that crosses into the next month
+  // counts each day in its own month. KPI grades are entered per week and count toward the month of their Monday.
   var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  function weekOfMonth(d) { return isIsoDate(d) ? Math.min(4, Math.ceil(+d.slice(8, 10) / 7)) : null; }
-  function periodKey(d) { return isIsoDate(d) ? d.slice(0, 7) + '-W' + weekOfMonth(d) : ''; }
-  function periodFrom(y, m, w) { var x = Math.min(4, Math.max(1, +w || 1)); return y + '-' + ('0' + m).slice(-2) + '-W' + x; }
-  function isPeriod(p) { return /^\d{4}-(0[1-9]|1[0-2])-W[1-4]$/.test(s(p)); }
-  function periodRange(p) {   // first and last date of a period
-    var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9), dim = daysInMonth(y, m), a = (w - 1) * 7 + 1, z = w === 4 ? dim : w * 7, pre = p.slice(0, 7) + '-';
-    return [pre + ('0' + a).slice(-2), pre + ('0' + z).slice(-2)];
-  }
-  // A period is a week ("2026-11-W4") or a whole month ("2026-11").
+  var MONTHS_FULL = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function weekOfMonth(d) { return isIsoDate(d) ? Math.min(4, Math.ceil(+d.slice(8, 10) / 7)) : null; }   // the QA Hub's own week numbers (kept for reference)
+  function mondayOf(d) { var x = dnum(d); if (x === null) return ''; var wd = (new Date(x * 864e5).getUTCDay() + 6) % 7; return fromDnum(x - wd); }
+  function periodKey(d) { return isIsoDate(d) ? mondayOf(d) : ''; }
+  function isPeriod(p) { return isIsoDate(p) && mondayOf(p) === p; }
+  function periodRange(p) { return isMonth(p) ? [p + '-01', p + '-' + ('0' + daysInMonth(+p.slice(0, 4), +p.slice(5, 7))).slice(-2)] : [p, addDays(p, 6)]; }
   function isMonth(p) { return /^\d{4}-(0[1-9]|1[0-2])$/.test(s(p)); }
-  function weeksOf(p) { return isMonth(p) ? [1, 2, 3, 4].map(function (w) { return p + '-W' + w; }) : [p]; }
+  // the weeks of a month: those whose Monday falls in it
+  function weeksOf(p) { if (!isMonth(p)) return [p]; var out = [], d = mondayOf(p + '-01'); if (d < p + '-01') d = addDays(d, 7); while (d.slice(0, 7) === p) { out.push(d); d = addDays(d, 7); } return out; }
+  // does a stored row belong to the period? week: its Monday; month: its piece's month (or, without pieces, its Monday's month)
+  function inPeriod(r, p) { return isMonth(p) ? (r.Month ? r.Month === p : s(r.Period).slice(0, 7) === p) : r.Period === p; }
   function prevMonth(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7) - 1; if (m < 1) { m = 12; y--; } return y + '-' + ('0' + m).slice(-2); }
   function nextMonth(p) { var y = +p.slice(0, 4), m = +p.slice(5, 7) + 1; if (m > 12) { m = 1; y++; } return y + '-' + ('0' + m).slice(-2); }
-  function periodLabel(p) { if (isMonth(p)) return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' (whole month)'; if (!isPeriod(p)) return s(p); var r = periodRange(p); return MONTHS[+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' · Week ' + p.slice(9) + ' (' + +r[0].slice(8) + '–' + +r[1].slice(8) + ')'; }
-  function prevPeriod(p) { if (isMonth(p)) return prevMonth(p); var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w > 1) return periodFrom(y, m, w - 1); m--; if (m < 1) { m = 12; y--; } return periodFrom(y, m, 4); }
-  function nextPeriod(p) { if (isMonth(p)) return nextMonth(p); var y = +p.slice(0, 4), m = +p.slice(5, 7), w = +p.slice(9); if (w < 4) return periodFrom(y, m, w + 1); m++; if (m > 12) { m = 1; y++; } return periodFrom(y, m, 1); }
+  function shortDay(d) { return MONTHS[+d.slice(5, 7) - 1] + ' ' + +d.slice(8, 10); }
+  function shortWeek(p) { return shortDay(p); }
+  function periodLabel(p) {
+    if (isMonth(p)) return MONTHS_FULL[+p.slice(5, 7) - 1] + ' ' + p.slice(0, 4) + ' (whole month)'; if (!isPeriod(p)) return s(p);
+    var e = addDays(p, 6), sameY = e.slice(0, 4) === p.slice(0, 4), sameM = e.slice(0, 7) === p.slice(0, 7);
+    return shortDay(p) + (sameY ? '' : ', ' + p.slice(0, 4)) + ' – ' + (sameM ? +e.slice(8, 10) : shortDay(e)) + ', ' + e.slice(0, 4);
+  }
+  function prevPeriod(p) { return isMonth(p) ? prevMonth(p) : addDays(p, -7); }
+  function nextPeriod(p) { return isMonth(p) ? nextMonth(p) : addDays(p, 7); }
+  function periodFrom(y, m, w) { var x = Math.min(4, Math.max(1, +w || 1)); return periodKey(y + '-' + ('0' + m).slice(-2) + '-' + ('0' + ((x - 1) * 7 + 1)).slice(-2)); }
 
   // ------------------------------------------------------------------ KPIs
   function campaignsOf(st) { return s(settingsWithDefaults(st).Campaigns).split(',').map(function (x) { return x.trim(); }).filter(Boolean); }
@@ -268,9 +280,10 @@ var AGSCore = (function () {
   // One week's figures per agent: attendance %, quality %, KPI score, and why they need attention.
   function weekView(data, period, st) {
     st = settingsWithDefaults(st || {});
-    var wks = {}; weeksOf(period).forEach(function (w) { wks[w] = 1; });
-    var group = function (list) { var o = {}; (list || []).forEach(function (r) { if (live(r) && wks[r.Period]) (o[r.AgentID] = o[r.AgentID] || []).push(r); }); return o; };
-    var attG = group(data.attWeeks), qaG = group(data.qaWeeks), kgG = group(data.kpiGrades), att = {}, qa = {}, kg = {};
+    var group = function (list) { var o = {}; (list || []).forEach(function (r) { if (live(r) && inPeriod(r, period)) (o[r.AgentID] = o[r.AgentID] || []).push(r); }); return o; };
+    // KPIs are monthly: a week shows the KPI of its Monday's month
+    var kMonth = isMonth(period) ? period : s(period).slice(0, 7), kgG = {}; (data.kpiGrades || []).forEach(function (r) { if (live(r) && r.Period === kMonth) (kgG[r.AgentID] = kgG[r.AgentID] || []).push(r); });
+    var attG = group(data.attWeeks), qaG = group(data.qaWeeks), att = {}, qa = {}, kg = {};
     Object.keys(attG).forEach(function (k) { var sc = 0, lo = 0; attG[k].forEach(function (r) { sc += n(r.Scheduled) || 0; lo += n(r.Lost) || 0; }); att[k] = { Pct: attG[k].length === 1 ? attG[k][0].Pct : sc > 0 ? round((sc - lo) / sc * 100, 1) : null }; });   // one week: the linked figure; a month: from the minutes
     Object.keys(qaG).forEach(function (k) { var tot = 0, cnt = 0, z = false; qaG[k].forEach(function (r) { var c = n(r.Audits) || 1; tot += (n(r.Avg) || 0) * c; cnt += c; if (b(r.Ztp)) z = true; }); qa[k] = { Avg: cnt ? round(tot / cnt, 1) : null, Audits: cnt, Ztp: z }; });
     Object.keys(kgG).forEach(function (k) { var l = kgG[k].map(function (r) { return n(r.Score); }); kg[k] = { Score: avg(l), GradeID: kgG[k].length === 1 ? kgG[k][0].GradeID : '' }; });
@@ -290,12 +303,13 @@ var AGSCore = (function () {
   }
   function overview(data, period, st) {
     var rows = weekView(data, period, st), prev = weekView(data, prevPeriod(period), st), pv = byKey(prev, 'agentId');
+    var kMonth = isMonth(period) ? period : period.slice(0, 7), pk = byKey(isMonth(period) ? prev : weekView(data, prevMonth(kMonth), st), 'agentId');   // KPI change: against the previous month
     var mo = period.slice(0, 7), camps = {};
     rows.forEach(function (r) { (camps[r.campaign || '—'] = camps[r.campaign || '—'] || []).push(r); });
     var groupStats = function (list) {
       var prevList = list.map(function (r) { return pv[r.agentId]; }).filter(Boolean);
       var g = { agents: list.length, att: avg(list.map(function (r) { return r.att; })), qa: avg(list.map(function (r) { return r.qa; })), kpi: avg(list.map(function (r) { return r.kpi; })),
-        prevAtt: avg(prevList.map(function (r) { return r.att; })), prevQa: avg(prevList.map(function (r) { return r.qa; })), prevKpi: avg(prevList.map(function (r) { return r.kpi; })),
+        prevAtt: avg(prevList.map(function (r) { return r.att; })), prevQa: avg(prevList.map(function (r) { return r.qa; })), prevKpi: avg(list.map(function (r) { return pk[r.agentId] ? pk[r.agentId].kpi : null; })),
         graded: list.filter(function (r) { return r.kpi !== null; }).length, watch: list.filter(function (r) { return r.why.length; }).length };
       var ids = {}; list.forEach(function (r) { ids[r.agentId] = 1; });
       return g;
@@ -316,8 +330,9 @@ var AGSCore = (function () {
   }
   function agentWeeks(data, agentId, periods) {
     var f = function (list) { return (list || []).filter(function (r) { return live(r) && r.AgentID === agentId; }); };
-    var att = byKey(f(data.attWeeks), 'Period'), qa = byKey(f(data.qaWeeks), 'Period'), kg = byKey(f(data.kpiGrades), 'Period');
-    return periods.map(function (p) { return { period: p, att: att[p] ? n(att[p].Pct) : null, qa: qa[p] ? n(qa[p].Avg) : null, audits: qa[p] ? n(qa[p].Audits) : 0, ztp: qa[p] ? b(qa[p].Ztp) : false, kpi: kg[p] ? n(kg[p].Score) : null, grades: kg[p] ? json(kg[p].Grades, {}) : {}, note: kg[p] ? kg[p].Note : '' }; });
+    var me = (data.agents || []).filter(function (a) { return a.AgentID === agentId; })[0] || { AgentID: agentId, FullName: '' };
+    var sub = { agents: [Object.assign({}, me, { Status: 'Active' })], attWeeks: f(data.attWeeks), qaWeeks: f(data.qaWeeks), kpiGrades: f(data.kpiGrades) }, kg = byKey(sub.kpiGrades, 'Period');
+    return periods.map(function (p) { var r = weekView(sub, p, {})[0]; return { period: p, att: r.att, qa: r.qa, audits: r.qaAudits, ztp: r.ztp, kpi: r.kpi, grades: kg[p] ? json(kg[p].Grades, {}) : {}, note: kg[p] ? kg[p].Note : '' }; });
   }
 
   // ------------------------------------------------------------------ links (pure: used by the sync in Setup.gs and by tests)
@@ -329,7 +344,7 @@ var AGSCore = (function () {
       if (d.ArchivedAt || n(d.Scheduled) === null || !isIsoDate(d.Date)) return;
       var entered = n(d.Absent) || n(d.Tardy) || n(d.EarlyOut) || n(d.Leave);
       if (!(d.Date < today || (d.Date === today && entered))) return;
-      var k = d.AgentID + '|' + periodKey(d.Date), o = out[k] || (out[k] = { AgentID: d.AgentID, Period: periodKey(d.Date), Scheduled: 0, Lost: 0, Days: 0 });
+      var k = d.AgentID + '|' + periodKey(d.Date) + '|' + d.Date.slice(0, 7), o = out[k] || (out[k] = { AgentID: d.AgentID, Period: periodKey(d.Date), Month: d.Date.slice(0, 7), Scheduled: 0, Lost: 0, Days: 0 });
       o.Scheduled += n(d.Scheduled) || 0; o.Lost += (n(d.Absent) || 0) + (b(d.TardyWaived) ? 0 : (n(d.Tardy) || 0)); o.Days++;
     });
     return Object.keys(out).map(function (k) { var o = out[k]; o.Pct = o.Scheduled > 0 ? round((o.Scheduled - o.Lost) / o.Scheduled * 100, 1) : null; return o; });
@@ -339,11 +354,11 @@ var AGSCore = (function () {
     var out = {};
     (audits || []).forEach(function (a) {
       if (a.ArchivedAt || b(a.NoAudit) || b(a.Callout) || s(a.Purpose) === 'TRAINING' || n(a.Score) === null) return;
-      var p = periodFrom(+a.Year, +a.Month, +a.Week); if (!isPeriod(p)) return;
-      var k = a.AgentID + '|' + p, o = out[k] || (out[k] = { AgentID: a.AgentID, Period: p, scores: [], Ztp: false });
+      var dte = isIsoDate(s(a.AuditDate)) ? s(a.AuditDate) : '', p = dte ? periodKey(dte) : periodFrom(+a.Year, +a.Month, +a.Week), mo = dte ? dte.slice(0, 7) : p.slice(0, 7); if (!isPeriod(p)) return;
+      var k = a.AgentID + '|' + p + '|' + mo, o = out[k] || (out[k] = { AgentID: a.AgentID, Period: p, Month: mo, scores: [], Ztp: false });
       o.scores.push(n(a.Score)); if (b(a.ZTP)) o.Ztp = true;
     });
-    return Object.keys(out).map(function (k) { var o = out[k]; return { AgentID: o.AgentID, Period: o.Period, Audits: o.scores.length, Avg: avg(o.scores), Ztp: o.Ztp }; });
+    return Object.keys(out).map(function (k) { var o = out[k]; return { AgentID: o.AgentID, Period: o.Period, Month: o.Month, Audits: o.scores.length, Avg: avg(o.scores), Ztp: o.Ztp }; });
   }
   // ------------------------------------------------------------------ call reports (pure: used by the sync and by tests)
   var MON_FULL = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
@@ -372,7 +387,7 @@ var AGSCore = (function () {
       var d = reportDate(r[c.date], year); if (!d || d < since) return;
       var uid = s(r[c.user]).trim(), nm = s(r[c.name]).trim(); if (!uid && !nm) return;
       var a = resolve(uid, nm); if (!a) { unmatched[uid || nm] = nm || uid; return; }
-      var k = a + '|' + periodKey(d), o = out[k] || (out[k] = { AgentID: a, Period: periodKey(d), Days: 0, Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 });
+      var k = a + '|' + periodKey(d) + '|' + d.slice(0, 7), o = out[k] || (out[k] = { AgentID: a, Period: periodKey(d), Month: d.slice(0, 7), Days: 0, Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 });
       var dk = a + '|' + d, dd = days[dk] || (days[dk] = { AgentID: a, Date: d, Inbound: 0, Outbound: 0, TalkSec: 0, HoldSec: 0, HandleSec: 0, LoginSec: 0, Offered: 0, Missed: 0 });
       dd.Inbound += num(r, 'inb'); dd.Outbound += num(r, 'out'); dd.TalkSec += dur(r, 'talk'); dd.HoldSec += dur(r, 'hold'); dd.HandleSec += dur(r, 'handle'); dd.LoginSec += dur(r, 'login'); dd.Offered += num(r, 'offered'); dd.Missed += num(r, 'missed');
       o.Days++; o.Inbound += num(r, 'inb'); o.Outbound += num(r, 'out'); o.TalkSec += dur(r, 'talk'); o.HoldSec += dur(r, 'hold'); o.HandleSec += dur(r, 'handle'); o.LoginSec += dur(r, 'login'); o.Offered += num(r, 'offered'); o.Missed += num(r, 'missed');
@@ -452,7 +467,7 @@ var AGSCore = (function () {
     var titles = {}; (cards || []).forEach(function (c) { var d = json(c.Definition, {}); (d.sections || []).forEach(function (sec) { (sec.items || []).forEach(function (it) { titles[c.ScorecardID + '|' + it.code] = it.title; }); }); });
     return (audits || []).filter(function (a) { return !a.ArchivedAt && s(a.Purpose) !== 'TRAINING' && !b(a.NoAudit) && n(a.Score) !== null; }).map(function (a) {
       var ag = resolveQa(a.AgentID); if (!ag) return null;
-      var p = periodFrom(+a.Year, +a.Month, +a.Week); if (!isPeriod(p)) return null;
+      var p = isIsoDate(s(a.AuditDate)) ? periodKey(s(a.AuditDate)) : periodFrom(+a.Year, +a.Month, +a.Week); if (!isPeriod(p)) return null;
       var missed = arr(a.Results).filter(function (r) { return r.a === 'N'; }).map(function (r) { return r.c + '|' + (titles[a.ScorecardID + '|' + r.c] || r.c); });
       return { QaAuditID: a.AuditID, AgentID: ag, Campaign: campNames[a.CampaignID] || '', Period: p, Date: s(a.AuditDate), Scorecard: a.ScorecardName || '', Score: n(a.Score), Passed: b(a.Passed) ? 'TRUE' : 'FALSE',
         Band: a.Band || '', Ztp: b(a.ZTP) ? 'TRUE' : 'FALSE', Callout: b(a.Callout) ? 'TRUE' : 'FALSE', Missed: JSON.stringify(missed), Auditor: a.AuditorName || '' };
@@ -461,16 +476,16 @@ var AGSCore = (function () {
   var BAND_ORDER = ['Excellent', 'Outstanding', 'Satisfactory', 'Needs Improvement', 'Poor', 'Auto-Fail (ZTP)'];
   // Quality for a period (week or month) and a set of agents: tiles, bands, flags, most-missed items, coverage.
   function qualityReport(data, period, agentIds, st) {
-    var inP = function (p) { var w = {}; weeksOf(p).forEach(function (x) { w[x] = 1; }); return w; }, cur = inP(period), prev = inP(prevPeriod(period)), ids = {}; agentIds.forEach(function (a) { ids[a] = 1; });
+    var inP = function (a, p) { return isMonth(p) ? s(a.Date).slice(0, 7) === p : a.Period === p; }, prevP = prevPeriod(period), ids = {}; agentIds.forEach(function (a) { ids[a] = 1; });   // audits: a month counts its own days
     var all = (data.qaAudits || []).filter(function (a) { return live(a) && ids[a.AgentID]; });
     var sum = function (list) { var sc = list.filter(function (a) { return !b(a.Callout); }), v = sc.map(function (a) { return n(a.Score); });
       return { audits: sc.length, avg: avg(v), pass: sc.length ? round(sc.filter(function (a) { return b(a.Passed); }).length / sc.length * 100, 1) : null, ztp: sc.filter(function (a) { return b(a.Ztp); }).length, callouts: list.length - sc.length }; };
-    var now = all.filter(function (a) { return cur[a.Period]; }), before = all.filter(function (a) { return prev[a.Period]; });
+    var now = all.filter(function (a) { return inP(a, period); }), before = all.filter(function (a) { return inP(a, prevP); });
     var bands = {}; BAND_ORDER.forEach(function (x) { bands[x] = 0; }); now.forEach(function (a) { if (!b(a.Callout) && bands[a.Band] !== undefined) bands[a.Band]++; });
     // flags: two failed audits in a row (latest two scored audits up to the end of the period), or a zero-tolerance finding in the period
-    var last = weeksOf(period).slice(-1)[0], flags = [];
+    var last = periodRange(period)[1], flags = [];
     agentIds.forEach(function (id) {
-      var mine = all.filter(function (a) { return a.AgentID === id && !b(a.Callout) && a.Period <= last; }).sort(function (x, y) { return s(x.Date) + x.QaAuditID < s(y.Date) + y.QaAuditID ? -1 : 1; });
+      var mine = all.filter(function (a) { return a.AgentID === id && !b(a.Callout) && s(a.Date) <= last; }).sort(function (x, y) { return s(x.Date) + x.QaAuditID < s(y.Date) + y.QaAuditID ? -1 : 1; });
       var why = []; if (mine.length >= 2 && !b(mine[mine.length - 1].Passed) && !b(mine[mine.length - 2].Passed)) why.push('Failed the last two audits');
       if (now.some(function (a) { return a.AgentID === id && b(a.Ztp) && !b(a.Callout); })) why.push('Zero-tolerance finding');
       if (why.length) flags.push({ agentId: id, why: why });
@@ -583,11 +598,11 @@ var AGSCore = (function () {
   function need(errors, f, k, msg) { if (!s(f[k]).trim()) errors[k] = msg || 'Required.'; }
   H.whoami = { fn: function (ctx) { return { user: publicUser(ctx.user), serverTime: ctx.now, coreVersion: CORE_VERSION }; } };
   H.bootstrap = { fn: function (ctx, p) {
-    var months = Math.max(1, Math.min(24, +p.months || 4)), d = new Date(Date.parse(ctx.today + 'T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - months + 1); var since = d.toISOString().slice(0, 7) + '-W1';
+    var months = Math.max(1, Math.min(24, +p.months || 4)), d = new Date(Date.parse(ctx.today + 'T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - months + 1); var since = mondayOf(d.toISOString().slice(0, 7) + '-01');   // the Monday on or before the first day of the oldest month
     var out = { settings: ctx.settings, user: publicUser(ctx.user), today: ctx.today, serverTime: ctx.now, coreVersion: CORE_VERSION, since: since };
     DATA_ENTITIES.forEach(function (e) {
       var dayCut = addDays(ctx.today, -42);   // daily call rows: the last 6 weeks only (older ones stay in the sheet)
-      out[e] = ctx.repo.all(e).filter(function (r) { return live(r) && (e === 'teamLeads' || ctx.visible(e, r)) && (!r.Period || r.Period >= since) && (e !== 'callDays' || s(r.Date) >= dayCut); });
+      out[e] = ctx.repo.all(e).filter(function (r) { return live(r) && (e === 'teamLeads' || ctx.visible(e, r)) && (!r.Period || r.Period >= (e === 'kpiGrades' ? since.slice(0, 7) : since)) && (e !== 'callDays' || s(r.Date) >= dayCut); });
     });
     out.users = isAdmin(ctx.user) ? ctx.repo.all('users').filter(live) : [];
     return out;
@@ -601,8 +616,8 @@ var AGSCore = (function () {
   // ---------- weekly KPI grades (one record per agent per week; saving again replaces the grades)
   H.saveKpiGrades = { write: true, fn: function (ctx, p) {
     var period = s(p.period), rows = Array.isArray(p.rows) ? p.rows : [], saved = 0;
-    if (!isPeriod(period)) throw AgsError('VALIDATION', 'Choose the week.');
-    if (period > periodKey(ctx.today)) throw AgsError('VALIDATION', 'You cannot grade a week that has not started.');
+    if (!isMonth(period)) throw AgsError('VALIDATION', 'Choose the month.');   // KPIs are graded once a month
+    if (period > ctx.today.slice(0, 7)) throw AgsError('VALIDATION', 'You cannot grade a month that has not started.');
     if (!rows.length || rows.length > 300) throw AgsError('VALIDATION', 'Nothing to save.');
     var errs = {}, existing = {};
     ctx.repo.all('kpiGrades').forEach(function (r) { if (live(r) && r.Period === period) existing[r.AgentID] = r; });
@@ -758,10 +773,8 @@ var AGSCore = (function () {
       var skill = 0.55 + rnd() * 0.45, kpis = DEFAULT_KPIS[a.Campaign];
       periods.forEach(function (per, j) {
         var current = j === periods.length - 1, sched = 2400, lost = rnd() < 0.7 ? 0 : Math.round(rnd() * (skill < 0.7 ? 400 : 160));
-        D.attWeeks.push(meta({ WeekID: id('attWeeks'), AgentID: a.AgentID, Period: per, Scheduled: String(sched), Lost: String(lost), Pct: String(round((sched - lost) / sched * 100, 1)), Days: '5' }));
-        if (rnd() < 0.9) { var q = round(Math.min(100, 74 + skill * 26 + (rnd() - 0.5) * 10), 1); D.qaWeeks.push(meta({ WeekID: id('qaWeeks'), AgentID: a.AgentID, Period: per, Audits: '3', Avg: String(q), Ztp: rnd() < 0.02 ? 'TRUE' : 'FALSE' })); }
-        if (!current || i % 3) { var g = {}; kpis.forEach(function (x) { g[x.key] = Math.max(1, Math.min(5, Math.round(1 + skill * 4 + (rnd() - 0.5) * 1.6))); });
-          D.kpiGrades.push(meta({ GradeID: id('kpiGrades'), AgentID: a.AgentID, TeamLeadID: a.TeamLeadID, Campaign: a.Campaign, Period: per, Grades: JSON.stringify(g), Score: String(kpiScore(kpis, g).score), Note: '' })); }
+        D.attWeeks.push(meta({ WeekID: id('attWeeks'), AgentID: a.AgentID, Period: per, Month: per.slice(0, 7), Scheduled: String(sched), Lost: String(lost), Pct: String(round((sched - lost) / sched * 100, 1)), Days: '5' }));
+        if (rnd() < 0.9) { var q = round(Math.min(100, 74 + skill * 26 + (rnd() - 0.5) * 10), 1); D.qaWeeks.push(meta({ WeekID: id('qaWeeks'), AgentID: a.AgentID, Period: per, Month: per.slice(0, 7), Audits: '3', Avg: String(q), Ztp: rnd() < 0.02 ? 'TRUE' : 'FALSE' })); }
       });
     });
     // call reports (Legacy, Banyan) and Hercules admits (Legacy), plus one name the demo cannot match
@@ -774,7 +787,7 @@ var AGSCore = (function () {
           var inb = Math.round(12 + rnd() * 26), outb = Math.round(8 + rnd() * 32), talk = (inb + outb) * Math.round(45 + rnd() * 60), dy = { Inbound: inb, Outbound: outb, TalkSec: talk, HoldSec: Math.round(talk * (0.04 + rnd() * 0.1)), HandleSec: talk, LoginSec: Math.round(8.2 * 3600 + rnd() * 1800), Offered: inb + Math.round(rnd() * 3), Missed: rnd() < 0.3 ? 1 : 0 };
           Object.keys(wk).forEach(function (k) { wk[k] += dy[k]; });
           if (date >= addDays(today, -42)) { var rec = { DayID: id('callDays'), Source: src, AgentID: a.AgentID, Date: date }; Object.keys(dy).forEach(function (k) { rec[k] = String(dy[k]); }); D.callDays.push(meta(rec)); } }
-        if (!nd) return; var wr = { WeekID: id('callWeeks'), Source: src, AgentID: a.AgentID, Period: per, Days: String(nd) }; Object.keys(wk).forEach(function (k) { wr[k] = String(wk[k]); }); D.callWeeks.push(meta(wr)); });
+        if (!nd) return; var wr = { WeekID: id('callWeeks'), Source: src, AgentID: a.AgentID, Period: per, Month: per.slice(0, 7), Days: String(nd) }; Object.keys(wk).forEach(function (k) { wr[k] = String(wk[k]); }); D.callWeeks.push(meta(wr)); });
       if (a.Campaign === 'Legacy') [0, 1, 2].forEach(function (k) { var d = new Date(Date.parse(today + 'T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - k); var calls = Math.round(120 + rnd() * 300);
         D.admitMonths.push(meta({ RowID: id('admitMonths'), AgentID: a.AgentID, Month: d.toISOString().slice(0, 7), Calls: String(calls), CallsVob: String(Math.round(calls * (0.02 + rnd() * 0.05))), Admits: String(Math.round(rnd() * 7)) })); });
     });
@@ -800,6 +813,12 @@ var AGSCore = (function () {
     });
     D.trainingDecisions.push(meta({ DecisionID: id('trainingDecisions'), TraineeKey: 'QA-T4', Name: 'Encarnacion, Mia', Campaign: 'Takahami', Decision: 'Endorsed to production', DecidedOn: addDays(today, -1), Notes: 'Strong teach back and mock calls.' }));
     D.settings = { QaTargets: JSON.stringify({ Legacy: 3, Banyan: 3, Takahami: 2 }), LinksSync: JSON.stringify({ at: today + 'T00:30:00.000Z', unmatched: { LEGACY_CALLS: { USR842DE0E37: 'John Vincent' } }, reports: {} }) };
+    D.agents.forEach(function (a, i) {   // KPI grades are monthly
+      var kpis = DEFAULT_KPIS[a.Campaign], skill = 0.55 + ((i * 37) % 45) / 100;
+      for (var mk = 3; mk >= 0; mk--) { var d0 = new Date(Date.parse(today.slice(0, 7) + '-01T00:00:00Z')); d0.setUTCMonth(d0.getUTCMonth() - mk); var mo = d0.toISOString().slice(0, 7);
+        if (mk === 0 && i % 3 === 0) continue; var g = {}; kpis.forEach(function (x) { g[x.key] = Math.max(1, Math.min(5, Math.round(1 + skill * 4 + (rnd() - 0.5) * 1.6))); });
+        D.kpiGrades.push(meta({ GradeID: id('kpiGrades'), AgentID: a.AgentID, TeamLeadID: a.TeamLeadID, Campaign: a.Campaign, Period: mo, Grades: JSON.stringify(g), Score: String(kpiScore(kpis, g).score), Note: '' })); }
+    });
     var pickA = function (c) { var l = D.agents.filter(function (a) { return a.Campaign === c; }); return l[Math.floor(rnd() * l.length)]; };
     [['Banyan', 'High', 'Caller was transferred to the wrong facility.', 'Open'], ['Legacy', 'Medium', 'Callback not made within the promised time.', 'In progress'], ['Legacy', 'Low', 'Client asked for a call recording review.', 'Resolved'], ['Takahami', 'Critical', 'Claim batch submitted with wrong allowable amounts.', 'Open']].forEach(function (x, i) {
       var a = pickA(x[0]); D.escalations.push(meta({ EscalationID: id('escalations'), Date: addDays(today, -i * 4 - 1), Campaign: x[0], AgentID: i === 2 ? '' : a.AgentID, Client: x[0] + ' client', Severity: x[1], Summary: x[2], Status: x[3], Owner: '', ResolvedDate: x[3] === 'Resolved' ? addDays(today, -2) : '', Resolution: x[3] === 'Resolved' ? 'Recording shared; no further action.' : '' })); });
@@ -817,7 +836,7 @@ var AGSCore = (function () {
     DATA_ENTITIES: DATA_ENTITIES, DEFAULT_SETTINGS: DEFAULT_SETTINGS, DEFAULT_KPIS: DEFAULT_KPIS, SEVERITIES: SEVERITIES, ESC_STATUSES: ESC_STATUSES, GRV_STATUSES: GRV_STATUSES,
     GRV_CATEGORIES: GRV_CATEGORIES, ATTRITION_TYPES: ATTRITION_TYPES, ACTIVE_STATUSES: ACTIVE_STATUSES, WRITE_ACTIONS: WRITE_ACTIONS, MONTHS: MONTHS,
     AgsError: AgsError, s: s, n: n, b: b, live: live, clone: clone, json: json, isEmail: isEmail, round: round, isIsoDate: isIsoDate, addDays: addDays, settingsWithDefaults: settingsWithDefaults, normRole: normRole,
-    weekOfMonth: weekOfMonth, periodKey: periodKey, isMonth: isMonth, weeksOf: weeksOf, periodFrom: periodFrom, isPeriod: isPeriod, periodRange: periodRange, periodLabel: periodLabel, prevPeriod: prevPeriod, nextPeriod: nextPeriod,
+    weekOfMonth: weekOfMonth, periodKey: periodKey, isMonth: isMonth, weeksOf: weeksOf, inPeriod: inPeriod, mondayOf: mondayOf, shortWeek: shortWeek, shortDay: shortDay, periodFrom: periodFrom, isPeriod: isPeriod, periodRange: periodRange, periodLabel: periodLabel, prevPeriod: prevPeriod, nextPeriod: nextPeriod,
     campaignsOf: campaignsOf, kpiDefs: kpiDefs, kpisFor: kpisFor, kpiScore: kpiScore, avg: avg, weekView: weekView, overview: overview, agentWeeks: agentWeeks,
     attendanceWeeks: attendanceWeeks, qualityWeeks: qualityWeeks, normName: normName, REPORT_SOURCES: REPORT_SOURCES, DEFAULT_HEALTH: DEFAULT_HEALTH,
     DECISIONS: DECISIONS, cardName: cardName, trainingRows: trainingRows, trainees: trainees,
@@ -1016,10 +1035,11 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   function render() {
     if (!S.user) return; var allowed = navList().map(function (n) { return n[0]; }).concat(['agent']); if (allowed.indexOf(S.page.split('/')[0]) < 0) S.page = 'overview';   /* the agent profile is opened from the lists, not the menu */
     var base = S.page.split('/')[0];
+    if (base === 'kpis' && !C.isMonth(S.period)) S.period = S.period.slice(0, 7);   // KPIs are monthly
     $('#nav').innerHTML = navList().map(function (n) { return '<button data-act="nav" data-page="' + n[0] + '"' + (n[0] === base ? ' aria-current="page"' : '') + '><span class="ni">' + n[2] + '</span>' + n[1] + '</button>'; }).join('');
     $('#g-camp').innerHTML = '<option value="">All campaigns</option>' + camps().map(function (c) { return '<option' + (S.camp === c ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('');
     var mon = C.isMonth(S.period);
-    $('#g-week').innerHTML = WEEKLY[base] ? '<span class="seg" role="group" aria-label="Show a week or the whole month"><button data-act="range" data-r="week" aria-pressed="' + !mon + '">Week</button><button data-act="range" data-r="month" aria-pressed="' + mon + '">Month</button></span>' +
+    $('#g-week').innerHTML = WEEKLY[base] ? (base === 'kpis' ? '' : '<span class="seg" role="group" aria-label="Show a week or the whole month"><button data-act="range" data-r="week" aria-pressed="' + !mon + '">Week</button><button data-act="range" data-r="month" aria-pressed="' + mon + '">Month</button></span>') +
       '<button class="icon" data-act="wk" data-d="-1" aria-label="Previous ' + (mon ? 'month' : 'week') + '">‹</button><span class="wk-l">' + esc(C.periodLabel(S.period)) + '</span><button class="icon" data-act="wk" data-d="1" aria-label="Next ' + (mon ? 'month' : 'week') + '"' + (atLatest() ? ' disabled' : '') + '>›</button>' : '';
     var lab = navList().filter(function (n) { return n[0] === base; })[0]; $('#title').textContent = base === 'agent' ? 'Agent' : lab ? lab[1] : ''; document.title = $('#title').textContent + ' — AGS Performance Hub';
     var ls = C.json(S.data.settings.LinksSync, null); $('#linkinfo').innerHTML = S.mode === 'demo' ? 'Demo data' : ls && ls.at ? 'Linked data: ' + esc(ago(ls.at)) : 'Links not run yet';
@@ -1034,10 +1054,10 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   ACT.closeModal = closeModal; ACT.nav = function (el) { go(el.dataset.page); };
   function atLatest() { var cur = C.periodKey(S.data.today); return C.isMonth(S.period) ? S.period >= cur.slice(0, 7) : S.period >= cur; }
   ACT.wk = function (el) { if (+el.dataset.d < 0) S.period = C.prevPeriod(S.period); else if (!atLatest()) S.period = C.nextPeriod(S.period); render(); };
-  // Week ↔ whole month: the month of the week shown; back to the current week (this month) or week 4 (an earlier month)
+  // Week ↔ whole month: the month of the week's Monday; back to the current week (this month) or the month's last week
   ACT.range = function (el) { var cur = C.periodKey(S.data.today);
     if (el.dataset.r === 'month' && !C.isMonth(S.period)) S.period = S.period.slice(0, 7);
-    else if (el.dataset.r === 'week' && C.isMonth(S.period)) S.period = S.period === cur.slice(0, 7) ? cur : S.period + '-W4';
+    else if (el.dataset.r === 'week' && C.isMonth(S.period)) S.period = S.period === cur.slice(0, 7) ? cur : C.weeksOf(S.period).slice(-1)[0];
     render(); };
   function lastWeekOf(p) { var cur = C.periodKey(S.data.today), w = C.weeksOf(p).filter(function (x) { return x <= cur; }); return w.length ? w[w.length - 1] : C.weeksOf(p)[0]; }
   ACT.theme = function () { S.theme = { auto: 'light', light: 'dark', dark: 'auto' }[S.theme]; lsSet('ags_ph_theme', S.theme); applyTheme(); };
@@ -1062,7 +1082,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
       (hl && hl.reasons.length ? '<div class="why">' + hl.reasons.map(function (r) { return '<span class="tag ' + (r.level === 'red' ? 'red' : '') + '">' + esc(r.text) + '</span>'; }).join(' ') + '</div>' : hl ? '<div class="why muted small">All measures on target.</div>' : '') + '<div class="trio">' +
       '<div><div class="lbl">Attendance</div><div class="big">' + pct(g.att, L.att) + '</div>' + delta(g.att, g.prevAtt, '%') + '</div>' +
       '<div><div class="lbl">Quality</div><div class="big">' + pct(g.qa, L.qa) + '</div>' + delta(g.qa, g.prevQa, '%') + '</div>' +
-      '<div><div class="lbl">KPI score</div><div class="big">' + kpiCell(g.kpi) + '</div>' + delta(g.kpi, g.prevKpi, '') + '<div class="muted small">' + g.graded + ' of ' + g.agents + ' graded</div></div></div>' +
+      '<div><div class="lbl">KPI score' + (C.isMonth(S.period) ? '' : ' <span class="muted">· ' + esc(C.MONTHS[+S.period.slice(5, 7) - 1]) + '</span>') + '</div><div class="big">' + kpiCell(g.kpi) + '</div>' + delta(g.kpi, g.prevKpi, '') + '<div class="muted small">' + g.graded + ' of ' + g.agents + ' graded</div></div></div>' +
       (g.campaign !== undefined ? '<div class="facts"><span>Open escalations <b>' + g.openEsc + '</b></span><span>Open grievances <b>' + g.openGrv + '</b></span><span>Attrition this month <b>' + g.attrition + '</b></span><span>To watch <b class="' + (g.watch ? 'red' : '') + '">' + g.watch + '</b></span></div>' : '') + '</section>'; };
     var watch = o.watch.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th><th>Team lead</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">KPI</th><th>Why</th></tr>' +
       o.watch.map(function (r) { return '<tr class="click" data-act="agent" data-id="' + esc(r.agentId) + '"><td><b>' + esc(r.name) + '</b></td><td>' + esc(r.campaign) + '</td><td>' + esc(tlName2(r.teamLeadId)) + '</td><td class="n">' + pct(r.att, L.att) + '</td><td class="n">' + pct(r.qa, L.qa) + '</td><td class="n">' + kpiCell(r.kpi) + '</td><td>' + r.why.map(function (w) { return '<span class="tag">' + esc(w) + '</span>'; }).join(' ') + '</td></tr>'; }).join('') + '</table></div>' : empty('Nobody to watch this week.');
@@ -1074,19 +1094,13 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   };
 
   // ======================================================================== KPI grades (weekly, by the team lead)
-  PAGES.kpis = function () {
-    if (C.isMonth(S.period)) {
-      var ws = C.weeksOf(S.period), ppl = people(), g = {}; S.data.kpiGrades.forEach(function (r) { if (C.live(r)) g[r.AgentID + '|' + r.Period] = r; });
-      return '<div class="note">Grades are entered per week. This is ' + esc(C.periodLabel(S.period)) + ': each week\'s KPI score and the month average. Switch to <b>Week</b> at the top to enter grades.</div>' +
-        (ppl.length ? '<section class="card flush"><div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th>' + ws.map(function (w) { return '<th class="n">Week ' + w.slice(9) + '</th>'; }).join('') + '<th class="n">Month</th></tr>' +
-          ppl.map(function (a) { var v = ws.map(function (w) { var r = g[a.AgentID + '|' + w]; return r ? C.n(r.Score) : null; }); return '<tr class="click" data-act="agent" data-id="' + esc(a.AgentID) + '"><td><b>' + esc(a.FullName) + '</b></td><td>' + esc(a.Campaign) + '</td>' + v.map(function (x) { return '<td class="n">' + kpiCell(x) + '</td>'; }).join('') + '<td class="n"><b>' + kpiCell(C.avg(v)) + '</b></td></tr>'; }).join('') + '</table></div></section>' : empty('No agents.'));
-    }
+  PAGES.kpis = function () {   // KPIs are graded once a month
     var list = people(), groups = {};
     list.forEach(function (a) { (groups[a.Campaign] = groups[a.Campaign] || []).push(a); });
     var have = {}; S.data.kpiGrades.forEach(function (g) { if (C.live(g) && g.Period === S.period) have[g.AgentID] = g; });
     if (!list.length) return empty('No agents to grade.');
-    var future = S.period > C.periodKey(S.data.today);
-    return '<div class="bar"><span class="muted">Grade each KPI from 1 to 5 for ' + esc(C.periodLabel(S.period)) + '. The KPI score is the weighted average of the grades given. Attendance and Quality come from the hubs.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save grades</button></div>' +
+    var future = S.period > S.data.today.slice(0, 7), mname = C.periodLabel(S.period).replace(' (whole month)', '');
+    return '<div class="bar"><span class="muted">KPIs are graded once a month. Grade each KPI from 1 to 5 for <b>' + esc(mname) + '</b>. The KPI score is the weighted average of the grades given. Attendance and Quality come from the hubs.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save grades</button></div>' +
       Object.keys(groups).sort().map(function (c) {
         var kpis = C.kpisFor(S.data.settings, c);
         return '<section class="card flush"><h2 class="pad">' + esc(c) + ' <span class="muted small">· ' + kpis.map(function (k) { return esc(k.label) + ' ' + k.weight; }).join(' · ') + '</span></h2><div class="tw"><table class="t grades"><tr><th>Agent</th>' + kpis.map(function (k) { return '<th class="n" title="Weight ' + k.weight + '">' + esc(k.label) + '</th>'; }).join('') + '<th class="n">KPI score</th><th>Note</th></tr>' +
@@ -1107,20 +1121,22 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     $$('tr[data-agent]').forEach(function (tr) { if (!tr.classList.contains('dirty') && $('.note', tr) && $('.note', tr).dataset.changed) rows.push({ AgentID: tr.dataset.agent, grades: {}, note: $('.note', tr).value }); });
     if (!rows.length) { toast('No changes to save.'); return; }
     el.disabled = true;
-    write('saveKpiGrades', { period: S.period, rows: rows }).then(function (r) { render(); toast(plural(r.saved || rows.length, 'agent') + ' saved for ' + C.periodLabel(S.period) + '.', 'ok'); }, function (e) { el.disabled = false; toast(errText(e), 'bad', 9000); });
+    write('saveKpiGrades', { period: S.period, rows: rows }).then(function (r) { render(); toast(plural(r.saved || rows.length, 'agent') + ' saved for ' + C.periodLabel(S.period).replace(' (whole month)', '') + '.', 'ok'); }, function (e) { el.disabled = false; toast(errText(e), 'bad', 9000); });
   };
   document.addEventListener('input', function (e) { if (e.target.classList && e.target.classList.contains('note')) { var tr = e.target.closest('tr'); if (tr) tr.classList.add('dirty'); } });
 
   // ======================================================================== Attendance and Quality (linked, weekly)
   function weeklyTable(kind) {
-    var weeks = lastPeriods(8), list = people(), L = LIM(), src = kind === 'att' ? S.data.attWeeks : S.data.qaWeeks, by = {};
-    src.forEach(function (r) { if (C.live(r)) by[r.AgentID + '|' + r.Period] = r; });
-    var val = function (a, p) { var r = by[a.AgentID + '|' + p]; return r ? C.n(kind === 'att' ? r.Pct : r.Avg) : null; };
+    var weeks = lastPeriods(8), list = people(), L = LIM();
+    // each week through the overview's calculation, so a week split across two months is combined
+    var views = weeks.map(function (p) { var o = {}; C.weekView(S.data, p, S.data.settings).forEach(function (r) { o[r.agentId] = r; }); return o; });
+    var cell = function (a, i) { return views[i][a.AgentID] || null; };
+    var val = function (a, p) { var r = cell(a, weeks.indexOf(p)); return r ? (kind === 'att' ? r.att : r.qa) : null; };
     var ls = C.json(S.data.settings.LinksSync, null);
     return '<div class="bar"><span class="muted">' + (kind === 'att' ? 'From the Attendance Hub: (scheduled − absent − tardy minutes) ÷ scheduled, per week. Waived tardiness is not counted.' : 'From the QA Hub: average of scored audits per week. Callouts, trainee scorecards and "no audit" weeks are left out.') + (ls && ls.at ? ' Updated ' + esc(ago(ls.at)) + '.' : '') + '</span></div>' +
-      (list.length ? '<section class="card flush"><div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th>' + weeks.map(function (p) { return '<th class="n">' + esc(C.MONTHS[+p.slice(5, 7) - 1] + ' W' + p.slice(9)) + '</th>'; }).join('') + '</tr>' +
-        list.map(function (a) { return '<tr class="click" data-act="agent" data-id="' + esc(a.AgentID) + '"><td><b>' + esc(a.FullName) + '</b></td><td>' + esc(a.Campaign) + '</td>' + weeks.map(function (p) { var v = val(a, p), r = by[a.AgentID + '|' + p];
-          return '<td class="n">' + pct(v, kind === 'att' ? L.att : L.qa) + (kind === 'qa' && r && C.b(r.Ztp) ? ' <span class="tag red" title="Zero-tolerance finding">ZTP</span>' : '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</table></div></section>' : empty('No agents.'));
+      (list.length ? '<section class="card flush"><div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th>' + weeks.map(function (p) { return '<th class="n">' + esc(C.shortWeek(p)) + '</th>'; }).join('') + '</tr>' +
+        list.map(function (a) { return '<tr class="click" data-act="agent" data-id="' + esc(a.AgentID) + '"><td><b>' + esc(a.FullName) + '</b></td><td>' + esc(a.Campaign) + '</td>' + weeks.map(function (p) { var v = val(a, p);
+          return '<td class="n">' + pct(v, kind === 'att' ? L.att : L.qa) + (kind === 'qa' && cell(a, weeks.indexOf(p)) && cell(a, weeks.indexOf(p)).ztp ? ' <span class="tag red" title="Zero-tolerance finding">ZTP</span>' : '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</table></div></section>' : empty('No agents.'));
   }
   PAGES.attendance = function () { return weeklyTable('att'); };
   // Quality: tiles, bands, flags, most-missed items, coverage — for the selected week or month
@@ -1140,7 +1156,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
           m.top.map(function (it) { return '<tr><td><span class="muted mono small">' + esc(it.code) + '</span> ' + esc(it.title) + '</td><td>' + esc(it.scorecard) + '</td><td class="n"><b>' + it.count + '</b></td><td class="n"><span class="meter"><i style="width:' + Math.min(100, it.rate) + '%"></i></span>' + it.rate + '%</td><td class="n">' + it.agentCount + '</td></tr>'; }).join('') + '</table></div>' : '<p class="muted">Nothing missed.</p>') + '</div>'; }).join('') : empty('No audits in this period.')) + '</section>';
     var stateCls = { met: 'cv-met', partial: 'cv-part', missing: 'cv-miss', none: '' };
     html += '<section class="card flush"><h2 class="pad">Coverage</h2><p class="muted small pad0">Audits done each week against the weekly target from the QA Hub scorecards. Weeks that have not started are left out.</p>' +
-      (q.weeks.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th class="n">Target / week</th>' + q.weeks.map(function (w) { return '<th class="n">' + esc(C.MONTHS[+w.slice(5, 7) - 1] + ' W' + w.slice(9)) + '</th>'; }).join('') + '<th class="n">Done</th></tr>' +
+      (q.weeks.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th class="n">Target / week</th>' + q.weeks.map(function (w) { return '<th class="n">' + esc(C.shortWeek(w)) + '</th>'; }).join('') + '<th class="n">Done</th></tr>' +
         q.coverage.map(function (c) { return '<tr><td><a href="#agent/' + esc(c.agentId) + '">' + esc(agentName(c.agentId)) + '</a></td><td class="n">' + (c.target || '—') + '</td>' + c.cells.map(function (x) { return '<td class="n"><span class="cv ' + stateCls[x.state] + '">' + x.count + (x.target ? ' / ' + x.target : '') + '</span></td>'; }).join('') + '<td class="n"><b>' + c.done + (c.due ? ' / ' + c.due : '') + '</b></td></tr>'; }).join('') + '</table></div>' : empty('This period has not started yet.')) + '</section>';
     return html + '<h2 style="margin:22px 0 10px">Weekly scores <span class="muted small">(last 8 weeks)</span></h2>' + weeklyTable('qa');
   };
@@ -1148,8 +1164,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   // ======================================================================== Legacy and Banyan reports (linked call reports)
   function reportPage(source, campaign) {
     var list = S.data.agents.filter(function (a) { return C.live(a) && a.Campaign === campaign; }).sort(function (a, b) { return a.FullName < b.FullName ? -1 : 1; });
-    var inP = {}; C.weeksOf(S.period).forEach(function (w) { inP[w] = 1; });
-    var wk = S.data.callWeeks.filter(function (w) { return C.live(w) && w.Source === source && inP[w.Period]; }), by = {}; wk.forEach(function (w) { (by[w.AgentID] = by[w.AgentID] || []).push(w); });
+    var wk = S.data.callWeeks.filter(function (w) { return C.live(w) && w.Source === source && C.inPeriod(w, S.period); }), by = {}; wk.forEach(function (w) { (by[w.AgentID] = by[w.AgentID] || []).push(w); });
     var rows = list.filter(function (a) { return by[a.AgentID]; }), tot = C.callStats(wk), legacy = source === 'LEGACY_CALLS', ls = C.json(S.data.settings.LinksSync, null);
     var num = function (v) { return v === null || v === undefined ? '—' : Math.round(v * 100) / 100; };
     var T = C.reportTargets(S.data.settings, source), J = function (m, v) { var j = C.judge(m, v, T[m]); return j ? ' class="n v ' + j + '"' : ' class="n"'; };
@@ -1181,14 +1196,14 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     var W = 1040, H = 230, L0 = 46, R0 = 56, T0 = 14, B0 = 30, cw = (W - L0 - R0) / weeks.length, y = function (v) { return T0 + (H - T0 - B0) * (1 - v / maxC); }, ya = function (v) { return T0 + (H - T0 - B0) * (1 - v / maxA); };
     var bars = pts.map(function (p, i) { var h = H - B0 - y(p.calls); return '<rect x="' + (L0 + i * cw + cw * 0.18) + '" y="' + y(p.calls) + '" width="' + cw * 0.64 + '" height="' + Math.max(0, h) + '" rx="3" class="ch-bar"><title>' + esc(C.periodLabel(weeks[i])) + ': ' + p.calls + ' calls, AHT ' + C.fmtDur(p.aht) + '</title></rect>'; }).join('');
     var path = pts.map(function (p, i) { return p.aht === null ? null : [L0 + i * cw + cw / 2, ya(p.aht)]; }).filter(Boolean), line = path.length ? '<polyline class="ch-line" points="' + path.map(function (q) { return q[0] + ',' + q[1]; }).join(' ') + '"/>' + path.map(function (q) { return '<circle class="ch-dot" cx="' + q[0] + '" cy="' + q[1] + '" r="3.2"/>'; }).join('') : '';
-    var labels = weeks.map(function (w, i) { return '<text x="' + (L0 + i * cw + cw / 2) + '" y="' + (H - 10) + '" class="ch-x">' + esc(C.MONTHS[+w.slice(5, 7) - 1] + ' W' + w.slice(9)) + '</text>'; }).join('');
+    var labels = weeks.map(function (w, i) { return '<text x="' + (L0 + i * cw + cw / 2) + '" y="' + (H - 10) + '" class="ch-x">' + esc(C.shortWeek(w)) + '</text>'; }).join('');
     var grid = [0, 0.5, 1].map(function (f) { var v = Math.round(maxC * f); return '<line x1="' + L0 + '" x2="' + (W - R0) + '" y1="' + y(v) + '" y2="' + y(v) + '" class="ch-grid"/><text x="' + (L0 - 6) + '" y="' + (y(v) + 4) + '" class="ch-y">' + v + '</text><text x="' + (W - R0 + 6) + '" y="' + (ya(maxA * f / 1.15 * 1.15) + 4) + '" class="ch-ya">' + C.fmtDur(maxA * f).replace(/^0:/, '') + '</text>'; }).join('');
     return '<section class="card"><h2>Trend <span class="muted small">· last 12 weeks · <i class="lg-bar"></i> calls <i class="lg-line"></i> AHT</span></h2><div class="tw"><svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Calls and AHT for the last 12 weeks">' + grid + bars + line + labels + '</svg></div></section>';
   }
   function inCampAgent(id) { return !!S.data.agents.filter(function (a) { return a.AgentID === id; })[0]; }
   // Day by day: campaign totals per day; for a single week also each agent's calls and AHT per day
   function dayByDay(source, list, T) {
-    var r0 = C.isMonth(S.period) ? [S.period + '-01', C.periodRange(S.period + '-W4')[1]] : C.periodRange(S.period), cut = C.addDays(S.data.today, -42);
+    var r0 = C.periodRange(S.period), cut = C.addDays(S.data.today, -42);
     var rows = S.data.callDays.filter(function (d) { return C.live(d) && d.Source === source && d.Date >= r0[0] && d.Date <= r0[1]; });
     if (!rows.length) return '<section class="card"><h2>Day by day</h2>' + empty(r0[1] < cut ? 'Daily figures are kept for the last 6 weeks.' : 'No daily figures for this period yet.') + '</section>';
     var dates = {}; rows.forEach(function (d) { (dates[d.Date] = dates[d.Date] || []).push(d); });
@@ -1283,13 +1298,21 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   ACT.editLog = function (el) { var L = LOGS[el.dataset.e], r = S.data[el.dataset.e].filter(function (x) { return x[L.id] === el.dataset.id; })[0]; if (r) logForm(el.dataset.e, r); };
 
   // ======================================================================== Agent profile
+  // KPIs are monthly: the last 6 months, each KPI's grade and the note
+  function monthlyKpi(a, kpis) {
+    var months = [], m = S.data.today.slice(0, 7); for (var i = 0; i < 6; i++) { months.push(m); var d = new Date(Date.parse(m + '-01T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - 1); m = d.toISOString().slice(0, 7); }
+    var g = {}; S.data.kpiGrades.forEach(function (r) { if (C.live(r) && r.AgentID === a.AgentID) g[r.Period] = r; });
+    return '<section class="card flush"><h2 class="pad">KPIs by month</h2><div class="tw"><table class="t"><tr><th>Month</th><th class="n">KPI score</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
+      months.map(function (mo) { var r = g[mo], gr = r ? C.json(r.Grades, {}) : {}; return '<tr><td>' + esc(C.periodLabel(mo).replace(' (whole month)', '')) + '</td><td class="n">' + kpiCell(r ? C.n(r.Score) : null) + '</td>' + kpis.map(function (k) { return '<td class="n">' + (gr[k.key] || '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r ? r.Note || '' : '') + '</td></tr>'; }).join('') + '</table></div></section>';
+  }
   PAGES.agent = function (id) {
     var a = S.data.agents.filter(function (x) { return x.AgentID === id; })[0]; if (!a) return empty('Agent not found.');
     var weeks = lastPeriods(12), rows = C.agentWeeks(S.data, id, weeks).reverse(), kpis = C.kpisFor(S.data.settings, a.Campaign), L = LIM();
     var related = function (e, f) { return S.data[e].filter(function (r) { return C.live(r) && r.AgentID === id; }).map(f).join('') || '<li class="muted">None</li>'; };
     return '<p><a href="#overview">← Overview</a></p><div class="prof"><span class="av big">' + esc(initials(a.FullName)) + '</span><div><h2 style="margin:0">' + esc(a.FullName) + '</h2><div class="muted">' + esc([a.EmployeeID, a.Campaign, 'Team lead: ' + tlName2(a.TeamLeadID), a.HireDate ? 'Hired ' + a.HireDate : '', a.Status === 'Inactive' ? 'Inactive' : ''].filter(Boolean).join(' · ')) + '</div></div></div>' +
-      '<section class="card flush"><h2 class="pad">Week by week</h2><div class="tw"><table class="t"><tr><th>Week</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">KPI score</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
-        rows.map(function (r) { return '<tr><td>' + esc(C.periodLabel(r.period)) + '</td><td class="n">' + pct(r.att, L.att) + '</td><td class="n">' + pct(r.qa, L.qa) + (r.ztp ? ' <span class="tag red">ZTP</span>' : '') + (r.audits ? '<div class="muted small">' + plural(r.audits, 'audit') + '</div>' : '') + '</td><td class="n">' + kpiCell(r.kpi) + '</td>' + kpis.map(function (k) { return '<td class="n">' + (r.grades[k.key] || '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r.note || '') + '</td></tr>'; }).join('') + '</table></div></section>' +
+      '<section class="card flush"><h2 class="pad">Week by week <span class="muted small">· Monday to Sunday</span></h2><div class="tw"><table class="t"><tr><th>Week</th><th class="n">Attendance</th><th class="n">Quality</th></tr>' +
+        rows.map(function (r) { return '<tr><td>' + esc(C.periodLabel(r.period)) + '</td><td class="n">' + pct(r.att, L.att) + '</td><td class="n">' + pct(r.qa, L.qa) + (r.ztp ? ' <span class="tag red">ZTP</span>' : '') + (r.audits ? '<div class="muted small">' + plural(r.audits, 'audit') + '</div>' : '') + '</td></tr>'; }).join('') + '</table></div></section>' +
+      monthlyKpi(a, kpis) +
       '<div class="grid2"><section class="card"><h2>Escalations</h2><ul class="hist">' + related('escalations', function (r) { return '<li>' + esc(r.Date + ' · ' + r.Severity + ' · ' + r.Status) + '<div class="small">' + esc(r.Summary) + '</div></li>'; }) + '</ul></section>' +
       '<section class="card"><h2>Grievances</h2><ul class="hist">' + related('grievances', function (r) { return '<li>' + esc(r.Date + ' · ' + r.Category + ' · ' + r.Status) + '<div class="small">' + esc(r.Details) + '</div></li>'; }) + '</ul></section></div>';
   };

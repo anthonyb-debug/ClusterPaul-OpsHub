@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AGS Performance Hub</title>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Cdefs%3E%3ClinearGradient id=%22phg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22#5B6CD6%22/%3E%3Cstop offset=%221%22 stop-color=%22#2E3C8F%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22url%28#phg%29%22/%3E%3Crect x=%2213%22 y=%2237%22 width=%229.5%22 height=%2214%22 rx=%222.6%22 fill=%22#fff%22 opacity=%22.55%22/%3E%3Crect x=%2227.25%22 y=%2229%22 width=%229.5%22 height=%2222%22 rx=%222.6%22 fill=%22#fff%22 opacity=%22.8%22/%3E%3Crect x=%2241.5%22 y=%2221%22 width=%229.5%22 height=%2230%22 rx=%222.6%22 fill=%22#fff%22/%3E%3Cpath d=%22M12.5 29.5 L25 20.5 L33 24.5 L49 11.5%22 fill=%22none%22 stroke=%22#86E3B6%22 stroke-width=%223.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M41.2 11 L49.6 11 L49.6 19.2%22 fill=%22none%22 stroke=%22#86E3B6%22 stroke-width=%223.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script>
@@ -22,7 +23,7 @@ h1{font-size:1.25rem;margin:0}h2{font-size:1.02rem;margin:0 0 12px}.muted{color:
 .lbl{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:5px}.field{margin-bottom:14px}.err{color:var(--bad);font-size:12.5px;font-weight:600;min-height:0}.err:empty{display:none}.hint{font-size:12px;color:var(--muted);margin-top:3px}
 .note{background:var(--surface2);border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:8px;padding:10px 12px;margin:10px 0}.note.bad{border-left-color:var(--bad);background:var(--bad-soft)}
 .login{min-height:100%;display:grid;place-items:center;padding:24px;background:linear-gradient(160deg,#0B1526,#18304F)}.lcard{background:var(--surface);border-radius:16px;padding:28px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35)}.lcard h1{font-size:1.5rem;margin:18px 0 6px;line-height:1.2}
-.brand{display:flex;gap:10px;align-items:center}.logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(140deg,#5B6CD6,#2E3C8F);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.brand{display:flex;gap:10px;align-items:center}.logo{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:none}.logo svg{width:100%;height:100%;display:block;border-radius:10px;box-shadow:0 2px 8px rgba(46,60,143,.35)}
 .demo{margin-top:18px;display:grid;gap:8px}.duser{display:flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left}.duser:hover{border-color:var(--accent);background:var(--accent-soft)}
 .av{width:30px;height:30px;border-radius:50%;background:#2D4C78;color:#fff;display:inline-grid;place-items:center;font-size:12px;font-weight:700;flex:none}
 .shell{display:grid;grid-template-columns:220px 1fr;height:100%}.side{background:var(--side);color:#D5DEEC;display:flex;flex-direction:column;padding:14px 10px}.side .brand{padding:4px 8px 16px}
@@ -1039,6 +1040,8 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
 </script>
 <script>
 (function () {
+  // the app mark: three rising bars with an upward trend line (also the favicon)
+  var LOGO = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="phg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5B6CD6"/><stop offset="1" stop-color="#2E3C8F"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#phg)"/><rect x="13" y="37" width="9.5" height="14" rx="2.6" fill="#fff" opacity=".55"/><rect x="27.25" y="29" width="9.5" height="22" rx="2.6" fill="#fff" opacity=".8"/><rect x="41.5" y="21" width="9.5" height="30" rx="2.6" fill="#fff"/><path d="M12.5 29.5 L25 20.5 L33 24.5 L49 11.5" fill="none" stroke="#86E3B6" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M41.2 11 L49.6 11 L49.6 19.2" fill="none" stroke="#86E3B6" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   'use strict';
   var C = AGSCore, CFG = window.AGS_CONFIG || {}, DEMO_KEY = 'ags_ph_demo_v1', SESS_KEY = 'ags_ph_session';
   // ---------------- small helpers
@@ -1122,7 +1125,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   function renderLogin(err) {
     var live = !!(CFG.API_URL && CFG.GOOGLE_CLIENT_ID), demo = CFG.ENABLE_DEMO !== false && !live;
     var users = []; if (demo) { S.demoT = S.demoT || new MemoryTransport(); users = S.demoT.repo.all('users').filter(function (u) { return C.b(u.Active); }); }
-    $('#app').innerHTML = '<div class="login"><div class="lcard"><div class="brand"><div class="logo">P</div><div><b>Performance Hub</b><div class="muted small">Alliance Global Solutions</div></div></div>' +
+    $('#app').innerHTML = '<div class="login"><div class="lcard"><div class="brand"><div class="logo">' + LOGO + '</div><div><b>Performance Hub</b><div class="muted small">Alliance Global Solutions</div></div></div>' +
       '<h1>Your teams at a glance.</h1><p class="muted">Attendance and quality, linked live from the Attendance and QA Hubs, with weekly KPI grades, escalations, grievances and attrition, all in one place.</p>' +
       (err ? '<div class="note bad">' + esc(err.message || err) + '</div>' : '') +
       (S.user ? '<div class="note">Your session has ended. Sign in again to continue: you\'ll return to where you were, and nothing you were saving is lost.</div>' : '') +
@@ -1145,7 +1148,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   var WEEKLY = { overview: 1, kpis: 1, legacy: 1, banyan: 1, quality: 1, attendance: 1 };
   function navList() { return NAV.filter(function (n) { return !n[3] || cap(n[3]); }); }
   function renderShell() {
-    $('#app').innerHTML = '<div class="shell"><aside class="side"><div class="brand"><div class="logo">P</div><div><b>Performance Hub</b><div class="small" style="opacity:.7">AGS</div></div></div><nav id="nav"></nav><div class="side-foot small" id="linkinfo"></div></aside>' +
+    $('#app').innerHTML = '<div class="shell"><aside class="side"><div class="brand"><div class="logo">' + LOGO + '</div><div><b>Performance Hub</b><div class="small" style="opacity:.7">AGS</div></div></div><nav id="nav"></nav><div class="side-foot small" id="linkinfo"></div></aside>' +
       '<div class="main"><header class="top"><h1 id="title"></h1><span class="spacer"></span><select id="g-camp" class="input sel" aria-label="Campaign"></select><span id="g-week" class="wk"></span><button id="theme-btn" class="icon" data-act="theme"></button><div class="rel"><button class="chip" data-act="userMenu"><span class="av">' + esc(initials(S.user.displayName)) + '</span><span class="hide-sm">' + esc(S.user.displayName) + '<span class="muted small"> · ' + esc(S.user.roleLabel) + '</span></span></button></div></header><main id="page" class="page"></main></div></div>';
     applyTheme();
   }

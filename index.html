@@ -92,6 +92,8 @@ h1,h2,h3{font-weight:500;letter-spacing:-0.02em}h1{font-size:1.4rem}
 .t a{color:var(--ink);text-decoration:none;font-weight:400}.t a:hover{text-decoration:underline;color:var(--accent)}.chart{max-height:260px}
 .ch-x,.ch-y,.ch-ya{font-weight:300}
 .wk-l{font-weight:500!important}.facts b{font-weight:500}.seg button{font-weight:500}.health{font-weight:500!important}
+.g{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:6px;font-weight:500;font-size:12.5px;background:var(--surface2)}.g5{background:#DCEFE3;color:#1E6B45}.g4{background:#E6F2DD;color:#3D7A2E}.g3{background:#F7EFD6;color:#8A6410}.g2{background:#FBE5D6;color:#A2481B}.g1{background:#F8DEDB;color:#A3271C}
+:root[data-theme="dark"] .g5,:root[data-theme="dark"] .g4{background:#1f3a2b;color:#9fd9b4}:root[data-theme="dark"] .g3{background:#3a3220;color:#e6c77a}:root[data-theme="dark"] .g2,:root[data-theme="dark"] .g1{background:#3d2420;color:#f0a99d}
 </style>
 </head>
 <body>
@@ -183,6 +185,8 @@ var AGSCore = (function () {
     Timezone: ['Asia/Manila', 'Time zone for "today" and weeks.'],
     SessionHours: ['12', 'How long people stay signed in after signing in with Google (hours, 1–168).'],
     Health: [JSON.stringify(DEFAULT_HEALTH), 'Campaign health thresholds: green at or above the first number, amber at or above the second, otherwise red (watch share: the reverse).'],
+    // Score Guide bands for the automatic Attendance and QA grades: the lowest whole % (rounded down) for grades 5, 4, 3, 2
+    GradeBands: [JSON.stringify({ attendance: [100, null, 95, 90], quality: { Banyan: [93, 88, 83, 78], Legacy: [93, 89, 83, 79], Takahami: [100, 95, 85, 75] } }), 'Attendance and QA grade bands (lowest whole % for 5, 4, 3, 2), from the Score Guide.'],
     TrainingPassMark: ['87', 'Trainee scorecards: both Teach Back and Mock Call averages at or above this % = meets the mark.'],
     ReportTargets: [JSON.stringify({ LEGACY_CALLS: { aht: 180, answerRate: 90, holdPct: 10, util: 40 }, BANYAN_CALLS: { aht: 145, holdPct: 10, util: 40, prodPerDay: '' } }), 'Report targets: AHT at most (seconds), answer rate at least (%), hold % at most, utilisation at least (%), productivity per day at least.'],
     QaTargets: ['{}', 'Weekly audit target per campaign, copied from the QA Hub scorecards.'],
@@ -278,6 +282,18 @@ var AGSCore = (function () {
   // ------------------------------------------------------------------ overview
   function avg(list) { var v = list.filter(function (x) { return x !== null && x !== undefined && isFinite(x); }); return v.length ? round(v.reduce(function (a, b2) { return a + b2; }, 0) / v.length, 1) : null; }
   // One week's figures per agent: attendance %, quality %, KPI score, and why they need attention.
+  // Automatic grades from the Score Guide: the whole % (rounded down, as in the KPI workbook) against the bands for 5, 4, 3, 2
+  function bandGrade(pct, b4) { if (pct === null || pct === undefined || !b4) return null; var f = Math.floor(+pct + 1e-9); for (var i = 0; i < 4; i++) if (b4[i] !== null && b4[i] !== undefined && f >= b4[i]) return 5 - i; return 1; }
+  function gradeBands(st) { return json(settingsWithDefaults(st || {}).GradeBands, null) || {}; }
+  function gradeAtt(pct, st) { return bandGrade(pct, gradeBands(st).attendance); }
+  function gradeQa(campaign, pct, st) { var q = gradeBands(st).quality || {}, k = Object.keys(q).filter(function (x) { return x.toLowerCase() === s(campaign).toLowerCase(); })[0]; return k ? bandGrade(pct, q[k]) : null; }
+  // Total grade (1.00–5.00): Attendance 25 + QA 25 + the campaign's KPIs at their weights, over what has been graded
+  function totalGrade(kpis, grades, attGrade, qaGrade) {
+    var num = 0, den = 0; grades = grades || {};
+    if (attGrade) { num += attGrade * 25; den += 25; } if (qaGrade) { num += qaGrade * 25; den += 25; }
+    (kpis || []).forEach(function (k) { var g = n(grades[k.key]); if (g !== null && g >= 1 && g <= 5) { num += g * (+k.weight || 0); den += +k.weight || 0; } });
+    return den ? round(num / den, 2) : null;
+  }
   function weekView(data, period, st) {
     st = settingsWithDefaults(st || {});
     var group = function (list) { var o = {}; (list || []).forEach(function (r) { if (live(r) && inPeriod(r, period)) (o[r.AgentID] = o[r.AgentID] || []).push(r); }); return o; };
@@ -286,17 +302,21 @@ var AGSCore = (function () {
     var attG = group(data.attWeeks), qaG = group(data.qaWeeks), att = {}, qa = {}, kg = {};
     Object.keys(attG).forEach(function (k) { var sc = 0, lo = 0; attG[k].forEach(function (r) { sc += n(r.Scheduled) || 0; lo += n(r.Lost) || 0; }); att[k] = { Pct: attG[k].length === 1 ? attG[k][0].Pct : sc > 0 ? round((sc - lo) / sc * 100, 1) : null }; });   // one week: the linked figure; a month: from the minutes
     Object.keys(qaG).forEach(function (k) { var tot = 0, cnt = 0, z = false; qaG[k].forEach(function (r) { var c = n(r.Audits) || 1; tot += (n(r.Avg) || 0) * c; cnt += c; if (b(r.Ztp)) z = true; }); qa[k] = { Avg: cnt ? round(tot / cnt, 1) : null, Audits: cnt, Ztp: z }; });
-    Object.keys(kgG).forEach(function (k) { var l = kgG[k].map(function (r) { return n(r.Score); }); kg[k] = { Score: avg(l), GradeID: kgG[k].length === 1 ? kgG[k][0].GradeID : '' }; });
+    Object.keys(kgG).forEach(function (k) { var l = kgG[k].map(function (r) { return n(r.Score); }); kg[k] = { Score: avg(l), GradeID: kgG[k].length === 1 ? kgG[k][0].GradeID : '', Grades: json(kgG[k][kgG[k].length - 1].Grades, {}) }; });
+    // the Total grade is monthly: a week shows its month's
+    var mg = isMonth(period) ? null : byKey(weekView(data, kMonth, st), 'agentId');
     var lim = { att: +st.WatchAttendance || 95, qa: +st.WatchQuality || 87, kpi: +st.WatchKpi || 3 };
     var openGrv = {}; (data.grievances || []).forEach(function (g) { if (live(g) && g.AgentID && (g.Status === 'Open' || g.Status === 'Under review')) openGrv[g.AgentID] = true; });
     return (data.agents || []).filter(function (a) { return live(a) && a.Status !== 'Inactive'; }).map(function (a) {
       var at = att[a.AgentID], q = qa[a.AgentID], k = kg[a.AgentID];
       var r = { agentId: a.AgentID, name: a.FullName, campaign: a.Campaign, teamLeadId: a.TeamLeadID,
         att: at ? n(at.Pct) : null, qa: q ? n(q.Avg) : null, qaAudits: q ? n(q.Audits) : 0, ztp: q ? b(q.Ztp) : false, kpi: k ? n(k.Score) : null, kpiId: k ? k.GradeID : '', why: [] };
+      if (mg) { var m = mg[a.AgentID] || {}; r.attGrade = m.attGrade || null; r.qaGrade = m.qaGrade || null; r.total = m.total === undefined ? null : m.total; }
+      else { r.attGrade = gradeAtt(r.att, st); r.qaGrade = gradeQa(a.Campaign, r.qa, st); r.total = totalGrade(kpisFor(st, a.Campaign), k ? k.Grades : {}, r.attGrade, r.qaGrade); }
       if (r.att !== null && r.att < lim.att) r.why.push('Attendance ' + r.att + '%');
       if (r.qa !== null && r.qa < lim.qa) r.why.push('Quality ' + r.qa + '%');
       if (r.ztp) r.why.push('Zero-tolerance finding');
-      if (r.kpi !== null && r.kpi < lim.kpi) r.why.push('KPI score ' + r.kpi.toFixed(2));
+      if (r.total !== null && r.total < lim.kpi) r.why.push('Total grade ' + r.total.toFixed(2));
       if (openGrv[a.AgentID]) r.why.push('Open grievance');
       return r;
     }).sort(function (x, y) { return x.name < y.name ? -1 : 1; });
@@ -308,7 +328,7 @@ var AGSCore = (function () {
     rows.forEach(function (r) { (camps[r.campaign || '—'] = camps[r.campaign || '—'] || []).push(r); });
     var groupStats = function (list) {
       var prevList = list.map(function (r) { return pv[r.agentId]; }).filter(Boolean);
-      var g = { agents: list.length, att: avg(list.map(function (r) { return r.att; })), qa: avg(list.map(function (r) { return r.qa; })), kpi: avg(list.map(function (r) { return r.kpi; })),
+      var g = { agents: list.length, att: avg(list.map(function (r) { return r.att; })), qa: avg(list.map(function (r) { return r.qa; })), kpi: avg(list.map(function (r) { return r.kpi; })), total: avg(list.map(function (r) { return r.total; })), prevTotal: avg(list.map(function (r) { return pk[r.agentId] ? pk[r.agentId].total : null; })),
         prevAtt: avg(prevList.map(function (r) { return r.att; })), prevQa: avg(prevList.map(function (r) { return r.qa; })), prevKpi: avg(list.map(function (r) { return pk[r.agentId] ? pk[r.agentId].kpi : null; })),
         graded: list.filter(function (r) { return r.kpi !== null; }).length, watch: list.filter(function (r) { return r.why.length; }).length };
       var ids = {}; list.forEach(function (r) { ids[r.agentId] = 1; });
@@ -516,7 +536,7 @@ var AGSCore = (function () {
     var hi = function (name, v, t, fmt) { if (v === null || v === undefined) return; var l = v >= t[0] ? 'green' : v >= t[1] ? 'amber' : 'red'; if (l !== 'green') out.reasons.push({ level: l, text: name + ' ' + fmt(v) }); if (rank[l] > rank[out.level]) out.level = l; };
     hi('Attendance', g.att, th.attendance, function (v) { return v + '%'; });
     hi('Quality', g.qa, th.quality, function (v) { return v + '%'; });
-    hi('KPI score', g.kpi, th.kpi, function (v) { return v.toFixed(2); });
+    hi('Total grade', g.total !== undefined ? g.total : g.kpi, th.kpi, function (v) { return v.toFixed(2); });
     var share = g.agents ? g.watch / g.agents * 100 : 0, ws = th.watchShare, sl = share <= ws[0] ? 'green' : share <= ws[1] ? 'amber' : 'red';
     if (sl !== 'green') { out.reasons.push({ level: sl, text: Math.round(share) + '% of agents to watch' }); if (rank[sl] > rank[out.level]) out.level = sl; }
     var el = g.critical ? 'red' : g.high >= 2 ? 'red' : g.high === 1 ? 'amber' : 'green';
@@ -841,6 +861,7 @@ var AGSCore = (function () {
     attendanceWeeks: attendanceWeeks, qualityWeeks: qualityWeeks, normName: normName, REPORT_SOURCES: REPORT_SOURCES, DEFAULT_HEALTH: DEFAULT_HEALTH,
     DECISIONS: DECISIONS, cardName: cardName, trainingRows: trainingRows, trainees: trainees,
     qaAuditRows: qaAuditRows, qualityReport: qualityReport, reportTargets: reportTargets, judge: judge, BAND_ORDER: BAND_ORDER,
+    gradeAtt: gradeAtt, gradeQa: gradeQa, totalGrade: totalGrade, bandGrade: bandGrade,
     weekdayOf: weekdayOf, durSec: durSec, fmtDur: fmtDur, reportDate: reportDate, callReportWeeks: callReportWeeks, callStats: callStats, admitMonths: admitMonths, makeResolver: makeResolver, health: health,
     isAdmin: isAdmin, isQA: isQA, isTL: isTL, allAccess: allAccess, capabilities: capabilities, buildScope: buildScope, inScope: inScope,
     resolveUser: resolveUser, publicUser: publicUser, handle: handle, generateSynthetic: generateSynthetic,
@@ -1082,12 +1103,12 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
       (hl && hl.reasons.length ? '<div class="why">' + hl.reasons.map(function (r) { return '<span class="tag ' + (r.level === 'red' ? 'red' : '') + '">' + esc(r.text) + '</span>'; }).join(' ') + '</div>' : hl ? '<div class="why muted small">All measures on target.</div>' : '') + '<div class="trio">' +
       '<div><div class="lbl">Attendance</div><div class="big">' + pct(g.att, L.att) + '</div>' + delta(g.att, g.prevAtt, '%') + '</div>' +
       '<div><div class="lbl">Quality</div><div class="big">' + pct(g.qa, L.qa) + '</div>' + delta(g.qa, g.prevQa, '%') + '</div>' +
-      '<div><div class="lbl">KPI score' + (C.isMonth(S.period) ? '' : ' <span class="muted">· ' + esc(C.MONTHS[+S.period.slice(5, 7) - 1]) + '</span>') + '</div><div class="big">' + kpiCell(g.kpi) + '</div>' + delta(g.kpi, g.prevKpi, '') + '<div class="muted small">' + g.graded + ' of ' + g.agents + ' graded</div></div></div>' +
+      '<div><div class="lbl">Total grade' + (C.isMonth(S.period) ? '' : ' <span class="muted">· ' + esc(C.MONTHS[+S.period.slice(5, 7) - 1]) + '</span>') + '</div><div class="big">' + kpiCell(g.total) + '</div>' + delta(g.total, g.prevTotal, '') + '<div class="muted small">KPIs graded for ' + g.graded + ' of ' + g.agents + '</div></div></div>' +
       (g.campaign !== undefined ? '<div class="facts"><span>Open escalations <b>' + g.openEsc + '</b></span><span>Open grievances <b>' + g.openGrv + '</b></span><span>Attrition this month <b>' + g.attrition + '</b></span><span>To watch <b class="' + (g.watch ? 'red' : '') + '">' + g.watch + '</b></span></div>' : '') + '</section>'; };
-    var watch = o.watch.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th><th>Team lead</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">KPI</th><th>Why</th></tr>' +
-      o.watch.map(function (r) { return '<tr class="click" data-act="agent" data-id="' + esc(r.agentId) + '"><td><b>' + esc(r.name) + '</b></td><td>' + esc(r.campaign) + '</td><td>' + esc(tlName2(r.teamLeadId)) + '</td><td class="n">' + pct(r.att, L.att) + '</td><td class="n">' + pct(r.qa, L.qa) + '</td><td class="n">' + kpiCell(r.kpi) + '</td><td>' + r.why.map(function (w) { return '<span class="tag">' + esc(w) + '</span>'; }).join(' ') + '</td></tr>'; }).join('') + '</table></div>' : empty('Nobody to watch this week.');
-    var tl = '<div class="tw"><table class="t"><tr><th>Team lead</th><th class="n">Agents</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">KPI score</th><th class="n">Graded</th><th class="n">To watch</th></tr>' +
-      o.byTeamLead.sort(function (a, b) { return tlName2(a.teamLeadId) < tlName2(b.teamLeadId) ? -1 : 1; }).map(function (g) { return '<tr><td><b>' + esc(tlName2(g.teamLeadId)) + '</b></td><td class="n">' + g.agents + '</td><td class="n">' + pct(g.att, L.att) + ' ' + delta(g.att, g.prevAtt, '%') + '</td><td class="n">' + pct(g.qa, L.qa) + ' ' + delta(g.qa, g.prevQa, '%') + '</td><td class="n">' + kpiCell(g.kpi) + ' ' + delta(g.kpi, g.prevKpi, '') + '</td><td class="n">' + g.graded + ' / ' + g.agents + '</td><td class="n' + (g.watch ? ' red' : '') + '">' + g.watch + '</td></tr>'; }).join('') + '</table></div>';
+    var watch = o.watch.length ? '<div class="tw"><table class="t"><tr><th>Agent</th><th>Campaign</th><th>Team lead</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">Total grade</th><th>Why</th></tr>' +
+      o.watch.map(function (r) { return '<tr class="click" data-act="agent" data-id="' + esc(r.agentId) + '"><td><b>' + esc(r.name) + '</b></td><td>' + esc(r.campaign) + '</td><td>' + esc(tlName2(r.teamLeadId)) + '</td><td class="n">' + pct(r.att, L.att) + '</td><td class="n">' + pct(r.qa, L.qa) + '</td><td class="n">' + kpiCell(r.total) + '</td><td>' + r.why.map(function (w) { return '<span class="tag">' + esc(w) + '</span>'; }).join(' ') + '</td></tr>'; }).join('') + '</table></div>' : empty('Nobody to watch this week.');
+    var tl = '<div class="tw"><table class="t"><tr><th>Team lead</th><th class="n">Agents</th><th class="n">Attendance</th><th class="n">Quality</th><th class="n">Total grade</th><th class="n">KPIs graded</th><th class="n">To watch</th></tr>' +
+      o.byTeamLead.sort(function (a, b) { return tlName2(a.teamLeadId) < tlName2(b.teamLeadId) ? -1 : 1; }).map(function (g) { return '<tr><td><b>' + esc(tlName2(g.teamLeadId)) + '</b></td><td class="n">' + g.agents + '</td><td class="n">' + pct(g.att, L.att) + ' ' + delta(g.att, g.prevAtt, '%') + '</td><td class="n">' + pct(g.qa, L.qa) + ' ' + delta(g.qa, g.prevQa, '%') + '</td><td class="n">' + kpiCell(g.total) + ' ' + delta(g.total, g.prevTotal, '') + '</td><td class="n">' + g.graded + ' / ' + g.agents + '</td><td class="n' + (g.watch ? ' red' : '') + '">' + g.watch + '</td></tr>'; }).join('') + '</table></div>';
     return (S.camp ? '' : card(o.total, 'All campaigns')) + '<div class="camps">' + o.byCampaign.map(function (g) { return card(g, g.campaign); }).join('') + '</div>' +
       '<section class="card flush"><h2 class="pad">Agents to watch <span class="muted small">(' + o.watch.length + ')</span></h2><p class="muted small pad0">Attendance below ' + L.att + '% · quality below ' + L.qa + '% · zero-tolerance finding · KPI score below ' + L.kpi + ' · open grievance</p>' + watch + '</section>' +
       '<section class="card flush"><h2 class="pad">By team lead</h2>' + tl + '</section>';
@@ -1099,22 +1120,24 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     list.forEach(function (a) { (groups[a.Campaign] = groups[a.Campaign] || []).push(a); });
     var have = {}; S.data.kpiGrades.forEach(function (g) { if (C.live(g) && g.Period === S.period) have[g.AgentID] = g; });
     if (!list.length) return empty('No agents to grade.');
-    var future = S.period > S.data.today.slice(0, 7), mname = C.periodLabel(S.period).replace(' (whole month)', '');
-    return '<div class="bar"><span class="muted">KPIs are graded once a month. Grade each KPI from 1 to 5 for <b>' + esc(mname) + '</b>. The KPI score is the weighted average of the grades given. Attendance and Quality come from the hubs.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save grades</button></div>' +
+    var future = S.period > S.data.today.slice(0, 7), mname = C.periodLabel(S.period).replace(' (whole month)', ''), mv = {}; C.weekView(S.data, S.period, S.data.settings).forEach(function (r) { mv[r.agentId] = r; });
+    var auto = function (pc, gr) { return pc === null || pc === undefined ? '<span class="muted">—</span>' : '<span class="g g' + gr + '">' + gr + '</span><div class="muted small">' + pc + '%</div>'; };
+    return '<div class="bar"><span class="muted">KPIs are graded once a month. Grade each KPI from 1 to 5 for <b>' + esc(mname) + '</b>. Attendance and QA are graded automatically from the hubs with the Score Guide bands. Total grade = Attendance 25% + QA 25% + the KPIs at their weights.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save grades</button></div>' +
       Object.keys(groups).sort().map(function (c) {
         var kpis = C.kpisFor(S.data.settings, c);
-        return '<section class="card flush"><h2 class="pad">' + esc(c) + ' <span class="muted small">· ' + kpis.map(function (k) { return esc(k.label) + ' ' + k.weight; }).join(' · ') + '</span></h2><div class="tw"><table class="t grades"><tr><th>Agent</th>' + kpis.map(function (k) { return '<th class="n" title="Weight ' + k.weight + '">' + esc(k.label) + '</th>'; }).join('') + '<th class="n">KPI score</th><th>Note</th></tr>' +
-          groups[c].map(function (a) { var g = have[a.AgentID], gr = g ? C.json(g.Grades, {}) : {};
-            return '<tr data-agent="' + esc(a.AgentID) + '" data-camp="' + esc(c) + '" data-v="' + esc(g ? g.RecordVersion : '') + '"><td><a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a><div class="muted small">' + esc(tlName2(a.TeamLeadID)) + '</div></td>' +
+        return '<section class="card flush"><h2 class="pad">' + esc(c) + ' <span class="muted small">· ' + kpis.map(function (k) { return esc(k.label) + ' ' + k.weight; }).join(' · ') + '</span></h2><div class="tw"><table class="t grades"><tr><th>Agent</th><th class="n" title="Automatic, weight 25">Attendance</th><th class="n" title="Automatic, weight 25">QA</th>' + kpis.map(function (k) { return '<th class="n" title="Weight ' + k.weight + '">' + esc(k.label) + '</th>'; }).join('') + '<th class="n">KPI score</th><th class="n">Total grade</th><th>Note</th></tr>' +
+          groups[c].map(function (a) { var g = have[a.AgentID], gr = g ? C.json(g.Grades, {}) : {}, m = mv[a.AgentID] || {};
+            return '<tr data-agent="' + esc(a.AgentID) + '" data-camp="' + esc(c) + '" data-v="' + esc(g ? g.RecordVersion : '') + '" data-ag="' + (m.attGrade || '') + '" data-qg="' + (m.qaGrade || '') + '"><td><a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a><div class="muted small">' + esc(tlName2(a.TeamLeadID)) + '</div></td>' +
+              '<td class="n">' + auto(m.att, m.attGrade) + '</td><td class="n">' + auto(m.qa, m.qaGrade) + '</td>' +
               kpis.map(function (k) { return '<td class="n"><input class="input gr" inputmode="numeric" maxlength="1" data-k="' + esc(k.key) + '" value="' + esc(gr[k.key] === undefined ? '' : gr[k.key]) + '" aria-label="' + esc(a.FullName + ' ' + k.label) + '"></td>'; }).join('') +
-              '<td class="n"><span class="score">' + kpiCell(g ? C.n(g.Score) : null) + '</span></td><td><input class="input note" maxlength="500" value="' + esc(g ? g.Note : '') + '" placeholder="Optional"></td></tr>'; }).join('') + '</table></div></section>';
+              '<td class="n"><span class="score">' + kpiCell(g ? C.n(g.Score) : null) + '</span></td><td class="n"><b class="total">' + kpiCell(m.total) + '</b></td><td><input class="input note" maxlength="500" value="' + esc(g ? g.Note : '') + '" placeholder="Optional"></td></tr>'; }).join('') + '</table></div></section>';
       }).join('');
   };
   document.addEventListener('input', function (e) {
     var el = e.target; if (!el.classList || !el.classList.contains('gr')) return;
     el.value = el.value.replace(/[^1-5]/g, '').slice(0, 1);
     var tr = el.closest('tr'), kpis = C.kpisFor(S.data.settings, tr.dataset.camp), g = {}; $$('.gr', tr).forEach(function (i) { if (i.value) g[i.dataset.k] = +i.value; });
-    $('.score', tr).innerHTML = kpiCell(C.kpiScore(kpis, g).score); tr.classList.add('dirty');
+    $('.score', tr).innerHTML = kpiCell(C.kpiScore(kpis, g).score); $('.total', tr).innerHTML = kpiCell(C.totalGrade(kpis, g, +tr.dataset.ag || null, +tr.dataset.qg || null)); tr.classList.add('dirty');
   });
   ACT.saveGrades = function (el) {
     var rows = $$('tr.dirty[data-agent]').map(function (tr) { var g = {}; $$('.gr', tr).forEach(function (i) { g[i.dataset.k] = i.value; }); return { AgentID: tr.dataset.agent, grades: g, note: $('.note', tr).value, expectedVersion: tr.dataset.v }; });
@@ -1302,8 +1325,10 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   function monthlyKpi(a, kpis) {
     var months = [], m = S.data.today.slice(0, 7); for (var i = 0; i < 6; i++) { months.push(m); var d = new Date(Date.parse(m + '-01T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - 1); m = d.toISOString().slice(0, 7); }
     var g = {}; S.data.kpiGrades.forEach(function (r) { if (C.live(r) && r.AgentID === a.AgentID) g[r.Period] = r; });
-    return '<section class="card flush"><h2 class="pad">KPIs by month</h2><div class="tw"><table class="t"><tr><th>Month</th><th class="n">KPI score</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
-      months.map(function (mo) { var r = g[mo], gr = r ? C.json(r.Grades, {}) : {}; return '<tr><td>' + esc(C.periodLabel(mo).replace(' (whole month)', '')) + '</td><td class="n">' + kpiCell(r ? C.n(r.Score) : null) + '</td>' + kpis.map(function (k) { return '<td class="n">' + (gr[k.key] || '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r ? r.Note || '' : '') + '</td></tr>'; }).join('') + '</table></div></section>';
+    var mv = {}; months.forEach(function (mo) { mv[mo] = C.agentWeeks(S.data, a.AgentID, [mo])[0]; mv[mo].row = C.weekView({ agents: [Object.assign({}, a, { Status: 'Active' })], attWeeks: S.data.attWeeks, qaWeeks: S.data.qaWeeks, kpiGrades: S.data.kpiGrades }, mo, S.data.settings)[0]; });
+    var ag = function (pc, gr) { return pc === null || pc === undefined ? '<span class="muted">—</span>' : pc + '% <span class="g g' + gr + '">' + gr + '</span>'; };
+    return '<section class="card flush"><h2 class="pad">KPIs by month</h2><div class="tw"><table class="t"><tr><th>Month</th><th class="n">Total grade</th><th class="n">Attendance</th><th class="n">QA</th><th class="n">KPI score</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
+      months.map(function (mo) { var r = g[mo], gr = r ? C.json(r.Grades, {}) : {}, w = mv[mo].row || {}; return '<tr><td>' + esc(C.periodLabel(mo).replace(' (whole month)', '')) + '</td><td class="n"><b>' + kpiCell(w.total) + '</b></td><td class="n">' + ag(w.att, w.attGrade) + '</td><td class="n">' + ag(w.qa, w.qaGrade) + '</td><td class="n">' + kpiCell(r ? C.n(r.Score) : null) + '</td>' + kpis.map(function (k) { return '<td class="n">' + (gr[k.key] || '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r ? r.Note || '' : '') + '</td></tr>'; }).join('') + '</table></div></section>';
   }
   PAGES.agent = function (id) {
     var a = S.data.agents.filter(function (x) { return x.AgentID === id; })[0]; if (!a) return empty('Agent not found.');
@@ -1344,7 +1369,7 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
     write('saveSettings', { changes: { KpiDefs: JSON.stringify(d) } }).then(function () { render(); toast('Saved.', 'ok'); }, function (e) { el.disabled = false; showErrors($('#page'), e); }); };
   SET.rules = function () { var st = S.data.settings, k = function (key, label, hint, type) { return '<div class="field"><label class="lbl">' + label + '</label><input class="input" data-st="' + key + '" ' + (type ? 'type="' + type + '" ' : '') + 'value="' + esc(st[key]) + '"><div class="hint">' + hint + '</div><div class="err" data-err="' + key + '"></div></div>'; };
     var ls = C.json(st.LinksSync, null);
-    return '<section class="card" style="max-width:720px">' + k('Campaigns', 'Campaigns covered', 'Names as in Schedules, separated by commas.') + k('WatchAttendance', 'Watch: attendance below (%)', 'Agents below this are listed under Agents to watch.', 'number') + k('WatchQuality', 'Watch: quality below (%)', '', 'number') + k('WatchKpi', 'Watch: KPI score below (1–5)', '', 'number') + k('TrainingPassMark', 'Training: pass mark (%)', 'Teach Back and Mock Call averages both at or above this = meets the mark.', 'number') + k('SessionHours', 'Session length (hours)', 'How long people stay signed in.', 'number') + healthFields() + k('ReportYear', 'Year for report dates without one', 'For dates like "Nov12". Leave empty for the current year.') + targetFields() +
+    return '<section class="card" style="max-width:720px">' + k('Campaigns', 'Campaigns covered', 'Names as in Schedules, separated by commas.') + k('WatchAttendance', 'Watch: attendance below (%)', 'Agents below this are listed under Agents to watch.', 'number') + k('WatchQuality', 'Watch: quality below (%)', '', 'number') + k('WatchKpi', 'Watch: total grade below (1–5)', '', 'number') + k('TrainingPassMark', 'Training: pass mark (%)', 'Teach Back and Mock Call averages both at or above this = meets the mark.', 'number') + k('SessionHours', 'Session length (hours)', 'How long people stay signed in.', 'number') + healthFields() + k('ReportYear', 'Year for report dates without one', 'For dates like "Nov12". Leave empty for the current year.') + targetFields() +
       '<button class="btn btn-primary" data-act="saveSettings">Save settings</button></section>' +
       '<section class="card" style="max-width:720px"><h2>Links</h2>' + (ls && ls.at ? '<p>Last copied ' + esc(ago(ls.at)) + '.</p><ul class="small"><li>Roster: ' + esc(JSON.stringify(ls.roster && ls.roster.agents || {})) + '</li><li>Attendance weeks: ' + esc(JSON.stringify(ls.attendance || {})) + '</li><li>Quality weeks: ' + esc(JSON.stringify(ls.quality || {})) + '</li></ul>' + (ls.problems && ls.problems.length ? '<div class="note bad">' + ls.problems.map(esc).join('<br>') + '</div>' : '') : '<p class="muted">Not run yet. In Apps Script, run AGS_syncLinks, then AGS_installLinksTrigger.</p>') + '</section>'; };
   function targetFields() { var t = C.json(S.data.settings.ReportTargets, {}) || {}, f = function (src, k, lab, hint) { var v = (t[src] || {})[k]; return '<label class="tf">' + lab + ' <input class="input rt" data-src="' + src + '" data-k="' + k + '" value="' + esc(v === undefined ? '' : v) + '"><span class="muted small">' + hint + '</span></label>'; };

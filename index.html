@@ -94,6 +94,7 @@ h1,h2,h3{font-weight:500;letter-spacing:-0.02em}h1{font-size:1.4rem}
 .wk-l{font-weight:500!important}.facts b{font-weight:500}.seg button{font-weight:500}.health{font-weight:500!important}
 .g{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:6px;font-weight:500;font-size:12.5px;background:var(--surface2)}.g5{background:#DCEFE3;color:#1E6B45}.g4{background:#E6F2DD;color:#3D7A2E}.g3{background:#F7EFD6;color:#8A6410}.g2{background:#FBE5D6;color:#A2481B}.g1{background:#F8DEDB;color:#A3271C}
 :root[data-theme="dark"] .g5,:root[data-theme="dark"] .g4{background:#1f3a2b;color:#9fd9b4}:root[data-theme="dark"] .g3{background:#3a3220;color:#e6c77a}:root[data-theme="dark"] .g2,:root[data-theme="dark"] .g1{background:#3d2420;color:#f0a99d}
+.kpi2 .raw{width:92px;text-align:right;padding:6px 8px}.kpi2 .gr{width:44px}.kpi2 th.grp{text-align:center;border-left:1px solid var(--line)}.kpi2 td.grp-l{border-left:1px solid var(--line2)}.kpi2 th.sub{font-size:11px!important}.bad-in{border-color:var(--bad)!important;background:var(--bad-soft)!important}
 </style>
 </head>
 <body>
@@ -124,7 +125,7 @@ var AGSCore = (function () {
   var SCHEMA = {
     TeamLeads: ['TeamLeadID', 'FullName', 'Email', 'Campaigns', 'Status'].concat(META),
     Agents: ['AgentID', 'EmployeeID', 'FullName', 'Campaign', 'TeamLeadID', 'Email', 'Status', 'HireDate'].concat(META),
-    KpiGrades: ['GradeID', 'AgentID', 'TeamLeadID', 'Campaign', 'Period', 'Grades', 'Score', 'Note'].concat(META),
+    KpiGrades: ['GradeID', 'AgentID', 'TeamLeadID', 'Campaign', 'Period', 'Grades', 'Score', 'Note', 'Raw'].concat(META),
     AttWeeks: ['WeekID', 'AgentID', 'Period', 'Month', 'Scheduled', 'Lost', 'Pct', 'Days'].concat(META),
     QaWeeks: ['WeekID', 'AgentID', 'Period', 'Month', 'Audits', 'Avg', 'Ztp'].concat(META),
     Escalations: ['EscalationID', 'Date', 'Campaign', 'AgentID', 'Client', 'Severity', 'Summary', 'Status', 'Owner', 'ResolvedDate', 'Resolution'].concat(META),
@@ -167,14 +168,15 @@ var AGSCore = (function () {
   var REPORT_SOURCES = { LEGACY_CALLS: 'Legacy daily call report', BANYAN_CALLS: 'Banyan daily call report', HERCULES: 'Hercules (admits and VOB)' };
   // Campaign health: the worst of these measures (green / amber / red).
   var DEFAULT_HEALTH = { attendance: [95, 90], quality: [87, 81], kpi: [3.5, 3], watchShare: [10, 20] };
-  // KPIs graded 1–5 by the team lead each week (from the Cluster Paul score guide). Attendance and Quality are shown
-  // as percentages from the hubs and are not graded. KPI score = Σ grade × weight ÷ Σ weight of the KPIs graded.
+  // Monthly KPI results, entered by the team lead: for each criterion the raw figure and its grade (1–5), as in the KPI
+  // workbook. Total grade = Σ grade × weight ÷ Σ weight of the criteria graded (all weights total 100).
   var DEFAULT_KPIS = {
-    Banyan: [{ key: 'aht', label: 'AHT', weight: 25 }, { key: 'prod', label: 'Productivity', weight: 25 }],
-    Legacy: [{ key: 'transfer', label: 'Transfer rate', weight: 10, group: 'Calls (40%)' }, { key: 'vob', label: 'VOB rate', weight: 10, group: 'Calls (40%)' },
-      { key: 'admission', label: 'Admission rate', weight: 10, group: 'Calls (40%)' }, { key: 'aht', label: 'AHT', weight: 10, group: 'Calls (40%)' },
-      { key: 'chat_admits', label: 'Chat admits', weight: 5, group: 'Chat (10%)' }, { key: 'chat_vob', label: 'Chat VOB rate', weight: 5, group: 'Chat (10%)' }],
-    Takahami: [{ key: 'prod', label: 'Productivity (claims per day)', weight: 50 }]
+    Banyan: [{ key: 'att', label: 'Attendance', weight: 25, type: 'pct' }, { key: 'qa', label: 'QA', weight: 25, type: 'pct' }, { key: 'aht', label: 'AHT', weight: 25, type: 'time' }, { key: 'prod', label: 'Productivity', weight: 25, type: 'num' }],
+    Legacy: [{ key: 'att', label: 'Attendance', weight: 25, type: 'pct' }, { key: 'qa', label: 'QA', weight: 25, type: 'pct' },
+      { key: 'transfer', label: 'Transfer %', weight: 10, type: 'pct', group: 'Calls (40%)' }, { key: 'admission', label: 'Admission %', weight: 10, type: 'pct', group: 'Calls (40%)' },
+      { key: 'vob', label: 'VOB %', weight: 10, type: 'pct', group: 'Calls (40%)' }, { key: 'aht', label: 'AHT', weight: 10, type: 'time', group: 'Calls (40%)' },
+      { key: 'chat_admits', label: 'Chat admits', weight: 5, type: 'num', group: 'Chat (10%)' }, { key: 'chat_vob', label: 'Chat VOB %', weight: 5, type: 'pct', group: 'Chat (10%)' }],
+    Takahami: [{ key: 'att', label: 'Attendance', weight: 25, type: 'pct' }, { key: 'qa', label: 'QA', weight: 25, type: 'pct' }, { key: 'prod', label: 'Productivity (claims per day)', weight: 50, type: 'num' }]
   };
   var DEFAULT_SETTINGS = {
     Campaigns: ['Banyan,Legacy,Takahami', 'Campaigns this hub covers (names as in Schedules), separated by commas.'],
@@ -250,7 +252,20 @@ var AGSCore = (function () {
   // ------------------------------------------------------------------ KPIs
   function campaignsOf(st) { return s(settingsWithDefaults(st).Campaigns).split(',').map(function (x) { return x.trim(); }).filter(Boolean); }
   function kpiDefs(st) { var d = json(settingsWithDefaults(st).KpiDefs, null); return d && typeof d === 'object' ? d : clone(DEFAULT_KPIS); }
-  function kpisFor(st, campaign) { var d = kpiDefs(st), k = Object.keys(d).filter(function (x) { return x.toLowerCase() === s(campaign).toLowerCase(); })[0]; return k ? d[k] : []; }
+  function kpisFor(st, campaign) {
+    var d = kpiDefs(st), k = Object.keys(d).filter(function (x) { return x.toLowerCase() === s(campaign).toLowerCase(); })[0], l = k ? d[k].slice() : [];
+    // Attendance and QA are criteria the team lead fills in too (added if saved settings predate them)
+    if (l.length && !l.some(function (x) { return x.key === 'qa'; })) l.unshift({ key: 'qa', label: 'QA', weight: 25, type: 'pct' });
+    if (l.length && !l.some(function (x) { return x.key === 'att'; })) l.unshift({ key: 'att', label: 'Attendance', weight: 25, type: 'pct' });
+    return l.map(function (x) { return x.type ? x : Object.assign({ type: /aht/i.test(x.key) ? 'time' : /rate|%|vob|transfer|admission/i.test(x.label + x.key) && !/admits/i.test(x.key) ? 'pct' : 'num' }, x); });
+  }
+  // A raw figure as typed: percentage (0–100, "%" optional), time (h:mm:ss or m:ss) or number. Returns the clean text, or an error.
+  function rawCheck(type, v) {
+    var t = s(v).trim().replace(/,/g, ''); if (t === '') return { ok: '' };
+    if (type === 'pct') { var p = t.replace(/%$/, '').trim(); return /^\d+(\.\d+)?$/.test(p) && +p <= 100 ? { ok: String(+p) + '%' } : { err: 'a percentage from 0 to 100' }; }
+    if (type === 'time') { if (!/^\d{1,2}:\d{2}(:\d{2})?$/.test(t)) return { err: 'a time like 0:01:52 or 1:52' }; var sec = durSec(t); return { ok: fmtDur(sec) }; }
+    return /^\d+(\.\d+)?$/.test(t) ? { ok: String(+t) } : { err: 'a number' };
+  }
   // KPI score (1.00–5.00) from the grades given; KPIs left blank are not counted.
   function kpiScore(kpis, grades) {
     var num = 0, den = 0, given = 0; grades = grades || {};
@@ -311,8 +326,9 @@ var AGSCore = (function () {
       var at = att[a.AgentID], q = qa[a.AgentID], k = kg[a.AgentID];
       var r = { agentId: a.AgentID, name: a.FullName, campaign: a.Campaign, teamLeadId: a.TeamLeadID,
         att: at ? n(at.Pct) : null, qa: q ? n(q.Avg) : null, qaAudits: q ? n(q.Audits) : 0, ztp: q ? b(q.Ztp) : false, kpi: k ? n(k.Score) : null, kpiId: k ? k.GradeID : '', why: [] };
-      if (mg) { var m = mg[a.AgentID] || {}; r.attGrade = m.attGrade || null; r.qaGrade = m.qaGrade || null; r.total = m.total === undefined ? null : m.total; }
-      else { r.attGrade = gradeAtt(r.att, st); r.qaGrade = gradeQa(a.Campaign, r.qa, st); r.total = totalGrade(kpisFor(st, a.Campaign), k ? k.Grades : {}, r.attGrade, r.qaGrade); }
+      // the Total grade comes from the team lead's monthly grades (all criteria, Attendance and QA included)
+      if (mg) { var m = mg[a.AgentID] || {}; r.attGrade = m.attGrade || null; r.qaGrade = m.qaGrade || null; r.total = m.total === undefined ? null : m.total; r.kpi = r.total; }
+      else { r.attGrade = k && k.Grades.att ? +k.Grades.att : null; r.qaGrade = k && k.Grades.qa ? +k.Grades.qa : null; r.total = k ? kpiScore(kpisFor(st, a.Campaign), k.Grades).score : null; r.kpi = r.total; }
       if (r.att !== null && r.att < lim.att) r.why.push('Attendance ' + r.att + '%');
       if (r.qa !== null && r.qa < lim.qa) r.why.push('Quality ' + r.qa + '%');
       if (r.ztp) r.why.push('Zero-tolerance finding');
@@ -649,11 +665,12 @@ var AGSCore = (function () {
         if (!kpis.some(function (x) { return x.key === k; })) { bad = 'Unknown KPI "' + k + '" for ' + a.Campaign + '.'; return; }
         if (!/^[1-5]$/.test(v)) { bad = a.FullName + ': grades are whole numbers from 1 to 5.'; return; } g[k] = +v;
       });
+      var raw = {}; Object.keys(row.raw || {}).forEach(function (k) { var kd = kpis.filter(function (x) { return x.key === k; })[0]; if (!kd) { bad = 'Unknown KPI "' + k + '" for ' + a.Campaign + '.'; return; } var r = rawCheck(kd.type, row.raw[k]); if (r.err) bad = a.FullName + ', ' + kd.label + ': enter ' + r.err + '.'; else if (r.ok !== '') raw[k] = r.ok; });
       if (bad) { errs['row' + i] = bad; return; }
       var sc = kpiScore(kpis, g), note = clean(row.note, 500), cur = existing[a.AgentID];
-      var rec = { AgentID: a.AgentID, TeamLeadID: a.TeamLeadID || '', Campaign: a.Campaign, Period: period, Grades: JSON.stringify(g), Score: sc.score === null ? '' : String(sc.score), Note: note };
+      var rec = { AgentID: a.AgentID, TeamLeadID: a.TeamLeadID || '', Campaign: a.Campaign, Period: period, Grades: JSON.stringify(g), Raw: JSON.stringify(raw), Score: sc.score === null ? '' : String(sc.score), Note: note };
       if (cur) { if (s(row.expectedVersion) && +row.expectedVersion !== +cur.RecordVersion) { errs['row' + i] = a.FullName + ': changed by ' + (cur.UpdatedBy || 'someone') + ' meanwhile. Reload and try again.'; return; } ctx.update('kpiGrades', cur.GradeID, rec, cur.RecordVersion, 'KPI_GRADES', { internal: true }); }
-      else if (Object.keys(g).length || note) ctx.insert('kpiGrades', rec, 'KPI_GRADES');
+      else if (Object.keys(g).length || Object.keys(raw).length || note) ctx.insert('kpiGrades', rec, 'KPI_GRADES');
       saved++;
     });
     if (Object.keys(errs).length) throw AgsError('VALIDATION', 'Some grades need attention.', { fields: errs });
@@ -836,8 +853,9 @@ var AGSCore = (function () {
     D.agents.forEach(function (a, i) {   // KPI grades are monthly
       var kpis = DEFAULT_KPIS[a.Campaign], skill = 0.55 + ((i * 37) % 45) / 100;
       for (var mk = 3; mk >= 0; mk--) { var d0 = new Date(Date.parse(today.slice(0, 7) + '-01T00:00:00Z')); d0.setUTCMonth(d0.getUTCMonth() - mk); var mo = d0.toISOString().slice(0, 7);
-        if (mk === 0 && i % 3 === 0) continue; var g = {}; kpis.forEach(function (x) { g[x.key] = Math.max(1, Math.min(5, Math.round(1 + skill * 4 + (rnd() - 0.5) * 1.6))); });
-        D.kpiGrades.push(meta({ GradeID: id('kpiGrades'), AgentID: a.AgentID, TeamLeadID: a.TeamLeadID, Campaign: a.Campaign, Period: mo, Grades: JSON.stringify(g), Score: String(kpiScore(kpis, g).score), Note: '' })); }
+        if (mk === 0 && i % 3 === 0) continue; var g = {}, raw = {}; kpis.forEach(function (x) { var gr = Math.max(1, Math.min(5, Math.round(1 + skill * 4 + (rnd() - 0.5) * 1.6))); g[x.key] = gr;
+          raw[x.key] = x.key === 'att' ? [88, 92, 97, 99, 100][gr - 1] + '%' : x.key === 'qa' ? [76, 80, 85, 90, 95][gr - 1] + '%' : x.type === 'time' ? fmtDur([215, 170, 120, 70, 30][gr - 1]) : x.type === 'pct' ? [1, 3, 6, 9, 12][gr - 1] + '%' : String(x.key === 'chat_admits' ? gr - 1 : [180, 280, 400, 520, 620][gr - 1]); });
+        D.kpiGrades.push(meta({ GradeID: id('kpiGrades'), AgentID: a.AgentID, TeamLeadID: a.TeamLeadID, Campaign: a.Campaign, Period: mo, Grades: JSON.stringify(g), Raw: JSON.stringify(raw), Score: String(kpiScore(kpis, g).score), Note: '' })); }
     });
     var pickA = function (c) { var l = D.agents.filter(function (a) { return a.Campaign === c; }); return l[Math.floor(rnd() * l.length)]; };
     [['Banyan', 'High', 'Caller was transferred to the wrong facility.', 'Open'], ['Legacy', 'Medium', 'Callback not made within the promised time.', 'In progress'], ['Legacy', 'Low', 'Client asked for a call recording review.', 'Resolved'], ['Takahami', 'Critical', 'Claim batch submitted with wrong allowable amounts.', 'Open']].forEach(function (x, i) {
@@ -861,7 +879,7 @@ var AGSCore = (function () {
     attendanceWeeks: attendanceWeeks, qualityWeeks: qualityWeeks, normName: normName, REPORT_SOURCES: REPORT_SOURCES, DEFAULT_HEALTH: DEFAULT_HEALTH,
     DECISIONS: DECISIONS, cardName: cardName, trainingRows: trainingRows, trainees: trainees,
     qaAuditRows: qaAuditRows, qualityReport: qualityReport, reportTargets: reportTargets, judge: judge, BAND_ORDER: BAND_ORDER,
-    gradeAtt: gradeAtt, gradeQa: gradeQa, totalGrade: totalGrade, bandGrade: bandGrade,
+    rawCheck: rawCheck, gradeAtt: gradeAtt, gradeQa: gradeQa, totalGrade: totalGrade, bandGrade: bandGrade,
     weekdayOf: weekdayOf, durSec: durSec, fmtDur: fmtDur, reportDate: reportDate, callReportWeeks: callReportWeeks, callStats: callStats, admitMonths: admitMonths, makeResolver: makeResolver, health: health,
     isAdmin: isAdmin, isQA: isQA, isTL: isTL, allAccess: allAccess, capabilities: capabilities, buildScope: buildScope, inScope: inScope,
     resolveUser: resolveUser, publicUser: publicUser, handle: handle, generateSynthetic: generateSynthetic,
@@ -1115,37 +1133,41 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
   };
 
   // ======================================================================== KPI grades (weekly, by the team lead)
-  PAGES.kpis = function () {   // KPIs are graded once a month
+  PAGES.kpis = function () {   // monthly KPI results, all entered by the team lead: raw figure and grade (1–5) per criterion
     var list = people(), groups = {};
     list.forEach(function (a) { (groups[a.Campaign] = groups[a.Campaign] || []).push(a); });
     var have = {}; S.data.kpiGrades.forEach(function (g) { if (C.live(g) && g.Period === S.period) have[g.AgentID] = g; });
     if (!list.length) return empty('No agents to grade.');
-    var future = S.period > S.data.today.slice(0, 7), mname = C.periodLabel(S.period).replace(' (whole month)', ''), mv = {}; C.weekView(S.data, S.period, S.data.settings).forEach(function (r) { mv[r.agentId] = r; });
-    var auto = function (pc, gr) { return pc === null || pc === undefined ? '<span class="muted">—</span>' : '<span class="g g' + gr + '">' + gr + '</span><div class="muted small">' + pc + '%</div>'; };
-    return '<div class="bar"><span class="muted">KPIs are graded once a month. Grade each KPI from 1 to 5 for <b>' + esc(mname) + '</b>. Attendance and QA are graded automatically from the hubs with the Score Guide bands. Total grade = Attendance 25% + QA 25% + the KPIs at their weights.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save grades</button></div>' +
+    var future = S.period > S.data.today.slice(0, 7), mname = C.periodLabel(S.period).replace(' (whole month)', ''), hub = {}; C.weekView(S.data, S.period, S.data.settings).forEach(function (r) { hub[r.agentId] = r; });
+    var ph = { pct: 'e.g. 98.5%', time: 'h:mm:ss', num: 'number' };
+    return '<div class="bar"><span class="muted">KPI results for <b>' + esc(mname) + '</b>, entered by the team lead: for each criterion type the raw figure and its grade (1–5). Total grade = Σ grade × weight ÷ 100. Attendance and QA show the hubs\' figures in grey as a guide.</span><span class="spacer"></span><button class="btn btn-primary" data-act="saveGrades"' + (future ? ' disabled' : '') + '>Save</button></div>' +
       Object.keys(groups).sort().map(function (c) {
         var kpis = C.kpisFor(S.data.settings, c);
-        return '<section class="card flush"><h2 class="pad">' + esc(c) + ' <span class="muted small">· ' + kpis.map(function (k) { return esc(k.label) + ' ' + k.weight; }).join(' · ') + '</span></h2><div class="tw"><table class="t grades"><tr><th>Agent</th><th class="n" title="Automatic, weight 25">Attendance</th><th class="n" title="Automatic, weight 25">QA</th>' + kpis.map(function (k) { return '<th class="n" title="Weight ' + k.weight + '">' + esc(k.label) + '</th>'; }).join('') + '<th class="n">KPI score</th><th class="n">Total grade</th><th>Note</th></tr>' +
-          groups[c].map(function (a) { var g = have[a.AgentID], gr = g ? C.json(g.Grades, {}) : {}, m = mv[a.AgentID] || {};
-            return '<tr data-agent="' + esc(a.AgentID) + '" data-camp="' + esc(c) + '" data-v="' + esc(g ? g.RecordVersion : '') + '" data-ag="' + (m.attGrade || '') + '" data-qg="' + (m.qaGrade || '') + '"><td><a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a><div class="muted small">' + esc(tlName2(a.TeamLeadID)) + '</div></td>' +
-              '<td class="n">' + auto(m.att, m.attGrade) + '</td><td class="n">' + auto(m.qa, m.qaGrade) + '</td>' +
-              kpis.map(function (k) { return '<td class="n"><input class="input gr" inputmode="numeric" maxlength="1" data-k="' + esc(k.key) + '" value="' + esc(gr[k.key] === undefined ? '' : gr[k.key]) + '" aria-label="' + esc(a.FullName + ' ' + k.label) + '"></td>'; }).join('') +
-              '<td class="n"><span class="score">' + kpiCell(g ? C.n(g.Score) : null) + '</span></td><td class="n"><b class="total">' + kpiCell(m.total) + '</b></td><td><input class="input note" maxlength="500" value="' + esc(g ? g.Note : '') + '" placeholder="Optional"></td></tr>'; }).join('') + '</table></div></section>';
+        return '<section class="card flush"><h2 class="pad">' + esc(c) + '</h2><div class="tw"><table class="t grades kpi2"><tr><th rowspan="2">Agent</th>' + kpis.map(function (k) { return '<th colspan="2" class="grp">' + esc(k.label) + ' <span class="muted">' + k.weight + '%</span></th>'; }).join('') + '<th rowspan="2" class="n">Total grade</th><th rowspan="2">Note</th></tr><tr>' +
+          kpis.map(function () { return '<th class="n sub">Raw</th><th class="n sub">Grade</th>'; }).join('') + '</tr>' +
+          groups[c].map(function (a) { var g = have[a.AgentID], gr = g ? C.json(g.Grades, {}) : {}, rw = g ? C.json(g.Raw, {}) : {}, hb = hub[a.AgentID] || {};
+            return '<tr data-agent="' + esc(a.AgentID) + '" data-camp="' + esc(c) + '" data-v="' + esc(g ? g.RecordVersion : '') + '"><td><a href="#agent/' + esc(a.AgentID) + '">' + esc(a.FullName) + '</a><div class="muted small">' + esc(tlName2(a.TeamLeadID)) + '</div></td>' +
+              kpis.map(function (k) { var hint = k.key === 'att' && hb.att !== null && hb.att !== undefined ? 'hub ' + hb.att + '%' : k.key === 'qa' && hb.qa !== null && hb.qa !== undefined ? 'hub ' + hb.qa + '%' : ph[k.type];
+                return '<td class="n grp-l"><input class="input raw" data-k="' + esc(k.key) + '" data-t="' + k.type + '" value="' + esc(rw[k.key] || '') + '" placeholder="' + esc(hint) + '" aria-label="' + esc(a.FullName + ' ' + k.label + ' raw') + '"></td><td class="n"><input class="input gr" inputmode="numeric" maxlength="1" data-k="' + esc(k.key) + '" value="' + esc(gr[k.key] === undefined ? '' : gr[k.key]) + '" aria-label="' + esc(a.FullName + ' ' + k.label + ' grade') + '"></td>'; }).join('') +
+              '<td class="n"><b class="total">' + kpiCell(g ? C.n(g.Score) : null) + '</b></td><td><input class="input note" maxlength="500" value="' + esc(g ? g.Note : '') + '" placeholder="Optional"></td></tr>'; }).join('') + '</table></div></section>';
       }).join('');
   };
   document.addEventListener('input', function (e) {
-    var el = e.target; if (!el.classList || !el.classList.contains('gr')) return;
+    var el = e.target; if (!el.classList) return;
+    if (el.classList.contains('raw')) { var tr0 = el.closest('tr'); if (tr0) tr0.classList.add('dirty'); el.classList.remove('bad-in'); return; }
+    if (!el.classList.contains('gr')) return;
     el.value = el.value.replace(/[^1-5]/g, '').slice(0, 1);
     var tr = el.closest('tr'), kpis = C.kpisFor(S.data.settings, tr.dataset.camp), g = {}; $$('.gr', tr).forEach(function (i) { if (i.value) g[i.dataset.k] = +i.value; });
-    $('.score', tr).innerHTML = kpiCell(C.kpiScore(kpis, g).score); $('.total', tr).innerHTML = kpiCell(C.totalGrade(kpis, g, +tr.dataset.ag || null, +tr.dataset.qg || null)); tr.classList.add('dirty');
+    $('.total', tr).innerHTML = kpiCell(C.kpiScore(kpis, g).score); tr.classList.add('dirty');
   });
+  document.addEventListener('change', function (e) { var el = e.target; if (!el.classList || !el.classList.contains('raw')) return; var r = C.rawCheck(el.dataset.t, el.value); if (r.err) { el.classList.add('bad-in'); el.title = 'Enter ' + r.err; } else { el.value = r.ok; el.title = ''; } });
   ACT.saveGrades = function (el) {
-    var rows = $$('tr.dirty[data-agent]').map(function (tr) { var g = {}; $$('.gr', tr).forEach(function (i) { g[i.dataset.k] = i.value; }); return { AgentID: tr.dataset.agent, grades: g, note: $('.note', tr).value, expectedVersion: tr.dataset.v }; });
-    $$('tr[data-agent]').forEach(function (tr) { if (!tr.classList.contains('dirty') && $('.note', tr) && $('.note', tr).dataset.changed) rows.push({ AgentID: tr.dataset.agent, grades: {}, note: $('.note', tr).value }); });
+    var rows = $$('tr.dirty[data-agent]').map(function (tr) { var g = {}, raw = {}; $$('.gr', tr).forEach(function (i) { g[i.dataset.k] = i.value; }); $$('.raw', tr).forEach(function (i) { raw[i.dataset.k] = i.value; }); return { AgentID: tr.dataset.agent, grades: g, raw: raw, note: $('.note', tr).value, expectedVersion: tr.dataset.v }; });
     if (!rows.length) { toast('No changes to save.'); return; }
     el.disabled = true;
     write('saveKpiGrades', { period: S.period, rows: rows }).then(function (r) { render(); toast(plural(r.saved || rows.length, 'agent') + ' saved for ' + C.periodLabel(S.period).replace(' (whole month)', '') + '.', 'ok'); }, function (e) { el.disabled = false; toast(errText(e), 'bad', 9000); });
   };
+
   document.addEventListener('input', function (e) { if (e.target.classList && e.target.classList.contains('note')) { var tr = e.target.closest('tr'); if (tr) tr.classList.add('dirty'); } });
 
   // ======================================================================== Attendance and Quality (linked, weekly)
@@ -1322,14 +1344,14 @@ if (typeof module !== 'undefined' && module.exports) { module.exports = MemoryRe
 
   // ======================================================================== Agent profile
   // KPIs are monthly: the last 6 months, each KPI's grade and the note
-  function monthlyKpi(a, kpis) {
+  function monthlyKpi(a, kpis) {   // the team lead's monthly results: raw figure and grade per criterion, and the Total grade
     var months = [], m = S.data.today.slice(0, 7); for (var i = 0; i < 6; i++) { months.push(m); var d = new Date(Date.parse(m + '-01T00:00:00Z')); d.setUTCMonth(d.getUTCMonth() - 1); m = d.toISOString().slice(0, 7); }
     var g = {}; S.data.kpiGrades.forEach(function (r) { if (C.live(r) && r.AgentID === a.AgentID) g[r.Period] = r; });
-    var mv = {}; months.forEach(function (mo) { mv[mo] = C.agentWeeks(S.data, a.AgentID, [mo])[0]; mv[mo].row = C.weekView({ agents: [Object.assign({}, a, { Status: 'Active' })], attWeeks: S.data.attWeeks, qaWeeks: S.data.qaWeeks, kpiGrades: S.data.kpiGrades }, mo, S.data.settings)[0]; });
-    var ag = function (pc, gr) { return pc === null || pc === undefined ? '<span class="muted">—</span>' : pc + '% <span class="g g' + gr + '">' + gr + '</span>'; };
-    return '<section class="card flush"><h2 class="pad">KPIs by month</h2><div class="tw"><table class="t"><tr><th>Month</th><th class="n">Total grade</th><th class="n">Attendance</th><th class="n">QA</th><th class="n">KPI score</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
-      months.map(function (mo) { var r = g[mo], gr = r ? C.json(r.Grades, {}) : {}, w = mv[mo].row || {}; return '<tr><td>' + esc(C.periodLabel(mo).replace(' (whole month)', '')) + '</td><td class="n"><b>' + kpiCell(w.total) + '</b></td><td class="n">' + ag(w.att, w.attGrade) + '</td><td class="n">' + ag(w.qa, w.qaGrade) + '</td><td class="n">' + kpiCell(r ? C.n(r.Score) : null) + '</td>' + kpis.map(function (k) { return '<td class="n">' + (gr[k.key] || '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r ? r.Note || '' : '') + '</td></tr>'; }).join('') + '</table></div></section>';
+    return '<section class="card flush"><h2 class="pad">KPIs by month</h2><div class="tw"><table class="t"><tr><th>Month</th><th class="n">Total grade</th>' + kpis.map(function (k) { return '<th class="n">' + esc(k.label) + '</th>'; }).join('') + '<th>Note</th></tr>' +
+      months.map(function (mo) { var r = g[mo], gr = r ? C.json(r.Grades, {}) : {}, rw = r ? C.json(r.Raw, {}) : {};
+        return '<tr><td>' + esc(C.periodLabel(mo).replace(' (whole month)', '')) + '</td><td class="n"><b>' + kpiCell(r ? C.n(r.Score) : null) + '</b></td>' + kpis.map(function (k) { return '<td class="n">' + (gr[k.key] || rw[k.key] ? esc(rw[k.key] || '') + (gr[k.key] ? ' <span class="g g' + gr[k.key] + '">' + gr[k.key] + '</span>' : '') : '<span class="muted">—</span>') + '</td>'; }).join('') + '<td class="small">' + esc(r ? r.Note || '' : '') + '</td></tr>'; }).join('') + '</table></div></section>';
   }
+
   PAGES.agent = function (id) {
     var a = S.data.agents.filter(function (x) { return x.AgentID === id; })[0]; if (!a) return empty('Agent not found.');
     var weeks = lastPeriods(12), rows = C.agentWeeks(S.data, id, weeks).reverse(), kpis = C.kpisFor(S.data.settings, a.Campaign), L = LIM();
